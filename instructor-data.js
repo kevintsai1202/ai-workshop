@@ -2,7 +2,7 @@
 // 重跑：npm run scrape:instructor
 window.INSTRUCTOR = {
   "source": "https://www.youtube.com/@pg-kt",
-  "scrapedAt": "2026-05-04T18:08:07.613Z",
+  "scrapedAt": "2026-05-05T06:34:46.713Z",
   "channel": {
     "name": "凱文大叔AI程式設計教室",
     "handle": "@pg-kt",
@@ -15,40 +15,46 @@ window.INSTRUCTOR = {
   },
   "recentVideos": [
     {
-      "title": "PDF OCR 文字辨識革命！ PDNob 2.0  實測：NotebookLM 簡報編輯超直覺，精準辨識 + 多語言支援",
-      "url": "https://www.youtube.com/watch?v=lbzNFTstwv8",
-      "thumbnail": "https://i.ytimg.com/vi/lbzNFTstwv8/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLA1-8QwZ7BsM-JULwcrXha5-whYQg",
-      "views": "觀看次數：456次"
+      "title": "【凱文大叔】手把手教你 Antigravity 設定與應用：規則（Rules）＋神技能（Skills）＋自動化（Workflows）打造最強AI 超能力！",
+      "url": "https://www.youtube.com/watch?v=e-WNdM4JO2U",
+      "thumbnail": "https://img.youtube.com/vi/e-WNdM4JO2U/hqdefault.jpg",
+      "views": "觀看次數：4.7萬次",
+      "viewsCount": 47000
     },
     {
-      "title": "開發到部屬全部交給 Claude Code！使用 Zeabur Skill 部屬實用級專案",
-      "url": "https://www.youtube.com/watch?v=8GCXwfelE-Y",
-      "thumbnail": "https://i.ytimg.com/vi/8GCXwfelE-Y/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDk6K6Hh_wtfgg4oiFM9b3fV7PCpg",
-      "views": "觀看次數：2245次"
+      "title": "不用花錢！3大AI影片生成神器大盤點，每天免費爽做50支影片？還教你去除浮水印！",
+      "url": "https://www.youtube.com/watch?v=uO6d_MW7GN4",
+      "thumbnail": "https://img.youtube.com/vi/uO6d_MW7GN4/hqdefault.jpg",
+      "views": "觀看次數：2.7萬次",
+      "viewsCount": 27000
     },
     {
-      "title": "(會員專屬)Spring AI講座",
-      "url": "https://www.youtube.com/watch?v=SAT4SnEamc0",
-      "thumbnail": "https://i.ytimg.com/vi/SAT4SnEamc0/hqdefault.jpg?sqp=-oaymwFBCNACELwBSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGGUgZShlMA8=&rs=AOn4CLC0c1n3kFVGIxt1DoKfbfMnuIjUNw",
-      "views": null
+      "title": "Chrome DevTools MCP 自動測試神器｜AI自動化測試 + SOP文件自動生成",
+      "url": "https://www.youtube.com/watch?v=4FaZOn9XW6k&pp=0gcJCd4KAYcqIYzv",
+      "thumbnail": "https://img.youtube.com/vi/4FaZOn9XW6k/hqdefault.jpg",
+      "views": "觀看次數：5409次",
+      "viewsCount": 5409
     },
     {
-      "title": "別再重新生成！NotebookLM 功能大進化：電影感影片、多樣資訊圖表，加碼公開最強「NotebookLM簡報修改」隱藏招式！",
-      "url": "https://www.youtube.com/watch?v=4teMnUxPgEU",
-      "thumbnail": "https://i.ytimg.com/vi/4teMnUxPgEU/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLC-uRgaPDb7ikr9zC9A-byMDNShPQ",
-      "views": "觀看次數：2923次"
+      "title": "最智能的 AI 網路爬蟲 - BrowserAct | no code 完成爬蟲設計 | 網路爬蟲界的n8n",
+      "url": "https://www.youtube.com/watch?v=3_yaY3osB8c",
+      "thumbnail": "https://img.youtube.com/vi/3_yaY3osB8c/hqdefault.jpg",
+      "views": "觀看次數：4660次",
+      "viewsCount": 4660
     },
     {
-      "title": "NotebookLM 最新影片摘要功能 - Cinematic 影片",
-      "url": "https://www.youtube.com/watch?v=27IdsdjAEgM",
-      "thumbnail": "https://i.ytimg.com/vi/27IdsdjAEgM/hqdefault.jpg?sqp=-oaymwFBCNACELwBSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGFsgWyhbMA8=&rs=AOn4CLA7_9_EOZjAzNoq1CH7OJp59Ee-PA",
-      "views": "觀看次數：234次"
+      "title": "Gemini CLI 最強改版 | Extensions 擴展插件全面解析 | Pro / Ultra 用戶額度多2.5倍",
+      "url": "https://www.youtube.com/watch?v=XvAjTZOPgIA&pp=0gcJCd4KAYcqIYzv",
+      "thumbnail": "https://img.youtube.com/vi/XvAjTZOPgIA/hqdefault.jpg",
+      "views": "觀看次數：4469次",
+      "viewsCount": 4469
     },
     {
-      "title": "PdNob抽獎影片",
-      "url": "https://www.youtube.com/watch?v=hf4j55vHH7M",
-      "thumbnail": "https://i.ytimg.com/vi/hf4j55vHH7M/hqdefault.jpg?sqp=-oaymwFBCNACELwBSFryq4qpAzMIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB8AEB-AH-CYAC0AWKAgwIABABGH8gGignMA8=&rs=AOn4CLDItp4BcndqpbY3npG2o1Q2homl6g",
-      "views": "觀看次數：46次"
+      "title": "Claude Code推出原生安裝 | 以後不用透過npm安裝 | 正確安裝方式才能完全更新",
+      "url": "https://www.youtube.com/watch?v=0O5MxC-vuy4",
+      "thumbnail": "https://img.youtube.com/vi/0O5MxC-vuy4/hqdefault.jpg",
+      "views": "觀看次數：3741次",
+      "viewsCount": 3741
     }
   ]
 };

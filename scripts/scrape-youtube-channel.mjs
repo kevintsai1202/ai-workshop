@@ -1,6 +1,6 @@
 // =============================================================================
 // 擷取 YouTube 頻道資訊腳本（Playwright）
-// 用途：抓取講師 @pg-kt 的頻道名稱、訂閱數、簡介、最新影片清單，
+// 用途：抓取講師 @pg-kt 的頻道名稱、訂閱數、簡介、最熱門影片清單，
 //       輸出至 data/instructor.json，供 index.html 的講師卡片使用。
 // 設計原則（依 CLAUDE.md）：
 //   1) 可重跑：純粹由 URL 驅動，每次執行覆寫 JSON 與截圖
@@ -105,43 +105,125 @@ async function scrapeChannelHeader(page) {
 }
 
 /**
- * 抓取頻道最新 N 部影片（標題 / 連結 / 縮圖 / 觀看數）
- * @param {number} limit 取前幾部，預設 6
+ * 從 YouTube 影片 URL 解析 videoId（11 字元）
+ * 例：https://www.youtube.com/watch?v=ABC123XYZ_8&pp=tracking → ABC123XYZ_8
+ * @returns {string|null}
  */
-async function scrapeRecentVideos(page, limit = 6) {
+function extractVideoId(url) {
+  if (!url) return null;
+  const m = String(url).match(/[?&]v=([\w-]{11})/);
+  return m ? m[1] : null;
+}
+
+/**
+ * 由 videoId 拼出 YouTube 官方縮圖 URL
+ * hqdefault (480×360) 是所有影片都有的最穩規格；maxresdefault 不一定存在。
+ */
+function thumbnailFromVideoId(videoId) {
+  return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : null;
+}
+
+/**
+ * 解析中文/英文觀看數字串為數值
+ * 支援格式：「觀看次數：2,245次」、「2.2萬次」、「1.5 萬」、「2.3K views」、「1.2M」
+ * @param {string|null} raw 觀看次數原始字串
+ * @returns {number} 解析後的整數；無法解析回傳 0
+ */
+function parseViews(raw) {
+  if (!raw) return 0;
+  const s = String(raw).replace(/觀看次數[：:]?/g, '').replace(/views?/gi, '').trim();
+  // 中文單位：萬 = 1e4, 億 = 1e8
+  const cn = s.match(/([\d.]+)\s*([萬億])/);
+  if (cn) {
+    const n = parseFloat(cn[1]);
+    const unit = cn[2] === '萬' ? 1e4 : 1e8;
+    return Math.round(n * unit);
+  }
+  // 英文單位：K = 1e3, M = 1e6, B = 1e9
+  const en = s.match(/([\d.]+)\s*([KMB])/i);
+  if (en) {
+    const n = parseFloat(en[1]);
+    const unit = { K: 1e3, M: 1e6, B: 1e9 }[en[2].toUpperCase()];
+    return Math.round(n * unit);
+  }
+  // 純數字（可能含逗號或「次」），例如「2,245次」、「459次」
+  const num = s.replace(/[,，\s次]/g, '').match(/\d+/);
+  return num ? parseInt(num[0], 10) : 0;
+}
+
+/**
+ * 抓取頻道最熱門 N 部影片（依觀看數由高到低；標題 / 連結 / 縮圖 / 觀看數）
+ *
+ * 策略說明：
+ *   YouTube SPA 會 strip 掉 `?view=0&sort=p` 排序參數（直接導航 URL 也沒用），
+ *   點擊頁面上的 sort chip 又因為 chip 是動態渲染、選擇器易變，穩定性差。
+ *   折衷做法：抓最近的 SAMPLE_SIZE 部影片（約 30 部，遠超平均熱門尾部），
+ *   解析觀看數後在本地端排序，取前 limit 部當作「熱門」。
+ *   這對「117 部影片」量級的頻道夠精準，且不需要 API key。
+ *
+ * @param {number} limit 最終取前幾部，預設 6
+ */
+async function scrapePopularVideos(page, limit = 6) {
+  // 取樣池大小：愈大愈接近全頻道熱門排序，但 scroll 時間也愈久
+  const SAMPLE_SIZE = 30;
+
   await page.goto(`${BASE_URL}/videos`, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await dismissCookieConsent(page);
 
   // 等影片格子出現
   await page
-    .waitForSelector('ytd-rich-item-renderer, ytd-grid-video-renderer, yt-lockup-view-model', { timeout: 30000 })
+    .waitForSelector('ytd-rich-item-renderer, ytd-grid-video-renderer', { timeout: 30000 })
     .catch(() => console.log('  ⚠ 影片清單選擇器逾時，可能頻道無公開影片'));
 
-  return await page.evaluate((limit) => {
-    /** 從多種 selector 中取出影片卡片 */
-    const cards = [
-      ...document.querySelectorAll('ytd-rich-item-renderer'),
-      ...document.querySelectorAll('ytd-grid-video-renderer'),
-      ...document.querySelectorAll('yt-lockup-view-model'),
-    ];
+  // 滾動載入更多影片，直到湊滿 SAMPLE_SIZE 或停止增加
+  let prev = 0;
+  for (let i = 0; i < 12; i++) {
+    const count = await page.evaluate(() => document.querySelectorAll('ytd-rich-item-renderer').length);
+    if (count >= SAMPLE_SIZE) break;
+    if (count === prev && i > 1) break; // 連續兩輪沒增加 → 已到底
+    prev = count;
+    await page.evaluate(() => window.scrollBy(0, document.body.scrollHeight));
+    await page.waitForTimeout(900);
+  }
 
-    return cards.slice(0, limit).map((card) => {
+  // 多停 1.2 秒讓最後一批 lazy-load 的觀看數 span 渲染完成
+  await page.waitForTimeout(1200);
+
+  // 在瀏覽器端抽取所有候選影片
+  const candidates = await page.evaluate((sampleSize) => {
+    const cards = Array.from(document.querySelectorAll('ytd-rich-item-renderer')).slice(0, sampleSize);
+    return cards.map((card) => {
       const titleEl = card.querySelector('#video-title, a.yt-lockup-metadata-view-model-wiz__title, h3 a');
       const thumbEl = card.querySelector('img');
       const viewsEl = Array.from(card.querySelectorAll('span'))
         .map((s) => s.textContent.trim())
         .find((t) => /觀看|view/i.test(t));
-
       const href = titleEl?.getAttribute('href') || titleEl?.querySelector('a')?.getAttribute('href');
-
       return {
         title: titleEl?.textContent?.trim() || titleEl?.getAttribute('title') || null,
         url: href ? new URL(href, 'https://www.youtube.com').href : null,
         thumbnail: thumbEl?.getAttribute('src') || null,
         views: viewsEl || null,
       };
-    });
-  }, limit);
+    }).filter(v => v.url); // 排除沒有 URL 的（廣告/異常卡片）
+  }, SAMPLE_SIZE);
+
+  // 在 Node 端解析觀看數並補上縮圖（YouTube virtual scrolling 會釋放捲出視野卡片的 <img src>，
+  // 這裡用 videoId 直接拼官方 thumbnail URL 當 fallback，比依賴頁面 src 穩定）
+  const ranked = candidates
+    .map((v) => {
+      const videoId = extractVideoId(v.url);
+      return {
+        ...v,
+        thumbnail: v.thumbnail || thumbnailFromVideoId(videoId),
+        viewsCount: parseViews(v.views),
+      };
+    })
+    .sort((a, b) => b.viewsCount - a.viewsCount)
+    .slice(0, limit);
+
+  console.log(`  → 取樣池 ${candidates.length} 部，依觀看數排序後取前 ${ranked.length} 部`);
+  return ranked;
 }
 
 /**
@@ -170,8 +252,8 @@ async function main() {
     }
     console.log('  →', JSON.stringify(header, null, 2));
 
-    console.log('\n📌 [2/3] 抓取最新影片清單...');
-    const videos = await scrapeRecentVideos(page, 6);
+    console.log('\n📌 [2/3] 抓取最熱門影片清單...');
+    const videos = await scrapePopularVideos(page, 6);
     console.log(`  → 抓到 ${videos.length} 部影片`);
     videos.forEach((v, i) => console.log(`     ${i + 1}. ${v.title}`));
 

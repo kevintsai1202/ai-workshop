@@ -90,7 +90,8 @@
   /* ===================== reset & base ===================== */
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; zoom: 1.35; }
+  /* 縮放只套用在主內容（.content），側邊選單保持原生尺寸不被放大 */
+  html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
     color: var(--fg);
@@ -118,23 +119,28 @@
   button { font: inherit; color: inherit; cursor: pointer; }
 
   /* ===================== layout ===================== */
+  /* sidebar 採用 fixed 定位（不再依賴 flex + sticky，避免 ancestor overflow 干擾），
+     .app 不再是 flex container，由 .main 用 margin-left 讓出 sidebar 寬度。
+     注意：不可加 overflow-x: hidden，否則瀏覽器會 implicit 把 overflow-y 設為 auto，
+     讓 .app 變成捲軸容器，window 反而不再捲動，導致 topbar sticky 失效。 */
   .app {
-    display: flex;
     min-height: 100vh;
-    overflow-x: hidden;
   }
   .app.sidebar-closed .sidebar {
-    margin-left: calc(-1 * var(--sidebar-w));
+    /* 用 transform 取代 margin 動畫，避免 reflow，動畫更順 */
+    transform: translateX(-100%);
   }
 
   /* ===================== sidebar ===================== */
   .sidebar {
-    flex: 0 0 var(--sidebar-w);
-    transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    position: sticky;
+    /* 真正固定：不隨頁面捲動，且不參與 flex/document flow */
+    position: fixed;
+    left: 0;
     top: 0;
-    align-self: start;
+    width: var(--sidebar-w);
     height: 100vh;
+    z-index: 10;
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
     border-right: 1px solid var(--border);
     background: var(--surface);
     display: flex;
@@ -271,8 +277,82 @@
   }
   .nav-reset:hover { color: var(--danger); border-color: var(--danger); }
 
+  /* ===== sidebar 上的內容縮放控制（控制 .content 的 zoom 變數） ===== */
+  .nav-zoom {
+    border-top: 1px solid var(--border);
+    padding: 12px 20px 14px;
+    background: var(--surface);
+  }
+  .nav-zoom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .nav-zoom-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .nav-zoom-reset {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--muted);
+    border-radius: var(--r-sm);
+    width: 22px;
+    height: 22px;
+    line-height: 1;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .nav-zoom-reset:hover { color: var(--accent); border-color: var(--accent); }
+  .nav-zoom-controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 6px;
+    align-items: stretch;
+  }
+  .nav-zoom-btn {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-sm);
+    color: var(--fg);
+    padding: 6px 0;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 600;
+  }
+  .nav-zoom-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .nav-zoom-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .nav-zoom-value {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    align-self: center;
+    text-align: center;
+    min-width: 52px;
+  }
+
   /* ===================== main ===================== */
-  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  /* sidebar 改 fixed 後，.main 用 margin-left 讓出空間；transition 對應 sidebar 動畫 */
+  .main {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .app.sidebar-closed .main {
+    margin-left: 0;
+  }
   .topbar {
     position: sticky;
     top: 0;
@@ -351,12 +431,14 @@
     max-width: var(--content-max);
     margin: 0 auto;
     padding: 36px 28px 120px;
+    /* 縮放由 sidebar 上的 +/− 控制，透過 CSS 變數 --content-zoom（預設 1.35）；
+       sidebar 不受影響 */
+    zoom: var(--content-zoom, 1.35);
     transition: max-width 300ms cubic-bezier(0.4, 0, 0.2, 1), padding 300ms ease;
   }
   .app.sidebar-closed .content {
     max-width: 100%;
     padding: 48px 6vw 160px;
-    zoom: 1.25;
   }
 
   section.chapter {
@@ -550,7 +632,7 @@
   }
 
   /* ===================== instructor card ===================== */
-  /* 講師卡片：頭像 + 頻道資訊 + 最新影片清單 */
+  /* 講師卡片：頭像 + 頻道資訊 + 最熱門影片清單 */
   .instructor-card {
     display: grid;
     grid-template-columns: 160px 1fr;
@@ -621,7 +703,7 @@
     margin-top: 8px;
   }
 
-  /* 最新影片清單 */
+  /* 最熱門影片清單 */
   .instructor-videos {
     margin-top: 18px;
   }
@@ -1087,7 +1169,8 @@
   }
   .material-row {
     display: grid;
-    grid-template-columns: 56px 1fr auto;
+    /* 第一欄 70px 容納 "PDF 文件" / "TEXT" / "CSV" 不換行 */
+    grid-template-columns: 70px 1fr auto;
     gap: 14px;
     align-items: center;
     padding: 11px 16px;
@@ -1106,6 +1189,7 @@
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 4px;
+    white-space: nowrap;
   }
   .material-name {
     font-weight: 500;
@@ -1138,6 +1222,7 @@
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--muted);
+    white-space: nowrap;
   }
   .pill.accent { background: var(--accent-soft); border-color: color-mix(in oklab, var(--accent) 20%, transparent); color: var(--accent-deep); }
   .pill.amber { background: var(--accent-2-soft); border-color: color-mix(in oklab, var(--accent-2) 22%, transparent); color: var(--accent-2-deep); }
@@ -1457,6 +1542,19 @@
       <div class="nav-progress-meta" id="prog-meta">0 / 0 任務完成</div>
       <button class="nav-reset" id="reset-btn" title="清除所有進度">清除進度</button>
     </div>
+
+    <!-- 內容縮放控制：透過 CSS 變數 --content-zoom 影響 .content（不影響 sidebar 自己） -->
+    <div class="nav-zoom">
+      <div class="nav-zoom-row">
+        <span class="nav-zoom-label">內容縮放</span>
+        <button class="nav-zoom-reset" id="zoom-reset" title="重設為預設縮放" aria-label="重設縮放">⟲</button>
+      </div>
+      <div class="nav-zoom-controls">
+        <button class="nav-zoom-btn" id="zoom-out" title="縮小" aria-label="縮小">−</button>
+        <span class="nav-zoom-value" id="zoom-pct">135%</span>
+        <button class="nav-zoom-btn" id="zoom-in" title="放大" aria-label="放大">+</button>
+      </div>
+    </div>
   </aside>
 
   <!-- ============================================================
@@ -1554,6 +1652,41 @@
       $('.app').classList.toggle('sidebar-closed');
     });
   }
+
+  // ---------- 內容縮放控制（透過 CSS 變數 --content-zoom 套到 .content） ----------
+  // sidebar 本身不受影響（CSS 寫死 sidebar 沒套用此變數）；用 localStorage 持久化使用者偏好
+  const ZOOM_KEY = 'content-zoom-v1';
+  const ZOOM_DEFAULT = 1.35;
+  const ZOOM_MIN = 0.8;
+  const ZOOM_MAX = 1.8;
+  const ZOOM_STEP = 0.05;
+  // 讀取使用者上次設定；損壞或超界時 fallback 預設值
+  const loadZoom = () => {
+    const raw = parseFloat(localStorage.getItem(ZOOM_KEY));
+    if (!Number.isFinite(raw) || raw < ZOOM_MIN || raw > ZOOM_MAX) return ZOOM_DEFAULT;
+    return raw;
+  };
+  let currentZoom = loadZoom();
+  const zoomPctEl = $('#zoom-pct');
+  const zoomInBtn = $('#zoom-in');
+  const zoomOutBtn = $('#zoom-out');
+  const zoomResetBtn = $('#zoom-reset');
+  // 將縮放值套用到 :root 並更新 UI（含端點按鈕 disabled 狀態）
+  const applyZoom = (z) => {
+    // 浮點誤差修正：四捨五入到 step 倍數
+    z = Math.round(z / ZOOM_STEP) * ZOOM_STEP;
+    z = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z));
+    currentZoom = z;
+    document.documentElement.style.setProperty('--content-zoom', z.toString());
+    if (zoomPctEl) zoomPctEl.textContent = Math.round(z * 100) + '%';
+    if (zoomOutBtn) zoomOutBtn.disabled = z <= ZOOM_MIN + 1e-6;
+    if (zoomInBtn) zoomInBtn.disabled = z >= ZOOM_MAX - 1e-6;
+    try { localStorage.setItem(ZOOM_KEY, z.toString()); } catch { /* 隱私模式 */ }
+  };
+  if (zoomInBtn) zoomInBtn.addEventListener('click', () => applyZoom(currentZoom + ZOOM_STEP));
+  if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => applyZoom(currentZoom - ZOOM_STEP));
+  if (zoomResetBtn) zoomResetBtn.addEventListener('click', () => applyZoom(ZOOM_DEFAULT));
+  applyZoom(currentZoom); // 初次套用
   const el = (tag, attrs = {}, ...children) => {
     const node = document.createElement(tag);
     for (const [k, v] of Object.entries(attrs)) {
@@ -1568,18 +1701,47 @@
     }
     return node;
   };
-  function getMaterialUrl(name) {
+  /**
+   * 依素材名稱與類型回傳實際檔案 URL
+   * - type === 'PDF 文件' → 直接連到 pdf/ 子資料夾下的 PDF 檔（搭配 <a download> 觸發下載）
+   * - 其餘類型 → 對應到拆分後的單一素材檔（老闆口語稿 / 會議逐字稿 / 客訴 / Skill YAML 等）
+   * @param {string} name 素材顯示名稱
+   * @param {string} [type] 素材類型（PDF 文件 / TEXT / CSV / YAML / MD）
+   */
+  function getMaterialUrl(name, type) {
+    // PDF 文件 → 對應 pdf/ 資料夾下的實體 PDF（會被加上 download 屬性）
+    if (type === 'PDF 文件') {
+      const pdfBase = '完整課程包/教學素材/pdf/';
+      if (name.includes('員工差勤')) return pdfBase + '綠野選物_員工差勤與休假管理辦法.pdf';
+      if (name.includes('教育訓練')) return pdfBase + '綠野選物_新進員工教育訓練手冊.pdf';
+      if (name.includes('新品上架')) return pdfBase + '綠野選物_新品上架公告作業辦法.pdf';
+      if (name.includes('FAQ官方版') || name.includes('FAQ 官方版')) return pdfBase + '暖光咖啡_FAQ官方版.pdf';
+      if (name.includes('退換貨')) return pdfBase + '暖光咖啡_商品退換貨政策.pdf';
+      if (name.includes('客訴處理')) return pdfBase + '暖光咖啡_客訴處理SOP.pdf';
+      if (name.includes('進貨與庫存')) return pdfBase + '暖光咖啡_食材進貨與庫存管理辦法.pdf';
+      if (name.includes('公司費用')) return pdfBase + '公司費用報支管理辦法.pdf';
+      // 課堂實作素材_Day1 / Day2 / Day3 — 預設給 Day1，學員可從 pdf/ 同層找到其他兩份
+      if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return pdfBase + '課堂實作素材_Day1.pdf';
+    }
+    // 拆分後的單獨素材（每個只看自己這一份）
+    if (name.includes('品牌調性')) return '完整課程包/教學素材/品牌調性指南.md';
+    if (name.includes('老闆口語稿')) return '完整課程包/教學素材/老闆口語稿.md';
+    if (name.includes('爛提示詞')) return '完整課程包/教學素材/3段爛提示詞.md';
+    if (name.includes('會議錄音逐字稿') || name.includes('錄音逐字稿')) return '完整課程包/教學素材/會議錄音逐字稿範本.md';
+    if (name.includes('請購單')) return '完整課程包/教學素材/亂格式請購單.csv';
+    if (name.includes('客訴 10 則') || name.includes('雜亂客訴')) return '完整課程包/教學素材/雜亂客訴10則.md';
+    if (name.includes('Skill 範本')) return '完整課程包/教學素材/發票自動整理_Skill範本.yaml';
+    // 教學素材的 .md 全文版（未指定 PDF type 時 fallback 到 .md，例如總覽表格、講師備課用）
     if (name.includes('員工差勤')) return '完整課程包/教學素材/綠野選物_員工差勤與休假管理辦法.md';
     if (name.includes('教育訓練')) return '完整課程包/教學素材/綠野選物_新進員工教育訓練手冊.md';
     if (name.includes('新品上架')) return '完整課程包/教學素材/綠野選物_新品上架公告作業辦法.md';
-    if (name.includes('FAQ官方版')) return '完整課程包/教學素材/暖光咖啡_FAQ官方版.md';
+    if (name.includes('FAQ官方版') || name.includes('FAQ 官方版')) return '完整課程包/教學素材/暖光咖啡_FAQ官方版.md';
     if (name.includes('退換貨')) return '完整課程包/教學素材/暖光咖啡_商品退換貨政策.md';
     if (name.includes('客訴處理')) return '完整課程包/教學素材/暖光咖啡_客訴處理SOP.md';
     if (name.includes('進貨與庫存')) return '完整課程包/教學素材/暖光咖啡_食材進貨與庫存管理辦法.md';
     if (name.includes('公司費用')) return '完整課程包/教學素材/公司費用報支管理辦法.md';
-    if (name.includes('實作素材_Day1 /')) return '完整課程包/教學素材/課堂實作素材_Day1.md';
+    if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return '完整課程包/教學素材/課堂實作素材_Day1.md';
     if (name.includes('課程輔助文件')) return '完整課程包/課程輔助文件.md';
-    if (name.includes('老闆口語稿') || name.includes('請購單') || name.includes('客訴 10 則') || name.includes('錄音逐字稿') || name.includes('Skill 範本')) return '完整課程包/課程輔助文件.md';
     if (name.includes('共用案例設定')) return '完整課程包/共用案例設定.md';
     return null;
   }
@@ -1761,13 +1923,13 @@
 
     card.append(meta);
 
-    // 最新影片區塊（橫跨兩欄，故另起一個容器附加在 card 後面）
+    // 最熱門影片區塊（橫跨兩欄，故另起一個容器附加在 card 後面）
     const wrapper = el('div', {});
     wrapper.append(card);
 
     if (Array.isArray(data.recentVideos) && data.recentVideos.length) {
       const vidSection = el('div', { class: 'instructor-videos' });
-      vidSection.append(el('h4', { class: 'instructor-videos-title' }, '頻道最新影片'));
+      vidSection.append(el('h4', { class: 'instructor-videos-title' }, '頻道最熱門影片'));
 
       const grid = el('div', { class: 'instructor-videos-grid' });
       data.recentVideos.forEach(v => {
@@ -2116,9 +2278,13 @@
       const row = el('div', { class: 'material-row' });
       row.append(el('div', { class: 'material-tag' }, m.type));
       const center = el('div');
-      const url = getMaterialUrl(m.name);
+      const url = getMaterialUrl(m.name, m.type);
       if (url) {
-        const link = el('a', { class: 'material-name', href: url, target: '_blank' }, m.name);
+        // PDF 文件用 download 屬性觸發下載（其他類型仍是 target=_blank 開新分頁檢視）
+        const linkAttrs = { class: 'material-name', href: url };
+        if (m.type === 'PDF 文件') linkAttrs.download = '';
+        else linkAttrs.target = '_blank';
+        const link = el('a', linkAttrs, m.name);
         link.style.color = 'var(--accent-deep)';
         link.style.textDecoration = 'none';
         center.append(link);
@@ -2147,16 +2313,18 @@
 
     const tbl = el('table', { class: 't' });
     tbl.innerHTML = `<thead><tr>
-      <th style="width:60px">類型</th>
+      <th style="width:100px">類型</th>
       <th>素材名稱</th>
       <th style="width:30%">使用時機</th>
       <th>用途</th>
     </tr></thead>`;
     const tb = el('tbody');
     C.materials.forEach(m => {
-      const url = getMaterialUrl(m.name);
-      const nameHtml = url 
-        ? `<a href="${url}" target="_blank" style="color:var(--accent-deep);text-decoration:none;"><b>${escapeHTML(m.name)}</b></a>` 
+      const url = getMaterialUrl(m.name, m.type);
+      // PDF 文件用 download 屬性觸發下載；其他類型用 target=_blank 開新分頁檢視
+      const linkProps = m.type === 'PDF 文件' ? 'download' : 'target="_blank"';
+      const nameHtml = url
+        ? `<a href="${url}" ${linkProps} style="color:var(--accent-deep);text-decoration:none;"><b>${escapeHTML(m.name)}</b></a>`
         : `<b>${escapeHTML(m.name)}</b>`;
       tb.innerHTML += `<tr>
         <td><span class="pill">${m.type}</span></td>
@@ -2269,8 +2437,8 @@
     const root = el('section', { class: 'chapter', id: 'quiz' });
     root.append(el('header', {},
       el('span', { class: 'eyebrow' }, '結訓條件 ／ 課後小測驗'),
-      el('h2', {}, '結訓測驗（10 題）'),
-      el('div', { class: 'lead' }, '完成 4 天課程後的小測驗，達 70 分（10 題答對 7 題以上）即達結訓標準。作答即時批改、結果會記在你的瀏覽器，下次回來可直接看到分數。')
+      el('h2', {}, '結訓測驗（8 題）'),
+      el('div', { class: 'lead' }, '完成 4 天課程後的小測驗，達 75 分（8 題答對 6 題以上）即達結訓標準。作答即時批改、結果會記在你的瀏覽器，下次回來可直接看到分數。')
     ));
 
     // 統計頂部
@@ -2278,12 +2446,12 @@
     const introLeft = el('div', {});
     introLeft.append(el('div', { class: 'stat-label' }, '結訓門檻'));
     introLeft.append(el('div', { style: 'font-size:14px;color:var(--muted);margin-top:4px;line-height:1.5' },
-      '出席時數達 80% 以上＋完成前後測考試。本測驗對應後測 10 題，主題涵蓋 4 天核心觀念。'));
+      '出席時數達 80% 以上＋完成前後測考試。本測驗對應後測 8 題，主題涵蓋 4 天核心觀念。'));
     intro.append(introLeft);
 
     const stat = el('div', { class: 'quiz-stat' });
     stat.append(el('div', { class: 'quiz-stat-label' }, '目前分數'));
-    stat.append(el('div', { class: 'quiz-stat-value', id: 'quiz-score' }, '— / 10'));
+    stat.append(el('div', { class: 'quiz-stat-value', id: 'quiz-score' }, '— / 8'));
     intro.append(stat);
     root.append(intro);
 
@@ -2400,21 +2568,20 @@
     state.quiz._score = score;
     store.save(state);
     updateQuizScoreUI();
-    toast(`得分：${score} / 10 ${score >= 7 ? '— 達結訓標準 ✓' : '— 未達 70 分'}`);
+    toast(`得分：${score} / 8 ${score >= 6 ? '— 達結訓標準 ✓' : '— 未達 75 分'}`);
   }
 
   function qIndexToDay(qid) {
+    // 對應到 8 題保留版（移除原 q6 Nano Banana 多選 與 q10 PASA/HSC，後續題目順移）
     const map = {
-      q1: 'Day 1 單元 1',
-      q2: 'Day 1 ／ Day 3',
-      q3: 'Day 1 單元 2',
-      q4: 'Day 3 單元 1',
-      q5: 'Day 2 單元 2',
-      q6: 'Day 2 單元 1',
-      q7: 'Day 3 單元 2',
-      q8: 'Day 4 單元 1',
-      q9: 'Day 1 ／ Day 3',
-      q10: 'Day 2 單元 1'
+      q1: 'Day 1 單元 1',     // 生成式 AI 機率預測
+      q2: 'Day 1 ／ Day 3',   // Gemini vs NotebookLM
+      q3: 'Day 1 單元 2',     // RTFC 四要素
+      q4: 'Day 3 單元 1',     // NotebookLM 引用來源
+      q5: 'Day 2 單元 2',     // 圖片→影片原理
+      q6: 'Day 3 單元 2',     // 規則注入（會計科目分類）
+      q7: 'Day 4 單元 1',     // Skill description
+      q8: 'Day 1 ／ Day 3'    // Human in the loop
     };
     return map[qid] || '對應章節';
   }
@@ -2424,13 +2591,13 @@
     if (!elScore) return;
     const s = state.quiz._score;
     if (s == null) {
-      elScore.textContent = '— / 10';
+      elScore.textContent = '— / 8';
       elScore.classList.remove('pass','fail');
       return;
     }
-    elScore.textContent = `${s} / 10`;
-    elScore.classList.toggle('pass', s >= 7);
-    elScore.classList.toggle('fail', s < 7);
+    elScore.textContent = `${s} / 8`;
+    elScore.classList.toggle('pass', s >= 6);
+    elScore.classList.toggle('fail', s < 6);
   }
 
   function resetQuiz() {
