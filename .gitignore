@@ -4,9 +4,6 @@ node_modules/
 # Claude Code session
 .claude/
 
-# Course source materials (IP — 課程主辦方智財權，不對外公開)
-完整課程包/
-
 # Verification & debug screenshots (not used by published site)
 data/verify-*.png
 data/error-snapshot.png

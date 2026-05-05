@@ -1,0 +1,261 @@
+/* ============================================================
+ * 教學素材 PDF 列印樣式
+ * 設計目標：A4 雙頁邊、中文字體優化、企業文件正式感、表格清晰、條文易讀
+ * ============================================================ */
+
+/* ----- 頁面與印刷設定 ----- */
+@page {
+  size: A4;
+  margin: 22mm 18mm 22mm 18mm;
+
+  @top-center {
+    content: string(doc-title);
+    font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+    font-size: 9pt;
+    color: #888;
+  }
+
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-family: "Microsoft JhengHei", sans-serif;
+    font-size: 9pt;
+    color: #888;
+  }
+}
+
+@page :first {
+  @top-center { content: none; }
+}
+
+/* ----- 全域字型與排版 ----- */
+html, body {
+  font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", "Heiti TC", "Source Han Sans TC", sans-serif;
+  font-size: 11pt;
+  line-height: 1.75;
+  color: #2c2c2c;
+  text-align: justify;
+  word-break: break-word;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+}
+
+/* ----- 標題層級 ----- */
+h1 {
+  string-set: doc-title content();
+  font-size: 22pt;
+  font-weight: 700;
+  color: #1a3a5c;
+  text-align: center;
+  margin: 0 0 6mm 0;
+  padding: 8mm 0 4mm 0;
+  border-bottom: 2pt solid #1a3a5c;
+  page-break-after: avoid;
+  letter-spacing: 2pt;
+}
+
+h2 {
+  font-size: 15pt;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1a3a5c 0%, #2d5a8a 100%);
+  padding: 3mm 5mm;
+  margin: 8mm 0 4mm 0;
+  border-radius: 1.5mm;
+  page-break-after: avoid;
+  page-break-before: auto;
+  letter-spacing: 1pt;
+}
+
+h3 {
+  font-size: 12.5pt;
+  font-weight: 700;
+  color: #1a3a5c;
+  margin: 6mm 0 3mm 0;
+  padding-left: 3mm;
+  border-left: 4pt solid #c9a868;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: #2d5a8a;
+  margin: 4mm 0 2mm 0;
+  page-break-after: avoid;
+}
+
+/* ----- 段落與條文 ----- */
+p {
+  margin: 0 0 3mm 0;
+  text-indent: 0;
+}
+
+/* 條文段落（**第 X 條（XX）** 開頭的段落）- 透過 strong 偵測 */
+p strong:first-child {
+  display: block;
+  color: #1a3a5c;
+  font-size: 11pt;
+  margin-bottom: 1mm;
+  font-weight: 700;
+}
+
+/* ----- 引用塊（教學使用說明） ----- */
+blockquote {
+  margin: 4mm 0;
+  padding: 4mm 5mm;
+  background: #fff8e7;
+  border-left: 4pt solid #c9a868;
+  border-radius: 0 1.5mm 1.5mm 0;
+  color: #5c4a1f;
+  font-size: 10pt;
+  line-height: 1.65;
+}
+
+blockquote p { margin: 0; }
+blockquote strong { color: #8b6914; }
+
+/* ----- 表格 ----- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4mm 0 6mm 0;
+  font-size: 10pt;
+  page-break-inside: auto;
+  box-shadow: 0 1pt 3pt rgba(0, 0, 0, 0.08);
+  border-radius: 1.5mm;
+  overflow: hidden;
+}
+
+thead {
+  display: table-header-group;
+  background: #1a3a5c;
+}
+
+thead th {
+  color: #ffffff;
+  font-weight: 700;
+  padding: 2.5mm 3mm;
+  text-align: left;
+  border: none;
+  letter-spacing: 0.5pt;
+}
+
+tbody tr {
+  page-break-inside: avoid;
+}
+
+tbody tr:nth-child(even) {
+  background: #f5f8fb;
+}
+
+tbody td {
+  padding: 2mm 3mm;
+  border-bottom: 0.5pt solid #d9e2ec;
+  vertical-align: top;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 文件資訊表（h1 下方第一張表）特別樣式 */
+h1 + table {
+  width: 75%;
+  margin: 0 auto 8mm auto;
+  font-size: 10pt;
+}
+
+h1 + table thead { display: none; }
+
+h1 + table td:first-child {
+  background: #f0f4f8;
+  font-weight: 700;
+  color: #1a3a5c;
+  width: 28%;
+}
+
+/* ----- 列表 ----- */
+ul, ol {
+  margin: 2mm 0 4mm 0;
+  padding-left: 8mm;
+}
+
+ul li, ol li {
+  margin-bottom: 1.5mm;
+  line-height: 1.7;
+}
+
+/* ----- 程式碼區塊 ----- */
+pre {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 4mm 5mm;
+  border-radius: 2mm;
+  font-family: "Cascadia Code", "Consolas", "Courier New", monospace;
+  font-size: 9.5pt;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin: 3mm 0 5mm 0;
+  page-break-inside: avoid;
+  box-shadow: 0 2pt 4pt rgba(0, 0, 0, 0.15);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+code {
+  font-family: "Cascadia Code", "Consolas", "Courier New", monospace;
+  font-size: 9.5pt;
+  background: #f0f4f8;
+  color: #c0392b;
+  padding: 0.5mm 1.5mm;
+  border-radius: 1mm;
+}
+
+/* ----- 強調 ----- */
+strong { color: #1a3a5c; font-weight: 700; }
+em { color: #5c4a1f; font-style: normal; font-weight: 600; }
+
+/* ----- 水平分隔線 ----- */
+hr {
+  border: none;
+  height: 1pt;
+  background: linear-gradient(to right, transparent, #1a3a5c, transparent);
+  margin: 8mm 0;
+}
+
+/* ----- 連結 ----- */
+a {
+  color: #2d5a8a;
+  text-decoration: none;
+  border-bottom: 0.5pt dotted #2d5a8a;
+}
+
+/* ----- 章節分頁規則 ----- */
+h2 { page-break-before: auto; }
+
+/* 第一個 h2 之前不要強制分頁 */
+h1 + table + h2,
+h1 + h2 {
+  page-break-before: avoid;
+}
+
+/* 避免孤行 */
+p, li { orphans: 2; widows: 2; }
+
+/* 附件區塊 */
+hr + p strong:first-child {
+  display: inline;
+  color: #c9a868;
+  font-size: 12pt;
+}
+
+/* ----- 列印優化 ----- */
+@media print {
+  body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
