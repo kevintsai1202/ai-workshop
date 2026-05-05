@@ -1,0 +1,16 @@
+{
+  "name": "ai-workshop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "行政與財務流程 AI 自動化｜互動教學工作坊（純靜態網頁 + Playwright 資料擷取腳本）",
+  "type": "module",
+  "scripts": {
+    "scrape:instructor": "node scripts/scrape-youtube-channel.mjs",
+    "scrape:tools": "node scripts/scrape-tools.mjs",
+    "verify:toolbox": "node scripts/verify-toolbox.mjs",
+    "serve": "npx serve ."
+  },
+  "devDependencies": {
+    "playwright": "^1.59.1"
+  }
+}

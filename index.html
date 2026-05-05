@@ -1,0 +1,2605 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>行政與財務流程 AI 自動化｜互動教學工作坊</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+   * Modern minimal direction（Linear / Vercel 系）
+   * 近灰階基底 + 單一飽和藍強調，hairline borders，無陰影
+   * ============================================================ */
+  :root {
+    --bg:      oklch(99% 0.002 240);
+    --surface: oklch(100% 0 0);
+    --surface-2: oklch(97.5% 0.004 250);
+    --fg:      oklch(18% 0.012 250);
+    --muted:   oklch(54% 0.012 250);
+    --muted-2: oklch(72% 0.01 250);
+    --border:  oklch(92% 0.005 250);
+    --border-strong: oklch(82% 0.008 250);
+    --accent:  oklch(58% 0.18 255);
+    --accent-soft: oklch(95% 0.04 255);
+    --accent-deep: oklch(45% 0.18 255);
+    /* 第二強調色：暖琥珀 — 用於 hero 數字、tip callout、RTFC 標籤
+       與藍色 accent 屬補色關係，不互搶但會在版面上形成節奏 */
+    --accent-2:      oklch(66% 0.14 65);
+    --accent-2-soft: oklch(94% 0.045 65);
+    --accent-2-deep: oklch(48% 0.14 60);
+    --success: oklch(58% 0.16 145);
+    --success-soft: oklch(95% 0.04 145);
+    --danger: oklch(60% 0.18 25);
+    --danger-soft: oklch(95% 0.05 25);
+    --warning: oklch(70% 0.13 75);
+    --warning-soft: oklch(95% 0.05 75);
+
+    /* 紋理底：極低密度 dot-grid，給章節 hero 與 sidebar 用，讓平面有觸感
+       點 1px、間距 24px、亮度差 ~6%；body 不直接使用，避免閱讀疲勞 */
+    --dot-color: oklch(80% 0.005 250 / 0.6);
+    --dot-bg: radial-gradient(circle at 1px 1px, var(--dot-color) 1px, transparent 0);
+
+    --font-display: "Nunito", "jf-openhuninn-1.1", "jf-openhuninn", "Gen Jyuu Gothic", "Taipei Sans TC Beta", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+    --font-body:    var(--font-display);
+    --font-serif:   var(--font-display);
+    --font-mono:    var(--font-display);
+
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+
+    --sidebar-w: 268px;
+    --header-h: 56px;
+    --content-max: 880px;
+
+    /* hover lift 使用的陰影，亮暗模式各自定義 */
+    --shadow-lift: 0 6px 18px -10px oklch(20% 0.02 250 / 0.18), 0 2px 4px -2px oklch(20% 0.02 250 / 0.06);
+  }
+
+  /* ============================================================
+   * Dark theme — 同樣的 modern-minimal 姿態，深底高對比
+   * accent 比亮模式提亮 ~12%，否則在深底顯得疲乏
+   * ============================================================ */
+  [data-theme="dark"] {
+    --bg:      oklch(16% 0.014 250);
+    --surface: oklch(19.5% 0.014 250);
+    --surface-2: oklch(22.5% 0.014 250);
+    --fg:      oklch(96% 0.005 250);
+    --muted:   oklch(68% 0.012 250);
+    --muted-2: oklch(50% 0.012 250);
+    --border:  oklch(28% 0.014 250);
+    --border-strong: oklch(38% 0.014 250);
+    --accent:  oklch(70% 0.17 255);
+    --accent-soft: oklch(30% 0.08 255);
+    --accent-deep: oklch(82% 0.13 255);
+    --accent-2:      oklch(78% 0.13 65);
+    --accent-2-soft: oklch(30% 0.075 65);
+    --accent-2-deep: oklch(86% 0.12 65);
+    --success: oklch(70% 0.16 145);
+    --success-soft: oklch(28% 0.07 145);
+    --danger: oklch(70% 0.18 25);
+    --danger-soft: oklch(28% 0.08 25);
+    --warning: oklch(78% 0.13 75);
+    --warning-soft: oklch(28% 0.08 75);
+    --shadow-lift: 0 8px 22px -10px oklch(0% 0 0 / 0.55), 0 2px 6px -2px oklch(0% 0 0 / 0.3);
+    color-scheme: dark;
+  }
+
+  /* ===================== reset & base ===================== */
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; zoom: 1.35; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.005em;
+    /* 主題切換時平滑過渡背景與文字色，避免閃白 */
+    transition: background-color 220ms ease, color 220ms ease;
+  }
+  h1,h2,h3,h4 { font-family: var(--font-display); letter-spacing: -0.02em; line-height: 1.25; margin: 0; color: var(--fg); }
+  h1 { font-size: 32px; font-weight: 660; }
+  h2 { font-size: 24px; font-weight: 600; }
+  h3 { font-size: 18px; font-weight: 600; }
+  h4 { font-size: 15px; font-weight: 600; }
+  p  { margin: 0 0 12px; text-wrap: pretty; }
+  a  { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  code, pre { font-family: var(--font-mono); }
+  ::selection { background: var(--accent-soft); color: var(--accent-deep); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  /* ===================== layout ===================== */
+  .app {
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .app.sidebar-closed .sidebar {
+    margin-left: calc(-1 * var(--sidebar-w));
+  }
+
+  /* ===================== sidebar ===================== */
+  .sidebar {
+    flex: 0 0 var(--sidebar-w);
+    transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .brand {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    /* 極淡 dot-grid，僅在 brand 區與 hero 區有紋理 — 內容區保持乾淨 */
+    background:
+      var(--dot-bg) 0 0 / 20px 20px,
+      var(--surface);
+  }
+  .brand-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .brand-title {
+    margin-top: 4px;
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 12px 16px;
+    scrollbar-width: thin;
+  }
+  .nav-section {
+    margin-top: 14px;
+  }
+  .nav-section:first-child { margin-top: 4px; }
+  .nav-section-title {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    padding: 0 10px 6px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--r-sm);
+    color: var(--fg);
+    font-size: 14px;
+    line-height: 1.3;
+    cursor: pointer;
+    user-select: none;
+  }
+  .nav-link:hover { background: var(--surface-2); text-decoration: none; }
+  .nav-link.active {
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    font-weight: 580;
+  }
+  .nav-link .nav-num {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    min-width: 32px;
+    font-variant-numeric: tabular-nums;
+  }
+  .nav-link.active .nav-num { color: var(--accent); }
+  .nav-link .nav-meta {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .nav-progress {
+    border-top: 1px solid var(--border);
+    padding: 14px 20px 18px;
+    background: var(--surface);
+  }
+  .nav-progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .nav-progress-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .nav-progress-value {
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+  }
+  .nav-progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .nav-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 320ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-progress-meta {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .nav-reset {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-sm);
+    color: var(--muted);
+    font-size: 11.5px;
+    width: 100%;
+  }
+  .nav-reset:hover { color: var(--danger); border-color: var(--danger); }
+
+  /* ===================== main ===================== */
+  .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: var(--header-h);
+    background: color-mix(in oklab, var(--bg) 86%, transparent);
+    backdrop-filter: saturate(160%) blur(10px);
+    -webkit-backdrop-filter: saturate(160%) blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 16px;
+  }
+  .topbar-trail {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .topbar-trail b { color: var(--fg); font-weight: 600; }
+  .topbar-spacer { flex: 1; }
+  .topbar-quick {
+    display: flex;
+    gap: 4px;
+  }
+  .topbar-quick button {
+    padding: 5px 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--r-sm);
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  .topbar-quick button:hover { color: var(--fg); border-color: var(--border); }
+
+  /* 主題切換鈕：sun/moon 圖示二態切換 */
+  .theme-toggle {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    color: var(--muted);
+    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+  .theme-toggle:hover { color: var(--fg); border-color: var(--border-strong); background: var(--surface-2); }
+  .theme-toggle svg { width: 15px; height: 15px; transition: transform 320ms cubic-bezier(0.4,0,0.2,1), opacity 200ms ease; }
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: inline-block; }
+  [data-theme="dark"] .theme-toggle .icon-sun { display: inline-block; }
+  [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+  /* ===================== chapter fade-up（單次入場動畫） ===================== */
+  @keyframes chapter-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  section.chapter.fade-in {
+    animation: chapter-in 480ms cubic-bezier(0.2, 0, 0.2, 1) both;
+  }
+  /* 尊重使用者的「減少動態效果」偏好 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .prompt-card:hover { transform: none; }
+  }
+
+  .content {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 36px 28px 120px;
+    transition: max-width 300ms cubic-bezier(0.4, 0, 0.2, 1), padding 300ms ease;
+  }
+  .app.sidebar-closed .content {
+    max-width: 100%;
+    padding: 48px 6vw 160px;
+    zoom: 1.25;
+  }
+
+  section.chapter {
+    scroll-margin-top: 80px;
+    margin-bottom: 84px;
+  }
+  section.chapter > header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  section.chapter > header .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+  /* 章節大標 — serif 顯示字，是 modern-minimal 與 editorial 的混搭點 */
+  section.chapter > header h2 {
+    margin-bottom: 6px;
+    font-family: var(--font-serif);
+    font-size: 34px;
+    font-weight: 540;
+    letter-spacing: -0.022em;
+    line-height: 1.1;
+  }
+  section.chapter > header .lead {
+    color: var(--muted);
+    font-size: 15.5px;
+    line-height: 1.7;
+    margin-top: 12px;
+    max-width: 68ch;
+  }
+
+  /* ============================================================
+   *  Day chapter hero — 巨型 serif 數字 + dot-grid 紋理底
+   *  原則：每個 Day 章節有自己的「封面舞台」，視覺重量集中
+   * ============================================================ */
+  .day-hero {
+    position: relative;
+    margin: 0 0 28px;
+    padding: 36px 28px 32px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background:
+      var(--dot-bg) 0 0 / 24px 24px,
+      linear-gradient(135deg, var(--surface), var(--surface-2));
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(180px, 38%) 1fr;
+    align-items: end;
+    gap: 32px;
+  }
+  /* 漸層遮罩讓紋理在右上角更深、左下淡出，給數字一個視覺停泊點 */
+  .day-hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      transparent 45%,
+      color-mix(in oklab, var(--surface) 70%, transparent) 100%);
+    pointer-events: none;
+  }
+  .day-hero > * { position: relative; z-index: 1; }
+  .day-hero-numeral {
+    font-family: var(--font-serif);
+    font-size: clamp(120px, 16vw, 200px);
+    font-weight: 500;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: var(--accent-2);
+    /* 描邊感：底色微透 + 細邊框，讓數字像印刷大字 */
+    -webkit-text-stroke: 0;
+    text-shadow: 0 1px 0 color-mix(in oklab, var(--accent-2) 18%, transparent);
+    user-select: none;
+  }
+  .day-hero-numeral .day-hero-num-sub {
+    display: block;
+    font-size: 0.18em;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+  .day-hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .day-hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .day-hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 3.3vw, 40px);
+    font-weight: 540;
+    letter-spacing: -0.022em;
+    line-height: 1.1;
+    color: var(--fg);
+  }
+  .day-hero-lead {
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.65;
+    max-width: 56ch;
+    margin-top: 4px;
+  }
+  .day-hero-stats {
+    display: flex;
+    gap: 28px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .day-hero-stat .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .day-hero-stat .stat-value {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 540;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  /* Day 章節有 hero，header 變得簡潔（無底線、字較小） */
+  section.chapter.has-hero > header {
+    border-bottom: 0;
+    padding-bottom: 0;
+    margin-bottom: 18px;
+  }
+  section.chapter.has-hero > header h2 { display: none; }
+  section.chapter.has-hero > header .eyebrow { display: none; }
+  section.chapter.has-hero > header .lead { margin-top: 0; }
+
+  @media (max-width: 880px) {
+    .day-hero {
+      grid-template-columns: 1fr;
+      padding: 28px 22px 26px;
+    }
+    .day-hero-numeral {
+      font-size: clamp(96px, 22vw, 140px);
+    }
+    .day-hero-stats {
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  }
+
+  /* ===================== reusable ===================== */
+
+  /* meta info table (overview) */
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 18px 0 0;
+    font-size: 14px;
+  }
+  .meta-grid > * {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .meta-grid > *:nth-last-child(-n+2) { border-bottom: 0; }
+  .meta-grid > div:nth-child(odd) {
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 12.5px;
+    border-right: 1px solid var(--border);
+  }
+  .meta-grid > div:nth-child(even) {
+    background: var(--surface);
+  }
+
+  /* ===================== instructor card ===================== */
+  /* 講師卡片：頭像 + 頻道資訊 + 最新影片清單 */
+  .instructor-card {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    align-items: start;
+    padding: 22px;
+    margin: 14px 0 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: linear-gradient(180deg, var(--accent-soft) 0%, var(--surface) 60%);
+  }
+  .instructor-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--surface-2);
+    box-shadow: 0 6px 20px -6px var(--accent);
+    border: 2px solid var(--surface);
+  }
+  .instructor-meta { min-width: 0; }
+  .instructor-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    letter-spacing: 0.2px;
+  }
+  .instructor-handle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .instructor-handle a {
+    color: var(--accent-deep);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+  }
+  .instructor-handle a:hover { border-bottom-style: solid; }
+  .instructor-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .instructor-stat {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .instructor-stat strong {
+    color: var(--accent-deep);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .instructor-bio {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .instructor-source {
+    font-size: 11.5px;
+    color: var(--muted-2);
+    margin-top: 8px;
+  }
+
+  /* 最新影片清單 */
+  .instructor-videos {
+    margin-top: 18px;
+  }
+  .instructor-videos-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0 0 10px;
+  }
+  .instructor-videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .instructor-video {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .instructor-video:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -10px var(--accent);
+    border-color: var(--accent);
+  }
+  .instructor-video-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    background: var(--surface-2);
+  }
+  .instructor-video-title {
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 10px 12px 6px;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .instructor-video-views {
+    font-size: 11.5px;
+    color: var(--muted);
+    padding: 0 12px 10px;
+  }
+
+  /* 響應式：880px 以下改單欄 */
+  @media (max-width: 880px) {
+    .instructor-card {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .instructor-avatar {
+      margin: 0 auto;
+      width: 130px;
+      height: 130px;
+    }
+    .instructor-stats { justify-content: center; }
+  }
+
+  /* ===================== tool gallery ===================== */
+  /* 工具圖鑑：Day 篩選 chip + 工具卡片網格 */
+  .toolbox-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 18px;
+  }
+  .toolbox-filters .chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .toolbox-filters .chip:hover { border-color: var(--accent); }
+  .toolbox-filters .chip.active {
+    background: var(--accent);
+    color: var(--surface);
+    border-color: var(--accent);
+  }
+
+  .toolbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px -10px var(--accent);
+    border-color: var(--accent);
+  }
+  .tool-card.is-hidden { display: none; }
+
+  .tool-screenshot {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
+    background: var(--surface-2);
+    display: block;
+  }
+  .tool-screenshot.is-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .tool-card-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  .tool-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .tool-tagline {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    flex: 1;
+  }
+  .tool-days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .tool-day-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    border: 1px solid var(--border);
+  }
+
+  /* generic table */
+  table.t {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 8px 0 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    font-variant-numeric: tabular-nums;
+  }
+  table.t th, table.t td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.t th {
+    background: var(--surface-2);
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border-strong);
+    letter-spacing: 0.005em;
+  }
+  table.t tr:last-child td { border-bottom: 0; }
+  table.t tr:hover td { background: var(--surface-2); }
+
+  /* simple unordered list */
+  ul.list { margin: 8px 0 14px; padding-left: 18px; }
+  ul.list li { margin-bottom: 5px; }
+
+  /* key-value list (concept mini-rows) */
+  .kv {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 10px 0 16px;
+    font-size: 13.5px;
+  }
+  .kv-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .kv-row:last-child { border-bottom: 0; }
+  .kv-key {
+    padding: 9px 14px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 12.5px;
+    font-weight: 500;
+    border-right: 1px solid var(--border);
+  }
+  .kv-val { padding: 9px 14px; }
+
+  /* note callout */
+  .note {
+    margin: 10px 0 14px;
+    padding: 10px 14px;
+    background: var(--accent-soft);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    color: var(--accent-deep);
+    font-size: 13.5px;
+  }
+  .note::before {
+    content: "重點 ／ ";
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  /* tip 變體：用第二強調色 accent-2（暖琥珀）— 提示性質的內容（堆疊機制、心法、口訣）
+     與重點藍區分，掃描頁面時自然分群 */
+  .note.tip {
+    background: var(--accent-2-soft);
+    border-left-color: var(--accent-2);
+    color: var(--accent-2-deep);
+  }
+  .note.tip::before { content: "Tip ／ "; }
+
+  /* heading inside chapters — H3 也用 serif 維持節奏，H4 維持 mono uppercase 標籤感 */
+  .chapter h3 {
+    margin: 32px 0 12px;
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 540;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
+  }
+  .chapter h4 { margin: 18px 0 8px; color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+
+  /* concept block */
+  .concept { margin-top: 18px; }
+  .concept-heading {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 540;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .concept-body { color: var(--muted); margin-bottom: 8px; }
+
+  /* ===================== unit accordion ===================== */
+  .unit {
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    margin-bottom: 16px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .unit summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .unit summary::-webkit-details-marker { display: none; }
+  .unit summary:hover { background: var(--surface-2); }
+  .unit-title {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    font-weight: 540;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+  }
+  .unit-meta {
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .unit-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .unit-progress-pill {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 10px;
+  }
+  .unit-progress-pill.done {
+    color: var(--success);
+    background: var(--success-soft);
+    border-color: color-mix(in oklab, var(--success) 20%, transparent);
+  }
+  .unit-arrow {
+    width: 14px; height: 14px;
+    color: var(--muted-2);
+    transition: transform 200ms;
+  }
+  details[open] .unit-arrow { transform: rotate(90deg); }
+  .unit-body {
+    padding: 4px 22px 22px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ===================== task list ===================== */
+  .task-list {
+    margin: 6px 0 4px;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+  .task-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    user-select: none;
+    transition: background 100ms;
+  }
+  .task-item:last-child { border-bottom: 0; }
+  .task-item:hover { background: var(--surface-2); }
+  .task-checkbox {
+    flex: 0 0 18px;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 4px;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    transition: background 120ms, border-color 120ms;
+  }
+  .task-checkbox svg { width: 12px; height: 12px; opacity: 0; transition: opacity 120ms; }
+  .task-item.done .task-checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .task-item.done .task-checkbox svg { opacity: 1; color: white; }
+  .task-item.done .task-label {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--muted-2);
+  }
+  .task-label {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ===================== prompt card ===================== */
+  .prompt-card {
+    margin: 12px 0 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: var(--surface);
+    /* hover 時微浮 — 暗示這張卡是可互動的（內含複製按鈕） */
+    transition: transform 180ms cubic-bezier(0.4,0,0.2,1),
+                box-shadow 180ms cubic-bezier(0.4,0,0.2,1),
+                border-color 180ms ease;
+  }
+  .prompt-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--border-strong);
+  }
+  .prompt-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .prompt-card-title {
+    font-weight: 600;
+    font-size: 14.5px;
+    line-height: 1.4;
+  }
+  .prompt-card-note {
+    margin-top: 3px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .prompt-copy-btn {
+    flex: 0 0 auto;
+    padding: 5px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--fg);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .prompt-copy-btn:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-soft); }
+  .prompt-copy-btn.ok { border-color: var(--success); color: var(--success); background: var(--success-soft); }
+  .prompt-copy-btn svg { width: 12px; height: 12px; }
+  .prompt-text {
+    margin: 0;
+    padding: 14px 16px 16px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    background: var(--surface);
+    color: var(--fg);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    tab-size: 2;
+  }
+
+  /* ===================== materials list ===================== */
+  .materials {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin: 8px 0 4px;
+    background: var(--surface);
+  }
+  .material-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+  }
+  .material-row:last-child { border-bottom: 0; }
+  .material-row:hover { background: var(--surface-2); }
+  .material-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-align: center;
+    padding: 3px 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .material-name {
+    font-weight: 500;
+    color: var(--fg);
+    line-height: 1.35;
+  }
+  .material-desc {
+    margin-top: 2px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .material-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted-2);
+    text-align: right;
+  }
+
+  /* ===================== tag pills ===================== */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .pill.accent { background: var(--accent-soft); border-color: color-mix(in oklab, var(--accent) 20%, transparent); color: var(--accent-deep); }
+  .pill.amber { background: var(--accent-2-soft); border-color: color-mix(in oklab, var(--accent-2) 22%, transparent); color: var(--accent-2-deep); }
+  .pill.success { background: var(--success-soft); border-color: color-mix(in oklab, var(--success) 25%, transparent); color: var(--success); }
+
+  /* ===================== brand cards ===================== */
+  .brand-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .brand-card {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    padding: 18px 20px;
+  }
+  .brand-card .brand-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .brand-card .brand-name {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .brand-card .brand-type {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .brand-card .brand-rows {
+    border-top: 1px solid var(--border);
+  }
+  .brand-card .brand-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .brand-card .brand-row:last-child { border-bottom: 0; }
+  .brand-card .brand-row > div:first-child { color: var(--muted); font-size: 12px; }
+
+  /* ===================== quiz ===================== */
+  .quiz-intro {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    align-items: center;
+  }
+  .quiz-stat {
+    text-align: right;
+  }
+  .quiz-stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .quiz-stat-value {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 540;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .quiz-stat-value.pass { color: var(--success); }
+  .quiz-stat-value.fail { color: var(--danger); }
+
+  .quiz-actions { display: flex; gap: 10px; margin-bottom: 24px; }
+  .btn {
+    padding: 9px 16px;
+    border-radius: var(--r-sm);
+    font-size: 13.5px;
+    font-weight: 540;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--fg);
+    transition: all 120ms;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent-deep); }
+  .btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .btn.primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: white; }
+  .btn.ghost {
+    border-color: transparent;
+    color: var(--muted);
+  }
+  .btn.ghost:hover { color: var(--danger); border-color: var(--danger); }
+
+  .question {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    background: var(--surface);
+  }
+  .q-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .q-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .q-option {
+    display: flex;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    user-select: none;
+    align-items: flex-start;
+    font-size: 13.5px;
+    line-height: 1.5;
+    background: var(--surface);
+    transition: all 100ms;
+  }
+  .q-option:hover { background: var(--surface-2); border-color: var(--border-strong); }
+  .q-option-mark {
+    flex: 0 0 18px;
+    width: 18px; height: 18px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 50%;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .q-option[data-multi="true"] .q-option-mark { border-radius: 4px; }
+  .q-option-mark::after {
+    content: "";
+    width: 8px; height: 8px;
+    border-radius: inherit;
+    background: var(--accent);
+    transform: scale(0);
+    transition: transform 100ms;
+  }
+  .q-option.checked .q-option-mark { border-color: var(--accent); }
+  .q-option.checked .q-option-mark::after { transform: scale(1); }
+  .q-option.correct {
+    border-color: var(--success);
+    background: var(--success-soft);
+  }
+  .q-option.correct .q-option-mark { border-color: var(--success); }
+  .q-option.correct .q-option-mark::after { background: var(--success); transform: scale(1); }
+  .q-option.wrong {
+    border-color: var(--danger);
+    background: var(--danger-soft);
+  }
+  .q-option.wrong .q-option-mark { border-color: var(--danger); }
+  .q-option.wrong .q-option-mark::after { background: var(--danger); transform: scale(1); }
+  .q-feedback {
+    margin-top: 12px;
+    padding: 9px 12px;
+    border-radius: var(--r-sm);
+    font-size: 12.5px;
+  }
+  .q-feedback.ok { background: var(--success-soft); color: var(--success); }
+  .q-feedback.no { background: var(--danger-soft); color: var(--danger); }
+
+  /* ===================== misc ===================== */
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .stat-card {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    padding: 18px 20px;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stat-value {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 540;
+    letter-spacing: -0.022em;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .day-header-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 18px 0 4px;
+  }
+  .dh-cell {
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    background: var(--surface);
+  }
+  .dh-cell .stat-value { font-size: 18px; }
+
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--fg);
+    color: var(--bg);
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 240ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  hr.div {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* responsive small adjustments — desktop-first as briefed */
+  @media (max-width: 1100px) {
+    :root { --sidebar-w: 240px; --content-max: 760px; }
+    body { font-size: 14.5px; }
+  }
+  @media (max-width: 880px) {
+    .app { flex-direction: column; }
+    .sidebar { flex: none; position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--border); margin-left: 0 !important; width: 100%; }
+    .nav { max-height: 200px; }
+    .brand-cards, .row-2, .day-header-grid { grid-template-columns: 1fr; }
+  }
+
+  /* skip-link for accessibility */
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+  }
+  .skip:focus {
+    left: 16px;
+    top: 16px;
+    background: var(--fg);
+    color: var(--bg);
+    padding: 8px 14px;
+    border-radius: var(--r-sm);
+    z-index: 1000;
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main-content">跳到內容</a>
+
+<div class="app">
+  <!-- ============================================================
+       SIDEBAR：固定左側導覽 + 進度條
+       ============================================================ -->
+  <aside class="sidebar" aria-label="課程章節導覽">
+    <div class="brand">
+      <div class="brand-eyebrow">115-116 強化服務業人才韌性計畫</div>
+      <div class="brand-title">行政與財務流程<br/>AI 自動化工作坊</div>
+    </div>
+
+    <nav class="nav" id="nav"></nav>
+
+    <div class="nav-progress">
+      <div class="nav-progress-row">
+        <span class="nav-progress-label">整體進度</span>
+        <span class="nav-progress-value" id="prog-pct">0%</span>
+      </div>
+      <div class="nav-progress-bar"><div class="nav-progress-fill" id="prog-fill"></div></div>
+      <div class="nav-progress-meta" id="prog-meta">0 / 0 任務完成</div>
+      <button class="nav-reset" id="reset-btn" title="清除所有進度">清除進度</button>
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       MAIN：主內容區
+       ============================================================ -->
+  <main class="main">
+    <div class="topbar">
+      <button id="sidebar-toggle" class="theme-toggle" style="margin-right: 12px; border: none; background: transparent;" title="收折/展開選單" aria-label="收折選單">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div class="topbar-trail" id="trail">課程總覽</div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-quick">
+        <button id="jump-quiz">前往結訓測驗</button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" type="button" title="切換亮／暗主題" aria-label="切換主題">
+        <svg class="icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M13.5 9.2A5.5 5.5 0 1 1 6.8 2.5a4.5 4.5 0 0 0 6.7 6.7z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="2.8"/>
+          <path d="M8 1.5v1.5M8 13v1.5M1.5 8h1.5M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="content" id="main-content"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast">已複製</div>
+
+<!-- ============================================================
+     COURSE DATA — 課程完整資料（外部檔案，artifact 版本會 inline）
+     ============================================================ -->
+<script src="course-data.js"></script>
+
+<!-- ============================================================
+     INSTRUCTOR DATA — 講師資料（由 scripts/scrape-youtube-channel.mjs 產生）
+     重新擷取請執行：npm run scrape:instructor
+     ============================================================ -->
+<script src="instructor-data.js"></script>
+
+<!-- ============================================================
+     TOOLS DATA — 工具圖鑑資料（由 scripts/scrape-tools.mjs 產生）
+     重新擷取請執行：npm run scrape:tools
+     ============================================================ -->
+<script src="tools-data.js"></script>
+
+<!-- ============================================================
+     APP LOGIC — 渲染 + 互動 + 進度持久化
+     ============================================================ -->
+<script>
+(() => {
+  'use strict';
+
+  // ---------- localStorage 包裝（容錯）----------
+  const STORAGE_KEY = 'mor3xppa-progress-v1';
+  const store = {
+    load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { tasks: {}, quiz: {}, lastSection: '' };
+        return JSON.parse(raw);
+      } catch (e) { return { tasks: {}, quiz: {}, lastSection: '' }; }
+    },
+    save(state) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      catch (e) { /* 隱私模式 / iframe 限制：靜默失敗 */ }
+    },
+    reset() {
+      try { localStorage.removeItem(STORAGE_KEY); }
+      catch (e) { /* ignore */ }
+    }
+  };
+
+  let state = store.load();
+  state.tasks = state.tasks || {};
+  state.quiz = state.quiz || {};
+
+  const C = window.COURSE;
+
+  // ---------- 工具函式 ----------
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  // ---------- Sidebar Toggle ----------
+  const sidebarToggleBtn = $('#sidebar-toggle');
+  if (sidebarToggleBtn) {
+    sidebarToggleBtn.addEventListener('click', () => {
+      $('.app').classList.toggle('sidebar-closed');
+    });
+  }
+  const el = (tag, attrs = {}, ...children) => {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === 'class') node.className = v;
+      else if (k === 'html') node.innerHTML = v;
+      else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
+      else if (v != null) node.setAttribute(k, v);
+    }
+    for (const c of children) {
+      if (c == null) continue;
+      node.append(c instanceof Node ? c : document.createTextNode(c));
+    }
+    return node;
+  };
+  function getMaterialUrl(name) {
+    if (name.includes('員工差勤')) return '完整課程包/教學素材/綠野選物_員工差勤與休假管理辦法.md';
+    if (name.includes('教育訓練')) return '完整課程包/教學素材/綠野選物_新進員工教育訓練手冊.md';
+    if (name.includes('新品上架')) return '完整課程包/教學素材/綠野選物_新品上架公告作業辦法.md';
+    if (name.includes('FAQ官方版')) return '完整課程包/教學素材/暖光咖啡_FAQ官方版.md';
+    if (name.includes('退換貨')) return '完整課程包/教學素材/暖光咖啡_商品退換貨政策.md';
+    if (name.includes('客訴處理')) return '完整課程包/教學素材/暖光咖啡_客訴處理SOP.md';
+    if (name.includes('進貨與庫存')) return '完整課程包/教學素材/暖光咖啡_食材進貨與庫存管理辦法.md';
+    if (name.includes('公司費用')) return '完整課程包/教學素材/公司費用報支管理辦法.md';
+    if (name.includes('實作素材_Day1 /')) return '完整課程包/教學素材/課堂實作素材_Day1.md';
+    if (name.includes('課程輔助文件')) return '完整課程包/課程輔助文件.md';
+    if (name.includes('老闆口語稿') || name.includes('請購單') || name.includes('客訴 10 則') || name.includes('錄音逐字稿') || name.includes('Skill 範本')) return '完整課程包/課程輔助文件.md';
+    if (name.includes('共用案例設定')) return '完整課程包/共用案例設定.md';
+    return null;
+  }
+
+  const escapeHTML = s => String(s).replace(/[&<>"']/g, ch => (
+    { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[ch]
+  ));
+
+  // ---------- 收集所有任務 id ----------
+  const allTaskIds = (() => {
+    const ids = [];
+    ['day1','day2','day3','day4'].forEach(dk => {
+      (C[dk].units || []).forEach(u => (u.tasks || []).forEach(t => ids.push(t.id)));
+    });
+    return ids;
+  })();
+
+  // ---------- 進度計算 ----------
+  function computeProgress() {
+    const done = allTaskIds.filter(id => state.tasks[id]).length;
+    return { done, total: allTaskIds.length, pct: allTaskIds.length ? Math.round(done / allTaskIds.length * 100) : 0 };
+  }
+
+  function unitProgress(dayId, unitId) {
+    const day = C[dayId];
+    if (!day) return { done: 0, total: 0 };
+    const unit = (day.units || []).find(u => u.id === unitId);
+    if (!unit) return { done: 0, total: 0 };
+    const ids = (unit.tasks || []).map(t => t.id);
+    const done = ids.filter(id => state.tasks[id]).length;
+    return { done, total: ids.length };
+  }
+
+  function updateProgressUI() {
+    const p = computeProgress();
+    $('#prog-pct').textContent = p.pct + '%';
+    $('#prog-fill').style.width = p.pct + '%';
+    $('#prog-meta').textContent = `${p.done} / ${p.total} 任務完成`;
+    // 更新所有單元 pill
+    $$('.unit-progress-pill').forEach(pill => {
+      const [dayId, unitId] = pill.dataset.unit.split(':');
+      const up = unitProgress(dayId, unitId);
+      pill.textContent = `${up.done} / ${up.total}`;
+      pill.classList.toggle('done', up.total > 0 && up.done === up.total);
+    });
+  }
+
+  // ---------- toast ----------
+  let toastTimer = null;
+  function toast(msg) {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1600);
+  }
+
+  // ---------- icons (inline SVG) ----------
+  const ICON = {
+    check: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,8.5 6.5,12 13,4.5"/></svg>',
+    chevron: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,3 11,8 6,13"/></svg>',
+    copy: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.2"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/></svg>'
+  };
+
+  // ============================================================
+  //  區塊渲染：總覽
+  // ============================================================
+  function renderOverview() {
+    const m = C.meta;
+    const root = el('section', { class: 'chapter', id: 'overview' });
+
+    root.append(el('header', {},
+      el('span', { class: 'eyebrow' }, '工作坊總覽'),
+      el('h2', {}, m.title),
+      el('div', { class: 'lead' }, m.subtitle + '。本互動工作坊把 4 天課程拆成可勾選的任務、可一鍵複製的 RTFC 提示詞，以及可帶回公司的素材清單 — 邊看邊做、隨時回來接續。')
+    ));
+
+    // 三格統計卡
+    const totalClassHours = m.days.reduce((acc, d) => acc + d.hours, 0);
+    root.append(el('div', { class: 'day-header-grid' },
+      statCell('總時數', `${totalClassHours + 4}H`, '4 天 + 4H 線上自學'),
+      statCell('任務數', String(allTaskIds.length), '可勾選追蹤'),
+      statCell('教學素材', String(C.materials.length), '規章 + Skill 範本')
+    ));
+
+    root.append(el('h3', {}, '課程基本資訊'));
+    const meta = el('div', { class: 'meta-grid' });
+    [
+      ['計畫名稱', m.program],
+      ['主辦單位', m.organizer],
+      ['上課日期', m.dates],
+      ['上課地點', m.location],
+      ['課程型態', m.format],
+      ['招生人數', m.capacity],
+      ['授課講師', m.instructor]
+    ].forEach(([k,v]) => { meta.append(el('div',{},k), el('div',{},v)); });
+    root.append(meta);
+
+    root.append(el('h3', {}, '整體課程目標'));
+    const goalList = el('ul', { class: 'list' });
+    m.objectives.forEach(o => goalList.append(el('li',{},o)));
+    root.append(goalList);
+
+    root.append(el('h3', {}, '4 天節次'));
+    const t = el('table', { class: 't' });
+    t.innerHTML = `<thead><tr><th>日次</th><th>日期</th><th>主題</th><th>時數</th></tr></thead>`;
+    const tb = el('tbody');
+    m.days.forEach(d => {
+      tb.innerHTML += `<tr><td>Day ${d.n}</td><td>${d.date}</td><td>${d.title}</td><td>${d.hours}H</td></tr>`;
+    });
+    t.append(tb);
+    root.append(t);
+
+    // 講師卡片：來自 instructor-data.js (Playwright 爬 YouTube @pg-kt)
+    if (window.INSTRUCTOR && window.INSTRUCTOR.channel) {
+      root.append(el('h3', {}, '授課講師'));
+      root.append(renderInstructorCard(window.INSTRUCTOR));
+    }
+
+    root.append(el('h3', {}, '結訓條件'));
+    const ul = el('ul', { class: 'list' });
+    m.completion.forEach(c => ul.append(el('li',{},c)));
+    root.append(ul);
+
+    return root;
+  }
+
+  /**
+   * 渲染講師卡片
+   * 頭像使用本地檔案 圓形去背.png；頻道資訊與影片清單來自 Playwright 擷取的資料
+   */
+  function renderInstructorCard(data) {
+    const ch = data.channel;
+    const card = el('div', { class: 'instructor-card' });
+
+    // 左側：本地圓形頭像 logo
+    card.append(el('img', {
+      class: 'instructor-avatar',
+      src: encodeURIComponent('圓形去背.png'), // 中文檔名 URL-encode
+      alt: ch.name || '講師頭像',
+      loading: 'lazy'
+    }));
+
+    // 右側：講師基本資訊
+    const meta = el('div', { class: 'instructor-meta' });
+    meta.append(el('div', { class: 'instructor-name' }, ch.name || '講師'));
+
+    // 頻道 handle 連結
+    const handleRow = el('div', { class: 'instructor-handle' });
+    handleRow.append(document.createTextNode('YouTube 頻道：'));
+    const link = el('a', { href: ch.url, target: '_blank', rel: 'noopener' }, ch.handle || ch.name);
+    handleRow.append(link);
+    meta.append(handleRow);
+
+    // 訂閱 / 影片數徽章
+    const stats = el('div', { class: 'instructor-stats' });
+    if (ch.subscriberCount) {
+      stats.append(el('span', { class: 'instructor-stat' },
+        el('strong', {}, '訂閱'), ch.subscriberCount.replace(/位訂閱者|subscribers?/gi, '').trim()));
+    }
+    if (ch.videoCount) {
+      // YouTube 原字串如「117 部影片」，前綴 strong 已含「影片」字樣，去掉以避免重複
+      const cleanVideoCount = ch.videoCount.replace(/部影片|videos?/gi, '').trim();
+      stats.append(el('span', { class: 'instructor-stat' },
+        el('strong', {}, '影片'), cleanVideoCount));
+    }
+    if (stats.children.length) meta.append(stats);
+
+    // 簡介
+    if (ch.description) {
+      meta.append(el('p', { class: 'instructor-bio' }, ch.description));
+    }
+
+    // 資料來源時間
+    if (data.scrapedAt) {
+      const date = new Date(data.scrapedAt).toLocaleDateString('zh-TW');
+      meta.append(el('div', { class: 'instructor-source' }, `資料擷取自 YouTube · ${date}`));
+    }
+
+    card.append(meta);
+
+    // 最新影片區塊（橫跨兩欄，故另起一個容器附加在 card 後面）
+    const wrapper = el('div', {});
+    wrapper.append(card);
+
+    if (Array.isArray(data.recentVideos) && data.recentVideos.length) {
+      const vidSection = el('div', { class: 'instructor-videos' });
+      vidSection.append(el('h4', { class: 'instructor-videos-title' }, '頻道最新影片'));
+
+      const grid = el('div', { class: 'instructor-videos-grid' });
+      data.recentVideos.forEach(v => {
+        if (!v.url) return;
+        const a = el('a', { class: 'instructor-video', href: v.url, target: '_blank', rel: 'noopener' });
+        if (v.thumbnail) {
+          a.append(el('img', { class: 'instructor-video-thumb', src: v.thumbnail, alt: v.title || '', loading: 'lazy' }));
+        }
+        a.append(el('div', { class: 'instructor-video-title' }, v.title || '(未命名)'));
+        if (v.views) a.append(el('div', { class: 'instructor-video-views' }, v.views));
+        grid.append(a);
+      });
+      vidSection.append(grid);
+      wrapper.append(vidSection);
+    }
+
+    return wrapper;
+  }
+
+  function statCell(label, value, meta) {
+    return el('div', { class: 'dh-cell' },
+      el('div', { class: 'stat-label' }, label),
+      el('div', { class: 'stat-value' }, value),
+      el('div', { class: 'stat-meta' }, meta)
+    );
+  }
+
+  // ============================================================
+  //  區塊：共用案例
+  // ============================================================
+  function renderSharedCase() {
+    const sc = C.sharedCase;
+    const root = el('section', { class: 'chapter', id: 'shared-case' });
+    root.append(el('header', {},
+      el('span', { class: 'eyebrow' }, '4 天共用情境'),
+      el('h2', {}, '案例品牌與角色設定'),
+      el('div', { class: 'lead' }, sc.intro)
+    ));
+
+    // 兩張品牌卡
+    const cards = el('div', { class: 'brand-cards' });
+    sc.brands.forEach(b => {
+      const card = el('div', { class: 'brand-card' });
+      card.append(el('div', { class: 'brand-id' }, '案例 ' + b.id));
+      card.append(el('div', { class: 'brand-name' }, b.name));
+      card.append(el('div', { class: 'brand-type' }, b.type));
+      const rows = el('div', { class: 'brand-rows' });
+      b.rows.forEach(([k,v]) => {
+        rows.append(el('div', { class: 'brand-row' },
+          el('div',{},k), el('div',{},v)));
+      });
+      card.append(rows);
+      cards.append(card);
+    });
+    root.append(cards);
+
+    root.append(el('h3', {}, '角色設定'));
+    const tr = el('table', { class: 't' });
+    tr.innerHTML = '<thead><tr><th>角色</th><th>所屬</th><th>職稱</th><th>在課程中的功能</th></tr></thead>';
+    const trb = el('tbody');
+    sc.roles.forEach(r => trb.innerHTML += `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`);
+    tr.append(trb);
+    root.append(tr);
+
+    root.append(el('h3', {}, '提示詞模板共用變數'));
+    const tv = el('table', { class: 't' });
+    tv.innerHTML = '<thead><tr><th>變數</th><th>暖光咖啡（A）</th><th>綠野選物（B）</th></tr></thead>';
+    const tvb = el('tbody');
+    sc.variables.forEach(r => tvb.innerHTML += `<tr><td><code>${escapeHTML(r[0])}</code></td><td>${r[1]}</td><td>${r[2]}</td></tr>`);
+    tv.append(tvb);
+    root.append(tv);
+
+    root.append(el('h3', {}, '共用工具集'));
+    const tt = el('table', { class: 't' });
+    tt.innerHTML = '<thead><tr><th>工具</th><th>主要用途</th><th>出現天次</th></tr></thead>';
+    const ttb = el('tbody');
+    sc.tools.forEach(r => ttb.innerHTML += `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`);
+    tt.append(ttb);
+    root.append(tt);
+
+    root.append(el('h3', {}, '學員每日產出（堆疊機制）'));
+    const td = el('table', { class: 't' });
+    td.innerHTML = '<thead><tr><th>天次</th><th>產出</th></tr></thead>';
+    const tdb = el('tbody');
+    sc.deliverables.forEach(r => tdb.innerHTML += `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`);
+    td.append(tdb);
+    root.append(td);
+
+    root.append(el('div', { class: 'note tip' },
+      '每天的作品在隔日仍可被引用，逐步堆疊出個人化的「行政 AI 工具箱」 — Day 4 就是把 Day 1~3 的提示詞封裝成可重用的 Agent Skill。'));
+
+    return root;
+  }
+
+  // ============================================================
+  //  區塊：Day（共用）
+  // ============================================================
+  function renderDay(dayId) {
+    const d = C[dayId];
+    // 加 has-hero 讓章節 header 切換成簡潔模式（隱藏原本 H2，由 hero 接手）
+    const root = el('section', { class: 'chapter has-hero', id: dayId });
+
+    // 該日狀態
+    const totalTasks = (d.units || []).reduce((s,u) => s + (u.tasks || []).length, 0);
+    const dayNumber = dayId.replace('day', ''); // "1" / "2" / "3" / "4"
+
+    // —— Day 章節封面 hero：左側巨型 D1-D4 數字 + 右側 metadata + 三項統計
+    const hero = el('div', { class: 'day-hero' });
+
+    // 左側：巨型襯線數字 "D1"，下方放期次標籤
+    const numWrap = el('div', { class: 'day-hero-numeral' });
+    numWrap.append(document.createTextNode('D' + dayNumber));
+    const numSub = el('span', { class: 'day-hero-num-sub' }, `第 ${dayNumber} 天 ／ Module 0${dayNumber}`);
+    numWrap.append(numSub);
+    hero.append(numWrap);
+
+    // 右側：eyebrow + title + lead + stats
+    const meta = el('div', { class: 'day-hero-meta' });
+    meta.append(el('div', { class: 'day-hero-eyebrow' }, `${d.date} ／ ${d.hours}`));
+    meta.append(el('div', { class: 'day-hero-title' }, d.title));
+    meta.append(el('div', { class: 'day-hero-lead' }, d.learningGoal));
+
+    const stats = el('div', { class: 'day-hero-stats' });
+    [['單元數', String(d.units.length)], ['任務數', String(totalTasks)], ['時段', d.hours]].forEach(([k,v]) => {
+      const s = el('div', { class: 'day-hero-stat' });
+      s.append(el('div', { class: 'stat-label' }, k));
+      s.append(el('div', { class: 'stat-value' }, v));
+      stats.append(s);
+    });
+    meta.append(stats);
+    hero.append(meta);
+
+    root.append(hero);
+
+    // 簡潔 header（H2 / eyebrow 在 has-hero 下都是 display:none，只保留可被搜尋引擎抓的結構）
+    root.append(el('header', {},
+      el('span', { class: 'eyebrow' }, 'Day ' + dayNumber),
+      el('h2', {}, d.title),
+      el('div', { class: 'lead' }, '')
+    ));
+
+    // 工具原則（Day 2 才有，改用 tip 變體 — 暖色強調這是「方法心法」性質）
+    if (d.principle) {
+      root.append(el('div', { class: 'note tip' }, d.principle));
+    }
+
+    // 當日時程
+    root.append(el('h3', {}, '當日時程'));
+    const sch = el('table', { class: 't' });
+    sch.innerHTML = '<thead><tr><th style="width:130px">時段</th><th style="width:32%">單元</th><th>內容重點</th></tr></thead>';
+    const sb = el('tbody');
+    d.schedule.forEach(r => sb.innerHTML += `<tr><td><code>${r[0]}</code></td><td>${r[1]}</td><td>${r[2]}</td></tr>`);
+    sch.append(sb);
+    root.append(sch);
+
+    // 各單元 accordion
+    root.append(el('h3', {}, '課程單元'));
+    d.units.forEach(u => root.append(renderUnit(d, u)));
+
+    // 預期成果
+    root.append(el('h3', {}, '預期成果'));
+    const ee = el('ul', { class: 'list' });
+    (d.expected || []).forEach(x => ee.append(el('li',{},x)));
+    root.append(ee);
+
+    // 課後作業
+    if (d.homework && d.homework.length) {
+      root.append(el('h3', {}, '課後作業（自願鼓勵）'));
+      const hw = el('ul', { class: 'list' });
+      d.homework.forEach(h => hw.append(el('li',{},h)));
+      root.append(hw);
+    }
+
+    return root;
+  }
+
+  // ---------- 單元 accordion ----------
+  function renderUnit(day, u) {
+    const det = el('details', { class: 'unit', id: `${day.id}-${u.id}` });
+    // 預設 Day 1 第一單元打開
+    if (day.id === 'day1' && u.id === 'u1') det.open = true;
+
+    const sum = el('summary', {});
+    const titleWrap = el('div', {});
+    titleWrap.append(el('div', { class: 'unit-title' }, u.title));
+    if (u.subtitle) {
+      const sub = el('div', { class: 'unit-meta' }, u.subtitle);
+      sub.style.color = 'var(--accent-deep)';
+      titleWrap.append(sub);
+    }
+    titleWrap.append(el('div', { class: 'unit-meta' }, u.time));
+    sum.append(titleWrap);
+
+    const right = el('div', { class: 'unit-progress' });
+    const pill = el('span', { class: 'unit-progress-pill', 'data-unit': `${day.id}:${u.id}` }, '0 / 0');
+    right.append(pill);
+    const arrow = el('span', { class: 'unit-arrow', html: ICON.chevron });
+    right.append(arrow);
+    sum.append(right);
+    det.append(sum);
+
+    const body = el('div', { class: 'unit-body' });
+
+    // 學習目標
+    if (u.goals && u.goals.length) {
+      body.append(el('h4', {}, '學習目標'));
+      const ul = el('ul', { class: 'list' });
+      u.goals.forEach(g => ul.append(el('li',{},g)));
+      body.append(ul);
+    }
+
+    // 核心觀念
+    if (u.concepts && u.concepts.length) {
+      body.append(el('h4', {}, '核心觀念'));
+      u.concepts.forEach(c => body.append(renderConcept(c)));
+    }
+
+    // 提示詞範例
+    if (u.prompts && u.prompts.length) {
+      body.append(el('h4', {}, 'RTFC 提示詞範例（一鍵複製到 Gemini）'));
+      u.prompts.forEach(p => body.append(renderPromptCard(p)));
+    }
+
+    // 任務清單（核心互動）
+    if (u.tasks && u.tasks.length) {
+      body.append(el('h4', {}, '任務清單'));
+      body.append(renderTaskList(u.tasks));
+    }
+
+    // 教學素材
+    if (u.materials && u.materials.length) {
+      body.append(el('h4', {}, '本單元教學素材'));
+      body.append(renderMaterialList(u.materials));
+    }
+
+    // FAQ
+    if (u.faq && u.faq.length) {
+      body.append(el('h4', {}, '常見學員疑問'));
+      const t = el('table', { class: 't' });
+      t.innerHTML = '<thead><tr><th style="width:35%">疑問</th><th>解答要點</th></tr></thead>';
+      const tb = el('tbody');
+      u.faq.forEach(([q,a]) => tb.innerHTML += `<tr><td>${q}</td><td>${a}</td></tr>`);
+      t.append(tb);
+      body.append(t);
+    }
+
+    det.append(body);
+    return det;
+  }
+
+  // ---------- concept ----------
+  function renderConcept(c) {
+    const w = el('div', { class: 'concept' });
+    if (c.heading) w.append(el('div', { class: 'concept-heading' }, c.heading));
+    if (c.body) w.append(el('div', { class: 'concept-body' }, c.body));
+    if (c.list && c.list.length) {
+      const kv = el('div', { class: 'kv' });
+      c.list.forEach(([k,v]) => {
+        const row = el('div', { class: 'kv-row' });
+        row.append(el('div', { class: 'kv-key' }, k));
+        row.append(el('div', { class: 'kv-val' }, v));
+        kv.append(row);
+      });
+      w.append(kv);
+    }
+    if (c.table) {
+      const t = el('table', { class: 't' });
+      t.innerHTML = '<thead><tr>' + c.table.head.map(h => `<th>${h}</th>`).join('') + '</tr></thead>';
+      const tb = el('tbody');
+      c.table.rows.forEach(r => tb.innerHTML += '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>');
+      t.append(tb);
+      w.append(t);
+    }
+    if (c.note) w.append(el('div', { class: 'note' }, c.note));
+    return w;
+  }
+
+  // ---------- prompt card ----------
+  function renderPromptCard(p) {
+    const w = el('div', { class: 'prompt-card', id: p.id });
+    const head = el('div', { class: 'prompt-card-head' });
+    const left = el('div');
+    left.append(el('div', { class: 'prompt-card-title' }, p.title));
+    if (p.note) left.append(el('div', { class: 'prompt-card-note' }, p.note));
+    head.append(left);
+
+    const btn = el('button', { class: 'prompt-copy-btn', type: 'button' });
+    btn.innerHTML = ICON.copy + '<span>複製</span>';
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        await navigator.clipboard.writeText(p.text);
+      } catch (err) {
+        // fallback: textarea select
+        const ta = document.createElement('textarea');
+        ta.value = p.text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        ta.remove();
+      }
+      btn.classList.add('ok');
+      btn.querySelector('span').textContent = '已複製';
+      toast('已複製：' + p.title);
+      setTimeout(() => {
+        btn.classList.remove('ok');
+        btn.querySelector('span').textContent = '複製';
+      }, 1800);
+    });
+    head.append(btn);
+    w.append(head);
+
+    w.append(el('pre', { class: 'prompt-text' }, p.text));
+    return w;
+  }
+
+  // ---------- task list ----------
+  function renderTaskList(tasks) {
+    const list = el('ul', { class: 'task-list' });
+    tasks.forEach(t => {
+      const li = el('li', { class: 'task-item' + (state.tasks[t.id] ? ' done' : ''), 'data-task-id': t.id });
+      const cb = el('div', { class: 'task-checkbox', html: ICON.check });
+      const lbl = el('div', { class: 'task-label' }, t.label);
+      li.append(cb, lbl);
+      li.addEventListener('click', () => toggleTask(t.id, li));
+      list.append(li);
+    });
+    return list;
+  }
+
+  function toggleTask(id, li) {
+    const next = !state.tasks[id];
+    if (next) state.tasks[id] = true;
+    else delete state.tasks[id];
+    li.classList.toggle('done', next);
+    store.save(state);
+    updateProgressUI();
+  }
+
+  // ---------- material list ----------
+  function renderMaterialList(items) {
+    const w = el('div', { class: 'materials' });
+    items.forEach(m => {
+      const row = el('div', { class: 'material-row' });
+      row.append(el('div', { class: 'material-tag' }, m.type));
+      const center = el('div');
+      const url = getMaterialUrl(m.name);
+      if (url) {
+        const link = el('a', { class: 'material-name', href: url, target: '_blank' }, m.name);
+        link.style.color = 'var(--accent-deep)';
+        link.style.textDecoration = 'none';
+        center.append(link);
+      } else {
+        center.append(el('div', { class: 'material-name' }, m.name));
+      }
+      if (m.desc) center.append(el('div', { class: 'material-desc' }, m.desc));
+      row.append(center);
+      const meta = el('div', { class: 'material-meta' }, '_extracted/完整課程包/教學素材/');
+      row.append(meta);
+      w.append(row);
+    });
+    return w;
+  }
+
+  // ============================================================
+  //  區塊：教學素材總覽
+  // ============================================================
+  function renderMaterials() {
+    const root = el('section', { class: 'chapter', id: 'materials-overview' });
+    root.append(el('header', {},
+      el('span', { class: 'eyebrow' }, '4 天通用素材庫'),
+      el('h2', {}, '教學素材總覽'),
+      el('div', { class: 'lead' }, '所有實作會用到的規章、SOP、政策、Skill 範本與測驗題庫，全部隨課程包一起發放。每份素材標明在哪一天哪個段落使用 — 確保你不會在實作時找不到原始檔。')
+    ));
+
+    const tbl = el('table', { class: 't' });
+    tbl.innerHTML = `<thead><tr>
+      <th style="width:60px">類型</th>
+      <th>素材名稱</th>
+      <th style="width:30%">使用時機</th>
+      <th>用途</th>
+    </tr></thead>`;
+    const tb = el('tbody');
+    C.materials.forEach(m => {
+      const url = getMaterialUrl(m.name);
+      const nameHtml = url 
+        ? `<a href="${url}" target="_blank" style="color:var(--accent-deep);text-decoration:none;"><b>${escapeHTML(m.name)}</b></a>` 
+        : `<b>${escapeHTML(m.name)}</b>`;
+      tb.innerHTML += `<tr>
+        <td><span class="pill">${m.type}</span></td>
+        <td>${nameHtml}<div style="color:var(--muted-2);font-size:11.5px;font-family:var(--font-mono);margin-top:2px">${escapeHTML(m.size||'')}</div></td>
+        <td>${(m.usedIn||[]).join(' ／ ')}</td>
+        <td style="color:var(--muted)">${escapeHTML(m.desc||'')}</td>
+      </tr>`;
+    });
+    tbl.append(tb);
+    root.append(tbl);
+
+    root.append(el('div', { class: 'note' },
+      '所有素材以雙品牌（暖光咖啡 / 綠野選物）為情境設計 — 學員可任選一條路線完整跑完 4 天，也可中途切換。'));
+
+    return root;
+  }
+
+  // ============================================================
+  //  區塊：工具圖鑑（Tool Gallery）
+  //  資料來源：window.TOOLS（由 scripts/scrape-tools.mjs 產生）
+  // ============================================================
+  function renderToolbox() {
+    const root = el('section', { class: 'chapter', id: 'toolbox' });
+    root.append(el('header', {},
+      el('span', { class: 'eyebrow' }, '4 天課程使用工具'),
+      el('h2', {}, '工具圖鑑'),
+      el('div', { class: 'lead' }, '4 天課程會用到的 AI 工具一覽。點擊任一張卡片開啟官方頁面；用上方 Day 篩選快速找到當日工具。')
+    ));
+
+    // 若資料未載入或為空，顯示提示
+    if (!Array.isArray(window.TOOLS) || window.TOOLS.length === 0) {
+      root.append(el('div', { class: 'note' },
+        '工具資料尚未擷取。請執行：npm run scrape:tools'));
+      return root;
+    }
+
+    // Day 篩選 chips
+    const filters = el('div', { class: 'toolbox-filters' });
+    const days = ['all', 1, 2, 3, 4];
+    days.forEach(d => {
+      const label = d === 'all' ? '全部' : `Day ${d}`;
+      const chip = el('button', { class: 'chip' + (d === 'all' ? ' active' : ''), 'data-day': String(d) }, label);
+      chip.addEventListener('click', () => {
+        // 切換 active
+        filters.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        // 篩選卡片
+        const current = chip.dataset.day;
+        grid.querySelectorAll('.tool-card').forEach(card => {
+          const cardDays = (card.dataset.days || '').split(' ').filter(Boolean);
+          const visible = current === 'all' || cardDays.includes(current);
+          card.classList.toggle('is-hidden', !visible);
+        });
+      });
+      filters.append(chip);
+    });
+    root.append(filters);
+
+    // 卡片網格
+    const grid = el('div', { class: 'toolbox-grid' });
+    window.TOOLS.forEach(t => grid.append(renderToolCard(t)));
+    root.append(grid);
+
+    return root;
+  }
+
+  /**
+   * 渲染單張工具卡片
+   * 頭部為截圖，主體為名稱 + tagline + Day 標籤
+   */
+  function renderToolCard(tool) {
+    const days = Array.isArray(tool.days) ? tool.days : [];
+    const card = el('a', {
+      class: 'tool-card',
+      href: tool.url,
+      target: '_blank',
+      rel: 'noopener',
+      'data-days': days.map(String).join(' ')
+    });
+
+    // 截圖（失敗時顯示文字 placeholder）
+    if (tool.screenshot && tool.scrapeStatus === 'ok') {
+      card.append(el('img', {
+        class: 'tool-screenshot',
+        src: tool.screenshot,
+        alt: tool.name,
+        loading: 'lazy'
+      }));
+    } else {
+      card.append(el('div', { class: 'tool-screenshot is-placeholder' },
+        '（截圖待擷取）'));
+    }
+
+    const body = el('div', { class: 'tool-card-body' });
+    body.append(el('div', { class: 'tool-name' }, tool.name));
+    body.append(el('div', { class: 'tool-tagline' }, tool.tagline || ''));
+    if (days.length) {
+      const tagWrap = el('div', { class: 'tool-days' });
+      days.forEach(d => tagWrap.append(el('span', { class: 'tool-day-tag' }, `Day ${d}`)));
+      body.append(tagWrap);
+    }
+    card.append(body);
+    return card;
+  }
+
+  // ============================================================
+  //  區塊：結訓測驗
+  // ============================================================
+  function renderQuiz() {
+    const root = el('section', { class: 'chapter', id: 'quiz' });
+    root.append(el('header', {},
+      el('span', { class: 'eyebrow' }, '結訓條件 ／ 課後小測驗'),
+      el('h2', {}, '結訓測驗（10 題）'),
+      el('div', { class: 'lead' }, '完成 4 天課程後的小測驗，達 70 分（10 題答對 7 題以上）即達結訓標準。作答即時批改、結果會記在你的瀏覽器，下次回來可直接看到分數。')
+    ));
+
+    // 統計頂部
+    const intro = el('div', { class: 'quiz-intro' });
+    const introLeft = el('div', {});
+    introLeft.append(el('div', { class: 'stat-label' }, '結訓門檻'));
+    introLeft.append(el('div', { style: 'font-size:14px;color:var(--muted);margin-top:4px;line-height:1.5' },
+      '出席時數達 80% 以上＋完成前後測考試。本測驗對應後測 10 題，主題涵蓋 4 天核心觀念。'));
+    intro.append(introLeft);
+
+    const stat = el('div', { class: 'quiz-stat' });
+    stat.append(el('div', { class: 'quiz-stat-label' }, '目前分數'));
+    stat.append(el('div', { class: 'quiz-stat-value', id: 'quiz-score' }, '— / 10'));
+    intro.append(stat);
+    root.append(intro);
+
+    // 操作按鈕
+    const acts = el('div', { class: 'quiz-actions' });
+    const submit = el('button', { class: 'btn primary', id: 'quiz-submit' }, '送出 ／ 即時批改');
+    const reset = el('button', { class: 'btn ghost', id: 'quiz-reset' }, '清除作答');
+    acts.append(submit, reset);
+    root.append(acts);
+
+    // 題目
+    const list = el('div', { class: 'quiz-list', id: 'quiz-list' });
+    C.quiz.forEach((q, i) => list.append(renderQuestion(q, i)));
+    root.append(list);
+
+    // 綁事件
+    submit.addEventListener('click', gradeQuiz);
+    reset.addEventListener('click', resetQuiz);
+
+    return root;
+  }
+
+  function renderQuestion(q, i) {
+    const w = el('div', { class: 'question', 'data-q-id': q.id });
+    w.append(el('div', { class: 'q-num' }, `第 ${String(i+1).padStart(2,'0')} 題 ｜ ${q.type === 'multi' ? '多選' : '單選'}`));
+    w.append(el('div', { class: 'q-text' }, q.q));
+    const opts = el('div', { class: 'q-options' });
+    q.options.forEach((opt, idx) => {
+      const o = el('div', { class: 'q-option', 'data-idx': idx, 'data-multi': q.type === 'multi' });
+      o.append(el('div', { class: 'q-option-mark' }));
+      o.append(el('div', {}, opt));
+      o.addEventListener('click', () => {
+        if (q.type === 'multi') {
+          o.classList.toggle('checked');
+        } else {
+          $$('.q-option', opts).forEach(x => x.classList.remove('checked'));
+          o.classList.add('checked');
+        }
+        // 清除批改痕跡
+        $$('.q-option', opts).forEach(x => x.classList.remove('correct','wrong'));
+        const fb = w.querySelector('.q-feedback');
+        if (fb) fb.remove();
+        saveQuizAnswers();
+      });
+      opts.append(o);
+    });
+    w.append(opts);
+    // 還原已存作答
+    if (state.quiz && state.quiz[q.id]) {
+      const ans = state.quiz[q.id];
+      const arr = Array.isArray(ans) ? ans : [ans];
+      arr.forEach(idx => {
+        const o = opts.querySelector(`.q-option[data-idx="${idx}"]`);
+        if (o) o.classList.add('checked');
+      });
+    }
+    return w;
+  }
+
+  function getUserAnswer(qEl, q) {
+    const checked = $$('.q-option.checked', qEl).map(o => Number(o.dataset.idx));
+    if (q.type === 'multi') return checked.sort();
+    return checked.length ? checked[0] : null;
+  }
+
+  function saveQuizAnswers() {
+    const list = $('#quiz-list');
+    if (!list) return;
+    state.quiz = {};
+    C.quiz.forEach(q => {
+      const qEl = list.querySelector(`.question[data-q-id="${q.id}"]`);
+      const a = getUserAnswer(qEl, q);
+      if (a != null && (!Array.isArray(a) || a.length)) state.quiz[q.id] = a;
+    });
+    store.save(state);
+  }
+
+  function isCorrect(q, ans) {
+    if (q.type === 'multi') {
+      if (!Array.isArray(ans)) return false;
+      const right = [...q.answer].sort();
+      return ans.length === right.length && ans.every((v,i) => v === right[i]);
+    }
+    return ans === q.answer;
+  }
+
+  function gradeQuiz() {
+    let score = 0;
+    const list = $('#quiz-list');
+    C.quiz.forEach(q => {
+      const qEl = list.querySelector(`.question[data-q-id="${q.id}"]`);
+      const ans = getUserAnswer(qEl, q);
+      // 重新染色
+      $$('.q-option', qEl).forEach(o => o.classList.remove('correct','wrong'));
+      const correctSet = q.type === 'multi' ? q.answer : [q.answer];
+      $$('.q-option', qEl).forEach(o => {
+        const idx = Number(o.dataset.idx);
+        if (correctSet.includes(idx)) o.classList.add('correct');
+        else if (o.classList.contains('checked')) o.classList.add('wrong');
+      });
+      // 反饋訊息
+      const oldFb = qEl.querySelector('.q-feedback');
+      if (oldFb) oldFb.remove();
+      const ok = isCorrect(q, ans);
+      if (ans != null && (!Array.isArray(ans) || ans.length)) {
+        if (ok) score++;
+        const fb = el('div', { class: 'q-feedback ' + (ok ? 'ok' : 'no') },
+          ok ? '✓ 答對 — 把這條觀念記下，可寫進你的 Day 4 Skill。' :
+               '✗ 再想想 — 上方綠色為正確答案。回 ' + qIndexToDay(q.id) + ' 章節重新閱讀。');
+        qEl.appendChild(fb);
+      }
+    });
+    saveQuizAnswers();
+    state.quiz._score = score;
+    store.save(state);
+    updateQuizScoreUI();
+    toast(`得分：${score} / 10 ${score >= 7 ? '— 達結訓標準 ✓' : '— 未達 70 分'}`);
+  }
+
+  function qIndexToDay(qid) {
+    const map = {
+      q1: 'Day 1 單元 1',
+      q2: 'Day 1 ／ Day 3',
+      q3: 'Day 1 單元 2',
+      q4: 'Day 3 單元 1',
+      q5: 'Day 2 單元 2',
+      q6: 'Day 2 單元 1',
+      q7: 'Day 3 單元 2',
+      q8: 'Day 4 單元 1',
+      q9: 'Day 1 ／ Day 3',
+      q10: 'Day 2 單元 1'
+    };
+    return map[qid] || '對應章節';
+  }
+
+  function updateQuizScoreUI() {
+    const elScore = $('#quiz-score');
+    if (!elScore) return;
+    const s = state.quiz._score;
+    if (s == null) {
+      elScore.textContent = '— / 10';
+      elScore.classList.remove('pass','fail');
+      return;
+    }
+    elScore.textContent = `${s} / 10`;
+    elScore.classList.toggle('pass', s >= 7);
+    elScore.classList.toggle('fail', s < 7);
+  }
+
+  function resetQuiz() {
+    if (!confirm('確定要清除所有作答嗎？')) return;
+    state.quiz = {};
+    store.save(state);
+    $$('.q-option').forEach(o => o.classList.remove('checked','correct','wrong'));
+    $$('.q-feedback').forEach(f => f.remove());
+    updateQuizScoreUI();
+    toast('已清除作答');
+  }
+
+  // ============================================================
+  //  Sidebar：渲染導覽 + 滾動高亮
+  // ============================================================
+  const NAV_ITEMS = [
+    { id: 'overview',           num: '00', label: '課程總覽',       group: '前置' },
+    { id: 'shared-case',        num: '01', label: '共用案例設定',   group: '前置' },
+    { id: 'day1',               num: 'D1', label: '產業趨勢 + AI 基礎',     group: '4 天課程', meta: '5/13' },
+    { id: 'day2',               num: 'D2', label: 'AI 多媒體製作',           group: '4 天課程', meta: '5/20' },
+    { id: 'day3',               num: 'D3', label: '行政與財務整理',          group: '4 天課程', meta: '5/27' },
+    { id: 'day4',               num: 'D4', label: 'AI 代理 + 成果展示',      group: '4 天課程', meta: '6/3' },
+    { id: 'materials-overview', num: 'M',  label: '教學素材總覽',   group: '工具' },
+    { id: 'toolbox',            num: 'T',  label: '工具圖鑑',       group: '工具' },
+    { id: 'quiz',               num: 'Q',  label: '結訓測驗',       group: '工具' }
+  ];
+
+  function renderSidebar() {
+    const nav = $('#nav');
+    nav.innerHTML = '';
+    let lastGroup = '';
+    NAV_ITEMS.forEach(item => {
+      if (item.group !== lastGroup) {
+        const sec = el('div', { class: 'nav-section' });
+        sec.append(el('div', { class: 'nav-section-title' }, item.group));
+        nav.append(sec);
+        lastGroup = item.group;
+      }
+      const link = el('a', { class: 'nav-link', href: '#' + item.id, 'data-target': item.id });
+      link.append(el('span', { class: 'nav-num' }, item.num));
+      link.append(el('span', {}, item.label));
+      if (item.meta) link.append(el('span', { class: 'nav-meta' }, item.meta));
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(item.id);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', '#' + item.id);
+        }
+      });
+      nav.lastElementChild.append(link);
+    });
+  }
+
+  function setupScrollSpy() {
+    const observer = new IntersectionObserver((entries) => {
+      // 取最靠近頂部的 entry
+      const visible = entries.filter(e => e.isIntersecting)
+        .sort((a,b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+      if (visible.length === 0) return;
+      const id = visible[0].target.id;
+      $$('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.target === id));
+      const item = NAV_ITEMS.find(i => i.id === id);
+      if (item) {
+        $('#trail').innerHTML = `<b>${escapeHTML(item.label)}</b>${item.meta ? ' <span style="color:var(--muted-2)">／ ' + item.meta + '</span>' : ''}`;
+      }
+    }, { rootMargin: '-60px 0px -60% 0px', threshold: 0 });
+
+    $$('section.chapter').forEach(s => observer.observe(s));
+  }
+
+  // ============================================================
+  //  事件：清除進度
+  // ============================================================
+  function setupGlobalEvents() {
+    $('#reset-btn').addEventListener('click', () => {
+      if (!confirm('確定要清除所有任務勾選與測驗作答嗎？此動作無法還原。')) return;
+      store.reset();
+      state = { tasks: {}, quiz: {} };
+      $$('.task-item').forEach(t => t.classList.remove('done'));
+      $$('.q-option').forEach(o => o.classList.remove('checked','correct','wrong'));
+      $$('.q-feedback').forEach(f => f.remove());
+      updateProgressUI();
+      updateQuizScoreUI();
+      toast('已清除所有進度');
+    });
+    $('#jump-quiz').addEventListener('click', () => {
+      $('#quiz').scrollIntoView({ behavior: 'smooth' });
+    });
+    $('#theme-toggle').addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+  }
+
+  // ============================================================
+  //  主題（亮 / 暗）— 先讀 localStorage，否則跟系統偏好
+  // ============================================================
+  const THEME_KEY = 'mor3xppa-theme';
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.setAttribute('aria-label', theme === 'dark' ? '切換到亮主題' : '切換到暗主題');
+  }
+  function initTheme() {
+    let saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    if (saved === 'dark' || saved === 'light') {
+      applyTheme(saved);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+  }
+
+  // ============================================================
+  //  章節入場動畫 — IntersectionObserver 觀察首次進入視窗時觸發 fade-in
+  //  （加 .fade-in 後 CSS 動畫播一次就停，不會每次滾動都閃）
+  // ============================================================
+  function setupFadeIn() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('fade-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    $$('section.chapter').forEach(s => io.observe(s));
+  }
+
+  // ============================================================
+  //  init
+  // ============================================================
+  function init() {
+    initTheme();
+    const root = $('#main-content');
+    root.append(renderOverview());
+    root.append(renderSharedCase());
+    root.append(renderDay('day1'));
+    root.append(renderDay('day2'));
+    root.append(renderDay('day3'));
+    root.append(renderDay('day4'));
+    root.append(renderMaterials());
+    root.append(renderToolbox());
+    root.append(renderQuiz());
+
+    renderSidebar();
+    setupGlobalEvents();
+    updateProgressUI();
+    updateQuizScoreUI();
+    setupScrollSpy();
+    setupFadeIn();
+
+    // 若 URL 有 hash，跳到該章節
+    if (location.hash) {
+      const t = document.getElementById(location.hash.slice(1));
+      if (t) setTimeout(() => t.scrollIntoView({ behavior: 'auto' }), 50);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
