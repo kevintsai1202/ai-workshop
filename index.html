@@ -491,7 +491,7 @@
       linear-gradient(135deg, var(--surface), var(--surface-2));
     overflow: hidden;
     display: grid;
-    grid-template-columns: minmax(180px, 38%) 1fr;
+    grid-template-columns: minmax(160px, 28%) minmax(0, 1fr) minmax(220px, 28%);
     align-items: end;
     gap: 32px;
   }
@@ -564,6 +564,10 @@
     padding-top: 14px;
     border-top: 1px solid var(--border);
   }
+  .day-hero-visual {
+    align-self: stretch;
+    min-height: 220px;
+  }
   .day-hero-stat .stat-label {
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -602,6 +606,60 @@
       flex-wrap: wrap;
       gap: 16px;
     }
+    .day-hero-visual {
+      min-height: 190px;
+    }
+  }
+
+  /* 情境圖片：優先使用 IMAGE-2 生成圖，缺圖時退回 inline SVG */
+  .scenario-visual {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background:
+      radial-gradient(circle at 18% 18%, var(--accent-soft), transparent 34%),
+      linear-gradient(145deg, var(--surface), var(--surface-2));
+    box-shadow: inset 0 1px 0 color-mix(in oklab, white 24%, transparent);
+    aspect-ratio: 16 / 9;
+  }
+  .scenario-visual img,
+  .scenario-visual svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 190px;
+    object-fit: cover;
+  }
+  .scenario-visual figcaption {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--fg);
+    font-size: 12.5px;
+    line-height: 1.35;
+  }
+  .scenario-visual .visual-kicker {
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+  }
+  .unit-scenario {
+    margin: 14px 0 18px;
+    min-height: 250px;
   }
 
   /* ===================== reusable ===================== */
@@ -1075,6 +1133,23 @@
     background: var(--surface);
     transition: background 120ms, border-color 120ms;
   }
+  .task-thumb {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    margin-top: 1px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: linear-gradient(145deg, var(--accent-soft), var(--surface-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-deep);
+  }
+  .task-thumb svg {
+    width: 34px;
+    height: 34px;
+  }
   .task-checkbox svg { width: 12px; height: 12px; opacity: 0; transition: opacity 120ms; }
   .task-item.done .task-checkbox {
     background: var(--accent);
@@ -1239,6 +1314,23 @@
     border: 1px solid var(--border);
     border-radius: var(--r-md);
     background: var(--surface);
+    overflow: hidden;
+  }
+  .brand-visual {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-bottom: 1px solid var(--border);
+    background:
+      radial-gradient(circle at 18% 18%, var(--accent-soft), transparent 34%),
+      linear-gradient(145deg, var(--surface), var(--surface-2));
+  }
+  .brand-visual img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .brand-card-body {
     padding: 18px 20px;
   }
   .brand-card .brand-id {
@@ -1273,6 +1365,58 @@
   }
   .brand-card .brand-row:last-child { border-bottom: 0; }
   .brand-card .brand-row > div:first-child { color: var(--muted); font-size: 12px; }
+
+  .role-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .role-card {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .role-portrait {
+    height: 220px;
+    padding: 16px 18px 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 50% 26%, var(--accent-soft), transparent 42%),
+      linear-gradient(180deg, var(--surface-2), var(--surface));
+  }
+  .role-portrait img {
+    display: block;
+    max-width: 100%;
+    max-height: 215px;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 24px color-mix(in oklab, black 16%, transparent));
+  }
+  .role-card-body {
+    padding: 14px 16px 16px;
+    border-top: 1px solid var(--border);
+  }
+  .role-card-name {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .role-card-meta {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .role-card-job {
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 1.55;
+  }
 
   /* ===================== quiz ===================== */
   .quiz-intro {
@@ -1498,7 +1642,7 @@
     .app { flex-direction: column; }
     .sidebar { flex: none; position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--border); margin-left: 0 !important; width: 100%; }
     .nav { max-height: 200px; }
-    .brand-cards, .row-2, .day-header-grid { grid-template-columns: 1fr; }
+    .brand-cards, .role-cards, .row-2, .day-header-grid { grid-template-columns: 1fr; }
   }
 
   /* skip-link for accessibility */
@@ -1806,6 +1950,133 @@
     copy: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.2"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/></svg>'
   };
 
+  // 每個 Day / 單元的情境圖片文案與構圖設定，key 對應 renderDay / renderUnit 的 id。
+  const SCENARIO_VISUALS = {
+    day1: { type: 'tool-desk', kicker: 'Day 1 scene', caption: '從行政痛點出發，建立 AI 工具與提示詞的基本工作台。' },
+    day2: { type: 'media-studio', kicker: 'Day 2 scene', caption: '把海報、投影片與短影片串成同一條多媒體製作線。' },
+    day3: { type: 'document-flow', kicker: 'Day 3 scene', caption: '讓規章、逐字稿、發票與表單進入可查核的整理流程。' },
+    day4: { type: 'agent-workshop', kicker: 'Day 4 scene', caption: '把前 3 天累積的提示詞封裝成可展示、可重用的 Agent Skill。' },
+    'day1-u1': { type: 'tool-map', src: 'assets/scenarios/day1-u1.png', kicker: 'tool setup', caption: '帳號登入與工具定位：先分清模型、工具與行政場景。' },
+    'day1-u2': { type: 'prompt-lab', src: 'assets/scenarios/day1-u2.png', kicker: 'prompt lab', caption: 'RTFC 提示詞實驗室：把口語稿、長文與爛提示詞逐步修成可用輸出。' },
+    'day1-u3': { type: 'gem-builder', src: 'assets/scenarios/day1-u3.png', kicker: 'gem builder', caption: '把今天常用的提示詞封裝成一個可以重複呼叫的 Gem。' },
+    'day2-u1': { type: 'poster-canvas', src: 'assets/scenarios/day2-u1.png', kicker: 'creative sprint', caption: '先文案、再主視覺、最後輸出海報與投影片。' },
+    'day2-u2': { type: 'video-flow', src: 'assets/scenarios/day2-u2.png', kicker: 'video flow', caption: '以關鍵幀為核心，將圖片轉成 8-16 秒短片成品。' },
+    'day3-u1': { type: 'source-citation', src: 'assets/scenarios/day3-u1.png', kicker: 'grounded work', caption: '讓 NotebookLM 只依據上傳來源產生公告、回覆與會議紀錄。' },
+    'day3-u2': { type: 'finance-grid', src: 'assets/scenarios/day3-u2.png', kicker: 'ops cleanup', caption: '把亂格式請購單、FAQ、發票與合規規則整理成表格。' },
+    'day4-u1': { type: 'skill-yaml', src: 'assets/scenarios/day4-u1.png', kicker: 'skill design', caption: '拆解輸入、輸出與觸發條件，完成第一版 Skill 範本。' },
+    'day4-u2': { type: 'showcase-stage', src: 'assets/scenarios/day4-u2.png', kicker: 'showcase', caption: '測試 Skill、準備 3 分鐘展示，完成後測與結訓。' }
+  };
+
+  // 共用案例品牌視覺，key 對應 course-data.js 的 sharedCase.brands[].id。
+  const CASE_VISUALS = {
+    A: {
+      src: 'assets/cases/warm-light-coffee.png',
+      alt: '暖光咖啡的 3D 立體店家微縮模型'
+    },
+    B: {
+      src: 'assets/cases/greenfield-select.png',
+      alt: '綠野選物的 3D 立體店家微縮模型'
+    }
+  };
+
+  /**
+   * 依情境類型產生可縮放的課程 SVG 插圖。
+   * @param {string} type 情境類型，決定卡片、人物、流程節點與裝置的組合
+   * @param {string} label SVG title 使用的無障礙標籤
+   * @returns {string} inline SVG 字串
+   */
+  function scenarioSvg(type, label) {
+    const motifs = {
+      'tool-desk': ['#2563eb', '#14b8a6', '#f59e0b'],
+      'media-studio': ['#db2777', '#f97316', '#22c55e'],
+      'document-flow': ['#0f766e', '#2563eb', '#64748b'],
+      'agent-workshop': ['#7c3aed', '#0891b2', '#f59e0b'],
+      'tool-map': ['#2563eb', '#0ea5e9', '#14b8a6'],
+      'prompt-lab': ['#f59e0b', '#2563eb', '#0f766e'],
+      'gem-builder': ['#14b8a6', '#7c3aed', '#2563eb'],
+      'poster-canvas': ['#db2777', '#f59e0b', '#2563eb'],
+      'video-flow': ['#f97316', '#7c3aed', '#0891b2'],
+      'source-citation': ['#0f766e', '#2563eb', '#f59e0b'],
+      'finance-grid': ['#16a34a', '#0ea5e9', '#f59e0b'],
+      'skill-yaml': ['#7c3aed', '#2563eb', '#14b8a6'],
+      'showcase-stage': ['#f59e0b', '#7c3aed', '#0ea5e9']
+    };
+    const [a, b, c] = motifs[type] || motifs['tool-desk'];
+    const escapedLabel = escapeHTML(label || '課程情境圖片');
+    const nodes = {
+      'media-studio': '<rect x="276" y="76" width="122" height="92" rx="16" fill="white" opacity=".9"/><circle cx="314" cy="112" r="20" fill="' + a + '" opacity=".8"/><path d="M286 151h96l-30-33-20 20-15-13z" fill="' + b + '" opacity=".78"/><rect x="62" y="86" width="150" height="100" rx="18" fill="white" opacity=".86"/><rect x="82" y="105" width="96" height="8" rx="4" fill="' + a + '" opacity=".7"/><rect x="82" y="124" width="112" height="7" rx="3.5" fill="' + c + '" opacity=".45"/><rect x="82" y="141" width="78" height="7" rx="3.5" fill="' + b + '" opacity=".45"/>',
+      'document-flow': '<rect x="72" y="72" width="96" height="124" rx="14" fill="white" opacity=".9"/><path d="M94 102h52M94 124h42M94 146h54" stroke="' + a + '" stroke-width="8" stroke-linecap="round" opacity=".55"/><rect x="216" y="98" width="118" height="80" rx="16" fill="white" opacity=".86"/><path d="M236 124h76M236 148h46" stroke="' + b + '" stroke-width="8" stroke-linecap="round" opacity=".55"/><path d="M178 134h28M334 138h34" stroke="' + c + '" stroke-width="7" stroke-linecap="round"/><path d="M360 126l16 12-16 12" fill="none" stroke="' + c + '" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>',
+      'agent-workshop': '<rect x="72" y="82" width="146" height="96" rx="16" fill="white" opacity=".88"/><path d="M92 112h80M92 135h56M92 158h96" stroke="' + a + '" stroke-width="8" stroke-linecap="round" opacity=".6"/><rect x="264" y="74" width="132" height="116" rx="20" fill="' + b + '" opacity=".16" stroke="' + b + '" stroke-width="3"/><circle cx="330" cy="120" r="30" fill="white" opacity=".88"/><path d="M315 120h30M330 105v30" stroke="' + a + '" stroke-width="8" stroke-linecap="round"/><path d="M218 130h38" stroke="' + c + '" stroke-width="7" stroke-linecap="round"/>',
+      'tool-map': '<circle cx="128" cy="122" r="44" fill="' + a + '" opacity=".18"/><circle cx="128" cy="122" r="24" fill="white" opacity=".9"/><circle cx="254" cy="82" r="28" fill="white" opacity=".86"/><circle cx="318" cy="160" r="34" fill="white" opacity=".86"/><circle cx="228" cy="174" r="24" fill="white" opacity=".86"/><path d="M152 113l78-24M153 134l52 30M253 104l46 40" stroke="' + b + '" stroke-width="6" stroke-linecap="round" opacity=".75"/>',
+      'prompt-lab': '<rect x="64" y="82" width="150" height="112" rx="18" fill="white" opacity=".9"/><path d="M88 112h84M88 136h54M88 160h96" stroke="' + a + '" stroke-width="8" stroke-linecap="round" opacity=".55"/><rect x="252" y="74" width="130" height="118" rx="18" fill="' + b + '" opacity=".16" stroke="' + b + '" stroke-width="3"/><path d="M282 112h70M282 139h46M282 166h58" stroke="white" stroke-width="8" stroke-linecap="round" opacity=".95"/>',
+      'gem-builder': '<path d="M316 60l28 50 56 10-39 40 8 56-53-25-52 25 8-56-40-40 56-10z" fill="' + a + '" opacity=".3" stroke="' + a + '" stroke-width="4"/><rect x="78" y="92" width="158" height="104" rx="20" fill="white" opacity=".9"/><path d="M104 124h82M104 150h106M104 176h58" stroke="' + b + '" stroke-width="8" stroke-linecap="round" opacity=".55"/>',
+      'poster-canvas': '<rect x="76" y="66" width="104" height="138" rx="18" fill="white" opacity=".9"/><circle cx="128" cy="114" r="26" fill="' + a + '" opacity=".7"/><path d="M92 178h72" stroke="' + c + '" stroke-width="10" stroke-linecap="round" opacity=".6"/><rect x="238" y="80" width="154" height="104" rx="18" fill="white" opacity=".86"/><path d="M260 110h92M260 134h74M260 158h104" stroke="' + b + '" stroke-width="8" stroke-linecap="round" opacity=".5"/>',
+      'video-flow': '<rect x="60" y="82" width="100" height="74" rx="14" fill="white" opacity=".9"/><rect x="192" y="70" width="100" height="74" rx="14" fill="white" opacity=".86"/><rect x="324" y="96" width="100" height="74" rx="14" fill="white" opacity=".86"/><path d="M102 108l24 14-24 14zM234 96l24 14-24 14zM366 122l24 14-24 14z" fill="' + a + '" opacity=".72"/><path d="M164 118h24M294 118h24" stroke="' + b + '" stroke-width="7" stroke-linecap="round"/>',
+      'source-citation': '<rect x="74" y="74" width="120" height="130" rx="16" fill="white" opacity=".9"/><path d="M98 108h72M98 132h52M98 156h72" stroke="' + a + '" stroke-width="8" stroke-linecap="round" opacity=".5"/><rect x="252" y="92" width="132" height="92" rx="18" fill="' + b + '" opacity=".18" stroke="' + b + '" stroke-width="3"/><circle cx="286" cy="126" r="12" fill="' + c + '"/><path d="M310 126h46M284 154h72" stroke="white" stroke-width="8" stroke-linecap="round" opacity=".95"/>',
+      'finance-grid': '<rect x="68" y="82" width="156" height="116" rx="16" fill="white" opacity=".9"/><path d="M68 118h156M68 154h156M120 82v116M172 82v116" stroke="' + a + '" stroke-width="4" opacity=".45"/><rect x="270" y="92" width="100" height="92" rx="16" fill="' + b + '" opacity=".18" stroke="' + b + '" stroke-width="3"/><path d="M294 132l18 18 36-44" fill="none" stroke="' + c + '" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>',
+      'skill-yaml': '<rect x="74" y="70" width="162" height="132" rx="18" fill="white" opacity=".9"/><path d="M100 104h92M100 130h58M100 156h104M100 182h70" stroke="' + a + '" stroke-width="8" stroke-linecap="round" opacity=".55"/><circle cx="326" cy="136" r="52" fill="' + b + '" opacity=".18" stroke="' + b + '" stroke-width="3"/><path d="M304 136h44M326 114v44" stroke="' + c + '" stroke-width="9" stroke-linecap="round"/>',
+      'showcase-stage': '<path d="M80 188h320" stroke="' + a + '" stroke-width="10" stroke-linecap="round"/><rect x="126" y="80" width="112" height="78" rx="16" fill="white" opacity=".9"/><path d="M148 110h66M148 134h42" stroke="' + b + '" stroke-width="8" stroke-linecap="round" opacity=".55"/><circle cx="318" cy="126" r="36" fill="' + c + '" opacity=".28"/><path d="M298 126h40M318 106v40" stroke="white" stroke-width="8" stroke-linecap="round"/>'
+    };
+    const fallback = '<rect x="72" y="82" width="148" height="110" rx="18" fill="white" opacity=".9"/><path d="M98 116h86M98 144h58M98 170h96" stroke="' + a + '" stroke-width="8" stroke-linecap="round" opacity=".55"/><circle cx="326" cy="132" r="56" fill="' + b + '" opacity=".18"/><path d="M284 132h84" stroke="' + c + '" stroke-width="8" stroke-linecap="round"/>';
+    return `
+      <svg viewBox="0 0 480 260" role="img" aria-label="${escapedLabel}" preserveAspectRatio="xMidYMid slice">
+        <title>${escapedLabel}</title>
+        <defs>
+          <pattern id="grid-${type}" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M24 0H0v24" fill="none" stroke="currentColor" stroke-opacity=".08" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="480" height="260" fill="url(#grid-${type})"/>
+        <circle cx="74" cy="58" r="76" fill="${a}" opacity=".12"/>
+        <circle cx="414" cy="224" r="118" fill="${b}" opacity=".12"/>
+        <path d="M44 216c88-36 154-40 228-10 52 21 94 20 164-20" fill="none" stroke="${c}" stroke-width="10" stroke-linecap="round" opacity=".16"/>
+        ${nodes[type] || fallback}
+      </svg>`;
+  }
+
+  /**
+   * 建立情境圖片 figure，供 Day hero、單元與實戰任務區共用。
+   * @param {string} key 情境圖片 key，例如 day1、day2-u1
+   * @param {string} extraClass 額外樣式 class
+   * @returns {HTMLElement|null} 圖片節點；找不到設定時回傳 null
+   */
+  function renderScenarioVisual(key, extraClass = '') {
+    const visual = SCENARIO_VISUALS[key];
+    if (!visual) return null;
+    const figure = el('figure', { class: ['scenario-visual', extraClass].filter(Boolean).join(' ') });
+    if (visual.src) {
+      figure.append(el('img', {
+        src: visual.src,
+        alt: visual.caption,
+        loading: extraClass.includes('day-hero-visual') ? 'eager' : 'lazy',
+        decoding: 'async'
+      }));
+    } else {
+      figure.innerHTML = scenarioSvg(visual.type, visual.caption);
+    }
+    figure.append(el('figcaption', {},
+      el('span', { class: 'visual-kicker' }, visual.kicker),
+      el('span', {}, visual.caption)
+    ));
+    return figure;
+  }
+
+  /**
+   * 產生任務列使用的小型圖像，讓每個實作步驟更容易被掃描。
+   * @param {number} index 任務在清單中的順序
+   * @returns {string} inline SVG 字串
+   */
+  function taskThumbSvg(index) {
+    const icons = [
+      '<path d="M8 26h24M8 18h16M8 10h24" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+      '<rect x="8" y="8" width="24" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M14 24l5-6 5 5 4-4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+      '<path d="M10 28l10-18 10 18M15 21h10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+      '<path d="M9 20h22M20 9v22" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="20" r="12" fill="none" stroke="currentColor" stroke-width="3"/>',
+      '<path d="M10 12h20v18H10zM14 8h12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
+    ];
+    return `<svg viewBox="0 0 40 40" aria-hidden="true">${icons[index % icons.length]}</svg>`;
+  }
+
   // ============================================================
   //  區塊渲染：總覽
   // ============================================================
@@ -1973,15 +2244,29 @@
     const cards = el('div', { class: 'brand-cards' });
     sc.brands.forEach(b => {
       const card = el('div', { class: 'brand-card' });
-      card.append(el('div', { class: 'brand-id' }, '案例 ' + b.id));
-      card.append(el('div', { class: 'brand-name' }, b.name));
-      card.append(el('div', { class: 'brand-type' }, b.type));
+      const visual = CASE_VISUALS[b.id];
+      if (visual) {
+        card.append(el('div', { class: 'brand-visual' },
+          el('img', {
+            src: visual.src,
+            alt: visual.alt,
+            loading: 'lazy',
+            decoding: 'async'
+          })
+        ));
+      }
+
+      const body = el('div', { class: 'brand-card-body' });
+      body.append(el('div', { class: 'brand-id' }, '案例 ' + b.id));
+      body.append(el('div', { class: 'brand-name' }, b.name));
+      body.append(el('div', { class: 'brand-type' }, b.type));
       const rows = el('div', { class: 'brand-rows' });
       b.rows.forEach(([k,v]) => {
         rows.append(el('div', { class: 'brand-row' },
           el('div',{},k), el('div',{},v)));
       });
-      card.append(rows);
+      body.append(rows);
+      card.append(body);
       cards.append(card);
     });
     root.append(cards);
@@ -2061,6 +2346,8 @@
     });
     meta.append(stats);
     hero.append(meta);
+    const dayVisual = renderScenarioVisual(dayId, 'day-hero-visual');
+    if (dayVisual) hero.append(dayVisual);
 
     root.append(hero);
 
@@ -2140,6 +2427,10 @@
       u.goals.forEach(g => ul.append(el('li',{},g)));
       body.append(ul);
     }
+
+    const unitVisualKey = `${day.id}-${u.id}`;
+    const unitVisual = renderScenarioVisual(unitVisualKey, 'unit-scenario');
+    if (unitVisual) body.append(unitVisual);
 
     // 核心觀念
     if (u.concepts && u.concepts.length) {
@@ -2251,11 +2542,12 @@
   // ---------- task list ----------
   function renderTaskList(tasks) {
     const list = el('ul', { class: 'task-list' });
-    tasks.forEach(t => {
+    tasks.forEach((t, index) => {
       const li = el('li', { class: 'task-item' + (state.tasks[t.id] ? ' done' : ''), 'data-task-id': t.id });
       const cb = el('div', { class: 'task-checkbox', html: ICON.check });
+      const thumb = el('div', { class: 'task-thumb', html: taskThumbSvg(index) });
       const lbl = el('div', { class: 'task-label' }, t.label);
-      li.append(cb, lbl);
+      li.append(cb, thumb, lbl);
       li.addEventListener('click', () => toggleTask(t.id, li));
       list.append(li);
     });
