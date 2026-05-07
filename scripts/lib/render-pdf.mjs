@@ -18,7 +18,9 @@ export async function renderPdf({ mdPath, cssPath, outPath, keepHtml = false }) 
   const htmlPath = outPath.replace(/\.pdf$/i, '.html');
   const cssContent = await fs.readFile(cssPath, 'utf8');
 
-  // 產生 HTML 模板（pandoc 會把 markdown 主體填入 $body$、TOC 填入 $body$ 之前）
+  // HTML 模板：包含精簡 inline TOC（只列 h1）；
+  // 同時 Edge headless 加 --export-tagged-pdf 會產生 tagged PDF，
+  // 多數 PDF 閱讀器（Adobe Reader / Edge / Chrome PDF viewer）會從結構樹推導出側邊書籤
   const tpl = `<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
@@ -30,7 +32,10 @@ $styles$
 </head>
 <body>
 $if(toc)$
+<nav id="TOC" role="doc-toc">
+<h2>目錄</h2>
 $table-of-contents$
+</nav>
 $endif$
 $body$
 </body>
@@ -47,7 +52,10 @@ $body$
       '-f', 'gfm+attributes',          // GFM + 支援 {.cover} 這類 attribute
       '-t', 'html5',
       '-s',
-      '--toc', '--toc-depth=3',
+      // 精簡 TOC：只列 h1 章節（11 條 entries 約佔 1 頁），
+      // 比原 toc-depth=3 的數百條短得多。對多數 PDF 閱讀器，
+      // 加上 --export-tagged-pdf 後側邊書籤面板還會自動展開。
+      '--toc', '--toc-depth=1',
       '--metadata', 'title=工作坊電子書',
       '--variable', `styles:${cssContent}`,
       '--template', tplPath,
@@ -68,6 +76,12 @@ $body$
       '--headless=new',
       '--disable-gpu',
       '--no-pdf-header-footer',
+      // 等所有 compositor stages 完成（base64 圖片需要這個才會被印進 PDF）
+      '--run-all-compositor-stages-before-draw',
+      // 給 base64 解碼足夠時間（單位 ms），對含 26+ 個 base64 PNG 的長文有用
+      '--virtual-time-budget=10000',
+      // 產 tagged PDF：讓 PDF 閱讀器側邊欄能從 h1/h2/h3 自動建立目錄樹（PDF outline / bookmarks）
+      '--export-tagged-pdf',
       `--print-to-pdf=${path.resolve(outPath)}`,
       '--print-to-pdf-no-header',
       fileUrl,

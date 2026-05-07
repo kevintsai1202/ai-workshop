@@ -10,9 +10,9 @@ import path from 'node:path';
 import url from 'node:url';
 import {
   loadSources,
-  composeCover, composeOverview, composeDay, composeQuiz,
+  composeCover, composeOverview, composeDay,
   composeAppendixA, composeAppendixB, composeAppendixC,
-  composeAppendixD, composeAppendixE, composeAppendixF,
+  composeAppendixE, composeAppendixF,
 } from './lib/compose-ebook.mjs';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -55,11 +55,10 @@ async function main() {
   sections.push(composeDay(s.COURSE.day2, s.dayContents.day2, 2));
   sections.push(composeDay(s.COURSE.day3, s.dayContents.day3, 3));
   sections.push(composeDay(s.COURSE.day4, s.dayContents.day4, 4));
-  sections.push(composeQuiz(s.COURSE.quiz));
+  // 測驗章節（第 5 章與附錄 D）已從電子書移除，依照需求改由網頁端進行
   sections.push(composeAppendixA(s.COURSE.materials));
   sections.push(composeAppendixB(s.auxMaterials));
   sections.push(await composeAppendixC(s.COURSE.materials));
-  sections.push(composeAppendixD(s.COURSE.quiz));
   sections.push(await composeAppendixE(s.TOOLS));
   sections.push(await composeAppendixF(s.INSTRUCTOR));
 

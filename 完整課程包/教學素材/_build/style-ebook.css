@@ -152,21 +152,36 @@ hr {
   margin: 18px 0;
 }
 
-/* ===== TOC（pandoc 產出 nav#TOC） ===== */
+/* ===== TOC（pandoc 產出 nav#TOC，只列 h1 章節） ===== */
 nav#TOC {
   page-break-after: always;
-  font-size: 10.5pt;
+  page-break-before: always;
+  font-size: 12pt;
+  padding: 16px 0;
 }
-nav#TOC ul { list-style: none; padding-left: 1em; }
-nav#TOC > ul { padding-left: 0; }
+nav#TOC ul {
+  list-style: none;
+  padding-left: 0;
+  line-height: 2.2;
+}
+nav#TOC li {
+  margin: 4px 0;
+  padding: 4px 0;
+  border-bottom: 1px dashed #e2e5ec;
+}
 nav#TOC a {
   color: #2c4fa5;
   text-decoration: none;
+  font-weight: 600;
 }
 nav#TOC h2 {
-  font-size: 18pt;
+  font-size: 22pt;
+  color: #1a1d22;
   border-bottom: 2px solid #4f7cdb;
   padding-bottom: 6px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
 /* ===== 連結 ===== */
