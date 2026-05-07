@@ -8,6 +8,7 @@
     "scrape:instructor": "node scripts/scrape-youtube-channel.mjs",
     "scrape:tools": "node scripts/scrape-tools.mjs",
     "verify:toolbox": "node scripts/verify-toolbox.mjs",
+    "build:ebook": "node scripts/build-ebook.mjs",
     "serve": "npx serve ."
   },
   "devDependencies": {
