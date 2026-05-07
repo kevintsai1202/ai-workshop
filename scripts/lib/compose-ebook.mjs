@@ -6,6 +6,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import url from 'node:url';
 import QRCode from 'qrcode';
+import sharp from 'sharp';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 // 從 scripts/lib/ → 專案根目錄需跳兩層
@@ -208,24 +209,39 @@ export function composeOverview(s) {
 
 /**
  * 把 assets/illustrations/<name> 讀成 base64 markdown 圖片標籤
- * 優先 SVG（檔案 6-9 KB，向量、可放大）；fallback PNG（含 AI 生圖細節，但 2-3 MB）
- * file:// 直接引用會被 Edge headless 的安全策略擋掉，所以改用 base64 內嵌
- * 找不到檔案時回傳空字串（不擋 build）
+ * 策略：
+ *  - SVG 優先：6-9 KB、向量、可放大；對 base64 內嵌最友善
+ *  - PNG fallback：原檔通常 2-3 MB（AI 生圖），會讓 Edge headless 解碼超時
+ *    → 用 sharp 動態縮到 max 800px wide，base64 後約 100-300 KB
+ *  - 找不到檔案時回傳空字串（不擋 build）
  */
 async function embedIllustration(name, alt = '') {
   if (!name) return '';
-  // SVG 優先：小檔（~7 KB vs PNG 2-3 MB）對 base64 內嵌與 Edge 解碼都更友善
-  const exts = ['.svg', '.png'];
-  for (const ext of exts) {
-    const p = path.join(ROOT, 'assets', 'illustrations', name + ext);
-    try {
-      const buf = await fs.readFile(p);
-      const mime = ext === '.svg' ? 'image/svg+xml' : 'image/png';
-      const b64 = buf.toString('base64');
-      return `![${alt || name}](data:${mime};base64,${b64}){.illustration}`;
-    } catch { /* try next ext */ }
+
+  // 1. SVG 優先
+  const svgPath = path.join(ROOT, 'assets', 'illustrations', name + '.svg');
+  try {
+    const buf = await fs.readFile(svgPath);
+    return `![${alt || name}](data:image/svg+xml;base64,${buf.toString('base64')}){.illustration}`;
+  } catch { /* try PNG */ }
+
+  // 2. PNG fallback：sharp 縮小寫到 dist/illustrations-tn/，markdown 用相對路徑引用
+  // （base64 PNG 在 Edge headless 印 PDF 時若處於某些位置會 silent drop；
+  //  寫成檔案讓 Edge 直接從硬碟載入較可靠）
+  const pngPath = path.join(ROOT, 'assets', 'illustrations', name + '.png');
+  try {
+    const tnDir = path.join(ROOT, 'dist', 'illustrations-tn');
+    await fs.mkdir(tnDir, { recursive: true });
+    const tnPath = path.join(tnDir, name + '.png');
+    await sharp(pngPath)
+      .resize({ width: 800, withoutEnlargement: true })
+      .png({ compressionLevel: 9 })
+      .toFile(tnPath);
+    // markdown 用相對於 dist/工作坊電子書.html 的相對路徑（HTML 在 dist/，圖在 dist/illustrations-tn/）
+    return `![${alt || name}](illustrations-tn/${name}.png){.illustration}`;
+  } catch {
+    return '';
   }
-  return '';
 }
 
 /**
