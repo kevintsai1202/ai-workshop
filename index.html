@@ -2272,12 +2272,36 @@
     root.append(cards);
 
     root.append(el('h3', {}, '角色設定'));
-    const tr = el('table', { class: 't' });
-    tr.innerHTML = '<thead><tr><th>角色</th><th>所屬</th><th>職稱</th><th>在課程中的功能</th></tr></thead>';
-    const trb = el('tbody');
-    sc.roles.forEach(r => trb.innerHTML += `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`);
-    tr.append(trb);
-    root.append(tr);
+
+    // 角色名稱對應到 assets/characters/ 下的去背 PNG 檔名（id 不含副檔名）
+    const ROLE_PORTRAITS = {
+      '阿凱': { src: 'assets/characters/akai.png', alt: '阿凱：暖光咖啡店長' },
+      '小美': { src: 'assets/characters/xiaomei.png', alt: '小美：綠野選物行政主管' },
+      '老闆': { src: 'assets/characters/boss.png', alt: '老闆／主管' }
+    };
+
+    // 上方：三張角色卡（去背圖 + 姓名/所屬/職稱），下方保留表格作完整欄位說明
+    const roleGrid = el('div', { class: 'role-cards' });
+    sc.roles.forEach(r => {
+      const [name, brand, job, fn] = r;
+      // 名字含「老闆 / 主管」這類複合字串，用 startsWith / 第一個關鍵字判斷
+      const portraitKey = Object.keys(ROLE_PORTRAITS).find(k => name.includes(k));
+      const portrait = portraitKey ? ROLE_PORTRAITS[portraitKey] : null;
+
+      const card = el('div', { class: 'role-card' });
+      if (portrait) {
+        card.append(el('div', { class: 'role-portrait' },
+          el('img', { src: portrait.src, alt: portrait.alt, loading: 'lazy', decoding: 'async' })
+        ));
+      }
+      const body = el('div', { class: 'role-card-body' });
+      body.append(el('div', { class: 'role-card-name' }, name));
+      body.append(el('div', { class: 'role-card-meta' }, `${brand} ／ ${job}`));
+      body.append(el('div', { class: 'role-card-job' }, fn));
+      card.append(body);
+      roleGrid.append(card);
+    });
+    root.append(roleGrid);
 
     root.append(el('h3', {}, '提示詞模板共用變數'));
     const tv = el('table', { class: 't' });

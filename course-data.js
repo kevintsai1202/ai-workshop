@@ -72,7 +72,7 @@ window.COURSE = {
     ],
     tools: [
       ['Gemini', '文案撰寫、改寫、長文摘要', 'Day 1、2、3'],
-      ['NotebookLM', '來源資料整理、會議錄音摘要、發票辨識', 'Day 1、3'],
+      ['NotebookLM', '來源資料整理、會議錄音摘要、發票辨識', 'Day 3'],
       ['Antigravity', 'Agent 協作、Skill 執行環境', 'Day 4'],
       ['Codex', '程式碼/腳本生成、Skill 開發輔助', 'Day 4']
     ],
