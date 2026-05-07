@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="發票轉 Excel：拍照辨識、會計分類、合規檢查">
+  <title>發票照片 → Excel 流程</title>
+  <desc>左：3 張不同類型的發票照片；中：AI 處理（OCR + 會計科目分類 + 合規檢查）；右：整理好的 Excel 表格輸出。</desc>
+
+  <!-- 階段標籤 -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1" fill="currentColor" opacity="0.65">
+    <text x="42" y="40">INPUT · 發票照片</text>
+    <text x="240" y="40">AI · 辨識 + 分類</text>
+    <text x="448" y="40">OUTPUT · Excel</text>
+  </g>
+
+  <!-- ====== Input：3 張發票 ====== -->
+  <g transform="translate(40 60)">
+    <!-- 發票 1：高鐵票 -->
+    <g transform="translate(0 0) rotate(-3)">
+      <rect x="0" y="0" width="100" height="140" rx="6" fill="rgba(255,255,255,0.65)" stroke="currentColor" stroke-width="2"/>
+      <!-- 票根頂部圖示 -->
+      <rect x="14" y="14" width="72" height="20" rx="3" fill="currentColor" opacity="0.18"/>
+      <text x="50" y="28" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">高鐵票</text>
+      <line x1="14" y1="48" x2="86" y2="48" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="62" x2="74" y2="62" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="76" x2="80" y2="76" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <text x="14" y="100" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">$1,490</text>
+      <!-- 票根剪裁線 -->
+      <line x1="0" y1="115" x2="100" y2="115" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+      <text x="50" y="132" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.6">2025-06-03</text>
+    </g>
+
+    <!-- 發票 2：便當收據 -->
+    <g transform="translate(20 60) rotate(2)">
+      <rect x="0" y="0" width="100" height="140" rx="6" fill="rgba(255,255,255,0.65)" stroke="currentColor" stroke-width="2"/>
+      <rect x="14" y="14" width="72" height="20" rx="3" fill="currentColor" opacity="0.18"/>
+      <text x="50" y="28" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">便當</text>
+      <line x1="14" y1="48" x2="86" y2="48" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="62" x2="78" y2="62" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="76" x2="68" y2="76" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <text x="14" y="100" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">$120</text>
+      <line x1="0" y1="115" x2="100" y2="115" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+      <text x="50" y="132" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.6">2025-06-05</text>
+    </g>
+
+    <!-- 發票 3：辦公用品 -->
+    <g transform="translate(0 130) rotate(-2)">
+      <rect x="0" y="0" width="100" height="140" rx="6" fill="rgba(255,255,255,0.65)" stroke="currentColor" stroke-width="2"/>
+      <rect x="14" y="14" width="72" height="20" rx="3" fill="currentColor" opacity="0.18"/>
+      <text x="50" y="28" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">A4 紙</text>
+      <line x1="14" y1="48" x2="86" y2="48" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="62" x2="80" y2="62" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <line x1="14" y1="76" x2="72" y2="76" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+      <text x="14" y="100" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">$280</text>
+      <line x1="0" y1="115" x2="100" y2="115" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+      <text x="50" y="132" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.6">2025-06-07</text>
+    </g>
+  </g>
+
+  <!-- ====== 中央 AI 處理區 ====== -->
+  <g transform="translate(220 130)">
+    <!-- AI 大圓 -->
+    <circle cx="80" cy="60" r="58" fill="rgba(255,255,255,0.7)" stroke="currentColor" stroke-width="2"/>
+    <!-- 內部「眼睛 / 透視」icon 暗示 OCR -->
+    <g transform="translate(80 50)" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-22 0 Q 0 -16 22 0 Q 0 16 -22 0 Z"/>
+      <circle cx="0" cy="0" r="6" fill="currentColor" opacity="0.5"/>
+    </g>
+    <text x="80" y="86" text-anchor="middle" font-family="inherit" font-size="13" font-weight="700" fill="currentColor">NotebookLM</text>
+    <text x="80" y="102" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="currentColor" opacity="0.7">OCR + 分類 + 合規</text>
+
+    <!-- 三個處理 chip 浮動 -->
+    <g font-family="inherit" font-size="9" fill="currentColor">
+      <rect x="-6" y="-8" width="56" height="18" rx="9" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <text x="22" y="4" text-anchor="middle">OCR 文字</text>
+      <rect x="118" y="0" width="60" height="18" rx="9" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <text x="148" y="12" text-anchor="middle">會計科目</text>
+      <rect x="116" y="92" width="60" height="18" rx="9" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <text x="146" y="104" text-anchor="middle">合規檢查</text>
+    </g>
+  </g>
+
+  <!-- 連線：input → AI -->
+  <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="4 4" opacity="0.5">
+    <path d="M150 130 L 220 165"/>
+    <path d="M150 200 L 220 195"/>
+    <path d="M150 260 L 220 220"/>
+  </g>
+
+  <!-- 連線：AI → Excel -->
+  <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M380 200 L 440 200" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M432 194 L 442 200 L 432 206"/>
+  </g>
+
+  <!-- ====== Output：Excel 表 ====== -->
+  <g transform="translate(440 110)">
+    <rect x="0" y="0" width="130" height="180" rx="6" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="2"/>
+    <!-- Header -->
+    <rect x="0" y="0" width="130" height="22" fill="currentColor" opacity="0.16"/>
+    <g font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor">
+      <text x="6" y="14" font-weight="700">日期</text>
+      <text x="46" y="14" font-weight="700">項目</text>
+      <text x="76" y="14" font-weight="700">$</text>
+      <text x="98" y="14" font-weight="700">科目</text>
+    </g>
+    <!-- Row dividers -->
+    <g stroke="currentColor" stroke-width="0.8" opacity="0.3">
+      <line x1="0" y1="22" x2="130" y2="22"/>
+      <line x1="0" y1="44" x2="130" y2="44"/>
+      <line x1="0" y1="66" x2="130" y2="66"/>
+      <line x1="0" y1="88" x2="130" y2="88"/>
+      <line x1="40" y1="0" x2="40" y2="180"/>
+      <line x1="72" y1="0" x2="72" y2="180"/>
+      <line x1="92" y1="0" x2="92" y2="180"/>
+    </g>
+    <!-- Rows -->
+    <g font-family="ui-monospace, Menlo, monospace" font-size="7.5" fill="currentColor">
+      <text x="4" y="36">06-03</text>
+      <text x="44" y="36">高鐵</text>
+      <text x="74" y="36">1490</text>
+      <text x="96" y="36">差旅</text>
+
+      <text x="4" y="58">06-05</text>
+      <text x="44" y="58">便當</text>
+      <text x="74" y="58">120</text>
+      <text x="96" y="58">誤餐</text>
+
+      <text x="4" y="80">06-07</text>
+      <text x="44" y="80">A4紙</text>
+      <text x="74" y="80">280</text>
+      <text x="96" y="80">辦公</text>
+    </g>
+    <!-- 合規檢查標記 -->
+    <g transform="translate(116 74)">
+      <circle cx="0" cy="0" r="6" fill="currentColor" opacity="0.85"/>
+      <path d="M-2.5 0 L 0 2 L 3 -2.5" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- 工作表標籤 -->
+    <rect x="0" y="166" width="40" height="14" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+    <text x="6" y="176" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor">expenses</text>
+  </g>
+
+  <!-- 底部註記 -->
+  <text x="300" y="380" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.55">拍照 → AI 整理 → 直接報帳</text>
+</svg>

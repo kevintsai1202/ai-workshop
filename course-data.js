@@ -9,10 +9,10 @@ window.COURSE = {
     subtitle: '打造高效能行政財務 AI 部隊（臺北班）',
     program: '115-116 年度強化服務業人才韌性計畫',
     organizer: '經濟部商業發展署 ｜ 商業服務業 AI 人才辦公室',
-    dates: '115/5/13、5/20、5/27、6/3（09:00 ~ 16:30）',
-    location: '台北市電腦商業同業公會（松山區八德路三段 2 號 5 樓）+ Cisco Webex 線上直播',
-    format: '混成課程，共 30 小時（含線上自學 4 小時）',
-    capacity: '100 人（實體優先錄取）',
+    dates: '115/5/13、5/20、5/27、6/3（每週三 09:00 ~ 16:30）',
+    location: '台北市電腦商業同業公會（松山區八德路三段 2 號 B103 教室／5/13 報到教室）+ Cisco Webex 線上直播',
+    mapUrl: 'https://maps.app.goo.gl/DYzX49jooACr4ahm7',
+    format: '混成課程，共 30 小時（含數位自學 4 小時）',
     instructor: '蔡承凱（凱文大叔）｜泰博科技 PLM 技術主任',
     completion: ['出席時數達 80% 以上', '完成前後測考試'],
     objectives: [
@@ -71,14 +71,15 @@ window.COURSE = {
       ['{語氣}', '溫暖、親切', '文青、療癒']
     ],
     tools: [
-      ['Gemini', '文案撰寫、改寫、長文摘要', 'Day 1、2、3'],
+      ['Gemini', '文案撰寫、改寫、長文摘要、生圖（Nano Banana）、生投影片（Canvas）', 'Day 1、2、3'],
       ['NotebookLM', '來源資料整理、會議錄音摘要、發票辨識', 'Day 3'],
+      ['Flow', 'AI 影片工具（Nano Banana 生圖 + Veo 生影片）', 'Day 2'],
       ['Antigravity', 'Agent 協作、Skill 執行環境', 'Day 4'],
       ['Codex', '程式碼/腳本生成、Skill 開發輔助', 'Day 4']
     ],
     deliverables: [
       ['Day 1', '個人提示詞庫（公告、通知、會議紀錄各 1 份）'],
-      ['Day 2', '海報草稿、投影片初稿、60 秒宣傳腳本'],
+      ['Day 2', '海報草稿、投影片初稿、Flow 產出的 8-16 秒短影片'],
       ['Day 3', '會議紀錄範本、FAQ 初稿、發票 Excel 範本'],
       ['Day 4', '個人化 Agent Skill（將 Day 1~3 的提示詞封裝成可重用技能）']
     ]
@@ -93,7 +94,7 @@ window.COURSE = {
     learningGoal: '建立 AI 工具的基本認知，能分辨「模型」（Gemini / GPT）與「工具」（Gemini App、NotebookLM、Antigravity、Codex 等）的差異，完成 Gemini / NotebookLM / Codex 的帳號登入並下載第四天會用到的 Antigravity，並透過提示詞與行政應用示範，初步將 AI 應用於日常公告與會議文件處理。',
     schedule: [
       ['09:00 ~ 10:00', '開場 + 破冰', '課程說明、學員自我介紹與痛點盤點'],
-      ['10:00 ~ 12:00', '單元 1：AI 基礎與多工具', '模型 vs 工具、Gemini vs ChatGPT、4 工具定位、帳號註冊'],
+      ['10:00 ~ 12:00', '單元 1：AI 基礎與多工具', '模型 vs 工具、Gemini vs ChatGPT、多工具定位、帳號註冊'],
       ['12:00 ~ 13:00', '午休', '（自理午餐）'],
       ['13:00 ~ 14:00', '單元 2 上半：提示詞入門', 'RTFC 四要素 + 公告示範'],
       ['14:00 ~ 15:30', '單元 2 下半：行政實作', '口語改寫公告 + 長文摘要'],
@@ -108,13 +109,14 @@ window.COURSE = {
           '用一句話說明「生成式 AI」是什麼。',
           '分得清「模型」與「工具」的差別。',
           '知道 Gemini 與 ChatGPT 兩大模型的差異與適用場景。',
-          '知道 Gemini / NotebookLM / Antigravity / Codex 各自的定位差異。',
+          '知道 Gemini / NotebookLM / Flow / Antigravity / Codex 各自的定位差異。',
           '完成 4 個工具的帳號註冊與登入。'
         ],
         concepts: [
           {
             heading: 'A. 生成式 AI 的本質：機率預測機',
             body: '別把 AI 當神，它是「接龍機」：你給它一段話，它預測下一個字最可能是什麼，然後一直接下去。',
+            illustration: 'day1-token-prediction',
             list: [
               ['擅長', '歸納、改寫、模仿風格、找模式'],
               ['不擅長', '精準計算、即時資訊、判斷對錯']
@@ -123,11 +125,12 @@ window.COURSE = {
           },
           {
             heading: 'B. 模型 vs 工具：別把兩個層級搞混',
+            illustration: 'day1-models-vs-tools',
             table: {
               head: ['層級', '你看到的', '實際是什麼', '比喻'],
               rows: [
                 ['模型', 'GPT-5、Gemini 2.5 Pro、Claude 4', 'AI 的「大腦」', '引擎'],
-                ['工具', 'ChatGPT App、Gemini App、NotebookLM、Antigravity', '包裝模型的「介面」', '車身']
+                ['工具', 'ChatGPT App、Gemini App、NotebookLM、Flow、Antigravity', '包裝模型的「介面」', '車身']
               ]
             },
             note: '同一台引擎可以裝在不同車身；同一台車身裡也可以換不同引擎。'
@@ -164,6 +167,7 @@ window.COURSE = {
               rows: [
                 ['Gemini', '通用對話與內容生成', '寫公告、改文案、長文摘要'],
                 ['NotebookLM', '以你提供的資料為唯一來源的 AI 筆記本', '會議錄音轉摘要、發票辨識、企業內部資料整理'],
+                ['Flow', 'Google AI 影片工具（Nano Banana 生圖 + Veo 生影片）', '製作門市開幕／新品宣傳的 8-16 秒短影片'],
                 ['Antigravity', '桌面型 AI 代理（IDE-like），可幫你自動跑流程', '把多步驟工作打包成 Skill 自動執行'],
                 ['Codex', '偏程式碼與腳本生成的 AI 工具', '能在電腦處理的工作都能交給它']
               ]
@@ -421,6 +425,7 @@ window.COURSE = {
           {
             heading: 'AI 影片核心原理：「圖片→影片」（Image-to-Video）',
             body: '為什麼業界多用 Image-to-Video？因為這樣才能確保影片中的主角長相、場景風格保持一致。',
+            illustration: 'day2-image-to-video',
             list: [
               ['步驟 1', '用 Nano Banana 產出 2-3 張關鍵幀（人物、場景）'],
               ['步驟 2', '用 Veo 把每張關鍵幀轉成 3-5 秒動畫片段'],
@@ -698,6 +703,7 @@ window.COURSE = {
           {
             heading: 'Skill 預演（為 Day 4 暖身）',
             body: '一鍵把發票照片自動寫入 Excel — Day 4 你會親手做一個。',
+            illustration: 'day3-invoice-to-excel',
             list: [
               ['輸入', '一張或多張發票照片'],
               ['Skill 內部', '辨識文字 → 分類會計科目 → 合規檢查（誤餐費 ≤ 150）→ 寫入 Excel'],
@@ -825,6 +831,7 @@ window.COURSE = {
           },
           {
             heading: 'Agent Skill 三要素',
+            illustration: 'day4-skill-encapsulation',
             list: [
               ['Input（輸入）', '資料/檔案/觸發詞 — 例：發票照片、用戶輸入「幫我整理發票」'],
               ['Output（輸出）', '結構化結果 — 例：Markdown 表格、Excel 寫入、Email 送出'],

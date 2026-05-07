@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="模型 vs 工具：引擎與車身的比喻">
+  <title>模型 vs 工具</title>
+  <desc>左側兩個引擎（GPT、Gemini）象徵 AI 模型；右側兩台不同造型的車身（ChatGPT App、NotebookLM）象徵包裝模型的工具。中央連線標示「同引擎可裝不同車身」。</desc>
+
+  <!-- ======= 引擎區（左） ======= -->
+  <g transform="translate(50 60)">
+    <!-- 區塊標籤 -->
+    <text x="0" y="-20" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor" opacity="0.7" letter-spacing="1">MODEL · 引擎</text>
+
+    <!-- 引擎 1：GPT -->
+    <g transform="translate(0 0)">
+      <rect x="0" y="0" width="180" height="100" rx="14" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+      <!-- 齒輪元素 -->
+      <g transform="translate(38 50)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.6)">
+        <circle cx="0" cy="0" r="20"/>
+        <circle cx="0" cy="0" r="6" fill="currentColor" opacity="0.4" stroke="none"/>
+        <g stroke-linecap="round">
+          <line x1="0" y1="-26" x2="0" y2="-22"/>
+          <line x1="0" y1="22" x2="0" y2="26"/>
+          <line x1="-26" y1="0" x2="-22" y2="0"/>
+          <line x1="22" y1="0" x2="26" y2="0"/>
+          <line x1="-18" y1="-18" x2="-15" y2="-15"/>
+          <line x1="15" y1="15" x2="18" y2="18"/>
+          <line x1="-18" y1="18" x2="-15" y2="15"/>
+          <line x1="15" y1="-15" x2="18" y2="-18"/>
+        </g>
+      </g>
+      <text x="80" y="42" font-family="inherit" font-size="18" font-weight="700" fill="currentColor">GPT-5</text>
+      <text x="80" y="64" font-family="inherit" font-size="12" fill="currentColor" opacity="0.7">OpenAI</text>
+      <text x="80" y="84" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor" opacity="0.5">model</text>
+    </g>
+
+    <!-- 引擎 2：Gemini -->
+    <g transform="translate(0 130)">
+      <rect x="0" y="0" width="180" height="100" rx="14" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+      <g transform="translate(38 50)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.6)">
+        <circle cx="0" cy="0" r="20"/>
+        <circle cx="0" cy="0" r="6" fill="currentColor" opacity="0.4" stroke="none"/>
+        <g stroke-linecap="round">
+          <line x1="0" y1="-26" x2="0" y2="-22"/>
+          <line x1="0" y1="22" x2="0" y2="26"/>
+          <line x1="-26" y1="0" x2="-22" y2="0"/>
+          <line x1="22" y1="0" x2="26" y2="0"/>
+          <line x1="-18" y1="-18" x2="-15" y2="-15"/>
+          <line x1="15" y1="15" x2="18" y2="18"/>
+          <line x1="-18" y1="18" x2="-15" y2="15"/>
+          <line x1="15" y1="-15" x2="18" y2="-18"/>
+        </g>
+      </g>
+      <text x="80" y="42" font-family="inherit" font-size="18" font-weight="700" fill="currentColor">Gemini 2.5</text>
+      <text x="80" y="64" font-family="inherit" font-size="12" fill="currentColor" opacity="0.7">Google</text>
+      <text x="80" y="84" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor" opacity="0.5">model</text>
+    </g>
+  </g>
+
+  <!-- ======= 連線（中央） ======= -->
+  <g stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round">
+    <!-- GPT → ChatGPT App -->
+    <path d="M230 110 Q 295 110 360 110" stroke-dasharray="5 5" opacity="0.55"/>
+    <!-- GPT → NotebookLM (cross) -->
+    <path d="M230 110 Q 295 175 360 240" stroke-dasharray="5 5" opacity="0.35"/>
+    <!-- Gemini → NotebookLM -->
+    <path d="M230 240 Q 295 240 360 240" stroke-dasharray="5 5" opacity="0.55"/>
+    <!-- Gemini → ChatGPT App (cross) -->
+    <path d="M230 240 Q 295 175 360 110" stroke-dasharray="5 5" opacity="0.35"/>
+  </g>
+  <!-- 中央註記 -->
+  <g transform="translate(300 200)">
+    <rect x="-50" y="-13" width="100" height="26" rx="13" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1.5"/>
+    <text x="0" y="4" font-family="inherit" font-size="11" text-anchor="middle" fill="currentColor" font-weight="600">可任意組合</text>
+  </g>
+
+  <!-- ======= 工具區（右） ======= -->
+  <g transform="translate(370 60)">
+    <text x="0" y="-20" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor" opacity="0.7" letter-spacing="1">TOOL · 車身</text>
+
+    <!-- 工具 1：ChatGPT App -->
+    <g transform="translate(0 0)">
+      <rect x="0" y="0" width="180" height="100" rx="14" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+      <!-- 對話框 icon -->
+      <g transform="translate(28 50)" stroke="currentColor" stroke-width="2" fill="none">
+        <path d="M-18 -14 H 18 A 6 6 0 0 1 24 -8 V 8 A 6 6 0 0 1 18 14 H 0 L -10 22 V 14 H -18 A 6 6 0 0 1 -24 8 V -8 A 6 6 0 0 1 -18 -14 Z" fill="rgba(255,255,255,0.6)"/>
+        <line x1="-12" y1="-2" x2="12" y2="-2" opacity="0.6"/>
+        <line x1="-12" y1="6" x2="6" y2="6" opacity="0.6"/>
+      </g>
+      <text x="68" y="38" font-family="inherit" font-size="15" font-weight="700" fill="currentColor">ChatGPT</text>
+      <text x="68" y="58" font-family="inherit" font-size="11" fill="currentColor" opacity="0.7">chatgpt.com</text>
+      <text x="68" y="80" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor" opacity="0.5">tool</text>
+    </g>
+
+    <!-- 工具 2：NotebookLM -->
+    <g transform="translate(0 130)">
+      <rect x="0" y="0" width="180" height="100" rx="14" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+      <!-- 筆記本 icon -->
+      <g transform="translate(28 50)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.6)">
+        <rect x="-18" y="-22" width="36" height="44" rx="3"/>
+        <line x1="-12" y1="-12" x2="12" y2="-12" opacity="0.6"/>
+        <line x1="-12" y1="-4" x2="8" y2="-4" opacity="0.6"/>
+        <line x1="-12" y1="4" x2="12" y2="4" opacity="0.6"/>
+        <line x1="-12" y1="12" x2="6" y2="12" opacity="0.6"/>
+      </g>
+      <text x="68" y="38" font-family="inherit" font-size="15" font-weight="700" fill="currentColor">NotebookLM</text>
+      <text x="68" y="58" font-family="inherit" font-size="11" fill="currentColor" opacity="0.7">notebooklm…</text>
+      <text x="68" y="80" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor" opacity="0.5">tool</text>
+    </g>
+  </g>
+
+  <!-- 底部註記 -->
+  <text x="300" y="370" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.55">同引擎可裝不同車身 · 同車身可換不同引擎</text>
+</svg>

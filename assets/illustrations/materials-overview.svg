@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" role="img" aria-label="教學素材總覽：多種文件類型彙整">
+  <title>教學素材總覽</title>
+  <desc>5 種文件類型（PDF、CSV、YAML、MD、IMG）橫向排列，象徵 4 天工作坊累積的教學素材彙整</desc>
+
+  <!-- 背景輔助底紋（極淺，視 CSS background 而定） -->
+  <g opacity="0.08">
+    <circle cx="80" cy="40" r="2" fill="currentColor"/>
+    <circle cx="720" cy="160" r="2" fill="currentColor"/>
+    <circle cx="400" cy="20" r="1.5" fill="currentColor"/>
+  </g>
+
+  <!-- ====== 5 張文件卡：PDF / CSV / YAML / MD / IMG ====== -->
+  <!-- 卡片 1：PDF -->
+  <g transform="translate(60 40) rotate(-3)">
+    <rect x="0" y="0" width="110" height="130" rx="8" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+    <path d="M84 0 L110 0 L110 26 Z" fill="currentColor" opacity="0.18"/>
+    <line x1="84" y1="0" x2="84" y2="26" stroke="currentColor" stroke-width="2"/>
+    <line x1="84" y1="26" x2="110" y2="26" stroke="currentColor" stroke-width="2"/>
+    <text x="14" y="58" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="currentColor">PDF</text>
+    <line x1="14" y1="76" x2="92" y2="76" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="14" y1="90" x2="78" y2="90" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="14" y1="104" x2="86" y2="104" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="14" y1="118" x2="68" y2="118" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- 卡片 2：CSV（試算表格線） -->
+  <g transform="translate(200 30) rotate(2)">
+    <rect x="0" y="0" width="110" height="130" rx="8" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+    <text x="14" y="32" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="currentColor">CSV</text>
+    <!-- 表格 4x4 -->
+    <g stroke="currentColor" stroke-width="1.5" opacity="0.45">
+      <line x1="14" y1="46" x2="96" y2="46"/>
+      <line x1="14" y1="68" x2="96" y2="68"/>
+      <line x1="14" y1="90" x2="96" y2="90"/>
+      <line x1="14" y1="112" x2="96" y2="112"/>
+      <line x1="14" y1="46" x2="14" y2="118"/>
+      <line x1="41" y1="46" x2="41" y2="118"/>
+      <line x1="68" y1="46" x2="68" y2="118"/>
+      <line x1="96" y1="46" x2="96" y2="118"/>
+    </g>
+    <line x1="14" y1="118" x2="96" y2="118" stroke="currentColor" stroke-width="1.5" opacity="0.45"/>
+    <!-- 一格塗色 -->
+    <rect x="41" y="68" width="27" height="22" fill="currentColor" opacity="0.18"/>
+  </g>
+
+  <!-- 卡片 3：YAML（中央高一點，當主角） -->
+  <g transform="translate(340 22)">
+    <rect x="0" y="0" width="120" height="148" rx="8" fill="rgba(255,255,255,0.65)" stroke="currentColor" stroke-width="2"/>
+    <text x="14" y="34" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="currentColor">YAML</text>
+    <!-- key: value 樣式 -->
+    <g font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor">
+      <text x="14" y="58" opacity="0.85">name:</text>
+      <text x="56" y="58" opacity="0.55">skill</text>
+      <text x="14" y="76" opacity="0.85">desc:</text>
+      <text x="56" y="76" opacity="0.55">--</text>
+      <text x="14" y="94" opacity="0.85">steps:</text>
+      <text x="22" y="110" opacity="0.55">- read</text>
+      <text x="22" y="126" opacity="0.55">- gen</text>
+    </g>
+    <!-- 角落 AI 標記 -->
+    <g transform="translate(96 16)">
+      <circle cx="0" cy="0" r="10" fill="currentColor" opacity="0.16"/>
+      <path d="M-4 0 L-1 3 L4 -3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- 卡片 4：MD（Markdown） -->
+  <g transform="translate(490 32) rotate(-2)">
+    <rect x="0" y="0" width="110" height="130" rx="8" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+    <text x="14" y="32" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="currentColor">MD</text>
+    <!-- # 標題列 -->
+    <text x="14" y="58" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="currentColor" opacity="0.85"># Title</text>
+    <line x1="14" y1="74" x2="90" y2="74" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <line x1="14" y1="86" x2="78" y2="86" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <!-- bullet -->
+    <circle cx="18" cy="102" r="1.5" fill="currentColor" opacity="0.6"/>
+    <line x1="24" y1="102" x2="86" y2="102" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="18" cy="116" r="1.5" fill="currentColor" opacity="0.6"/>
+    <line x1="24" y1="116" x2="76" y2="116" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- 卡片 5：IMG（發票照片，呼應 Day 3 影像辨識） -->
+  <g transform="translate(630 38) rotate(3)">
+    <rect x="0" y="0" width="110" height="130" rx="8" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+    <text x="14" y="32" font-family="ui-monospace, Menlo, monospace" font-size="14" font-weight="700" fill="currentColor">IMG</text>
+    <!-- 發票示意：山＋月亮（傳統圖片占位符語彙） -->
+    <rect x="14" y="44" width="82" height="74" rx="4" fill="currentColor" opacity="0.08"/>
+    <circle cx="78" cy="62" r="6" fill="currentColor" opacity="0.4"/>
+    <path d="M14 110 L40 86 L60 100 L82 80 L96 92 L96 118 L14 118 Z" fill="currentColor" opacity="0.32"/>
+  </g>
+
+  <!-- ====== 底部極短連結線：暗示這些素材彼此關聯彙整成課程包 ====== -->
+  <g stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.35" fill="none">
+    <path d="M170 175 Q 250 188 320 175"/>
+    <path d="M460 175 Q 530 188 600 175"/>
+  </g>
+</svg>

@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Image-to-Video 三步驟：關鍵幀 → 動畫片段 → 串接成片">
+  <title>Image-to-Video 工作流</title>
+  <desc>左：3 張人物／場景關鍵幀；中：Veo 把每張靜態圖轉成 3-5 秒動畫；右：Flow 把動畫片段串接成完整影片。</desc>
+
+  <!-- 階段標籤 -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1" fill="currentColor" opacity="0.65">
+    <text x="100" y="40">STEP 1 · Nano Banana</text>
+    <text x="295" y="40">STEP 2 · Veo</text>
+    <text x="475" y="40">STEP 3 · Flow</text>
+  </g>
+
+  <!-- ====== Step 1: 3 張關鍵幀 ====== -->
+  <g transform="translate(50 60)">
+    <!-- 幀 1 -->
+    <g transform="translate(0 10) rotate(-4)">
+      <rect x="0" y="0" width="100" height="74" rx="6" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="2"/>
+      <!-- 場景：人物剪影 -->
+      <circle cx="50" cy="32" r="10" fill="currentColor" opacity="0.45"/>
+      <path d="M30 64 Q 50 48 70 64 Z" fill="currentColor" opacity="0.45"/>
+      <text x="6" y="72" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.7">frame-1</text>
+    </g>
+    <!-- 幀 2 -->
+    <g transform="translate(20 90)">
+      <rect x="0" y="0" width="100" height="74" rx="6" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="2"/>
+      <circle cx="40" cy="32" r="10" fill="currentColor" opacity="0.45"/>
+      <path d="M20 64 Q 40 48 60 64 Z" fill="currentColor" opacity="0.45"/>
+      <!-- 場景元素 -->
+      <rect x="68" y="40" width="24" height="20" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+      <text x="6" y="72" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.7">frame-2</text>
+    </g>
+    <!-- 幀 3 -->
+    <g transform="translate(0 170) rotate(3)">
+      <rect x="0" y="0" width="100" height="74" rx="6" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="2"/>
+      <circle cx="35" cy="32" r="10" fill="currentColor" opacity="0.45"/>
+      <path d="M15 64 Q 35 48 55 64 Z" fill="currentColor" opacity="0.45"/>
+      <!-- 杯子元素 -->
+      <path d="M70 36 L80 36 L78 50 L72 50 Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+      <text x="6" y="72" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.7">frame-3</text>
+    </g>
+  </g>
+
+  <!-- ====== 連接箭頭 1 → 2 ====== -->
+  <g transform="translate(170 0)" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 100 L 90 100" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M82 94 L 92 100 L 82 106"/>
+    <path d="M0 200 L 90 200" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M82 194 L 92 200 L 82 206"/>
+    <path d="M0 290 L 90 290" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M82 284 L 92 290 L 82 296"/>
+  </g>
+
+  <!-- ====== Step 2: 3 個動畫片段（影片格） ====== -->
+  <g transform="translate(265 60)">
+    <!-- 片段 1 -->
+    <g transform="translate(0 10) rotate(-2)">
+      <rect x="0" y="0" width="100" height="74" rx="6" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="2"/>
+      <!-- 播放三角 -->
+      <polygon points="42,28 42,46 58,37" fill="currentColor" opacity="0.55"/>
+      <!-- 縮影 -->
+      <line x1="6" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      <line x1="14" y1="62" x2="14" y2="66" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      <line x1="22" y1="62" x2="22" y2="66" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      <line x1="30" y1="62" x2="30" y2="66" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      <text x="6" y="72" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.7">3s clip</text>
+    </g>
+    <!-- 片段 2 -->
+    <g transform="translate(15 90)">
+      <rect x="0" y="0" width="100" height="74" rx="6" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="2"/>
+      <polygon points="42,28 42,46 58,37" fill="currentColor" opacity="0.55"/>
+      <line x1="6" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      <text x="6" y="72" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.7">5s clip</text>
+    </g>
+    <!-- 片段 3 -->
+    <g transform="translate(0 170) rotate(2)">
+      <rect x="0" y="0" width="100" height="74" rx="6" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="2"/>
+      <polygon points="42,28 42,46 58,37" fill="currentColor" opacity="0.55"/>
+      <line x1="6" y1="64" x2="94" y2="64" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      <text x="6" y="72" font-family="ui-monospace, Menlo, monospace" font-size="8" fill="currentColor" opacity="0.7">4s clip</text>
+    </g>
+  </g>
+
+  <!-- ====== 連接箭頭 2 → 3（合流） ====== -->
+  <g transform="translate(385 0)" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 100 Q 50 100 60 200" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M0 200 L 60 200" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M0 290 Q 50 290 60 200" stroke-dasharray="4 4" opacity="0.55"/>
+    <path d="M52 194 L 62 200 L 52 206"/>
+  </g>
+
+  <!-- ====== Step 3: 完整影片時間軸 ====== -->
+  <g transform="translate(450 150)">
+    <rect x="0" y="0" width="120" height="100" rx="8" fill="rgba(255,255,255,0.7)" stroke="currentColor" stroke-width="2"/>
+    <!-- 大播放按鈕 -->
+    <circle cx="60" cy="38" r="18" fill="rgba(255,255,255,0.8)" stroke="currentColor" stroke-width="2"/>
+    <polygon points="55,28 55,48 73,38" fill="currentColor" opacity="0.7"/>
+    <!-- 時間軸 -->
+    <rect x="10" y="68" width="100" height="6" rx="3" fill="currentColor" opacity="0.15"/>
+    <rect x="10" y="68" width="40" height="6" rx="3" fill="currentColor" opacity="0.55"/>
+    <!-- 時間刻度 -->
+    <g stroke="currentColor" stroke-width="1" opacity="0.5">
+      <line x1="10" y1="80" x2="10" y2="84"/>
+      <line x1="42" y1="80" x2="42" y2="84"/>
+      <line x1="76" y1="80" x2="76" y2="84"/>
+      <line x1="110" y1="80" x2="110" y2="84"/>
+    </g>
+    <text x="60" y="96" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" fill="currentColor">final video</text>
+  </g>
+
+  <!-- 底部註記 -->
+  <text x="300" y="380" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.55">先穩定主角／場景 → 再賦予動態 → 最後組合節奏</text>
+</svg>

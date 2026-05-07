@@ -491,7 +491,8 @@
       linear-gradient(135deg, var(--surface), var(--surface-2));
     overflow: hidden;
     display: grid;
-    grid-template-columns: minmax(160px, 28%) minmax(0, 1fr) minmax(220px, 28%);
+    /* 拿掉右側場景視覺後改 2 欄：左大號數字 + 右側標題與統計 */
+    grid-template-columns: minmax(160px, 28%) minmax(0, 1fr);
     align-items: end;
     gap: 32px;
   }
@@ -518,6 +519,23 @@
     -webkit-text-stroke: 0;
     text-shadow: 0 1px 0 color-mix(in oklab, var(--accent-2) 18%, transparent);
     user-select: none;
+    /* 預設可見；hover/動畫只負責「點綴」，避免 IntersectionObserver 失效時數字消失 */
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+  }
+  /* 進場動畫：父層 .fade-in 觸發時 numeral 也播一次淡入，沒觸發時也不會「消失」 */
+  @keyframes numeral-fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  section.chapter.fade-in .day-hero-numeral {
+    animation: numeral-fade-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  /* hover：色彩加深、陰影拉長，讓數字有光暈感 */
+  .day-hero:hover .day-hero-numeral {
+    color: var(--accent-deep);
+    text-shadow:
+      0 2px 0 color-mix(in oklab, var(--accent-2) 22%, transparent),
+      0 18px 40px color-mix(in oklab, var(--accent) 22%, transparent);
   }
   .day-hero-numeral .day-hero-num-sub {
     display: block;
@@ -564,10 +582,6 @@
     padding-top: 14px;
     border-top: 1px solid var(--border);
   }
-  .day-hero-visual {
-    align-self: stretch;
-    min-height: 220px;
-  }
   .day-hero-stat .stat-label {
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -605,9 +619,6 @@
     .day-hero-stats {
       flex-wrap: wrap;
       gap: 16px;
-    }
-    .day-hero-visual {
-      min-height: 190px;
     }
   }
 
@@ -662,6 +673,42 @@
     min-height: 250px;
   }
 
+  /* ===================== illustration（PNG 優先 + SVG fallback） ===================== */
+  /* 通用：放在章節頂部或單元講解面板內，承載概念類插圖 */
+  .illustration {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    /* 淺漸層底（給 SVG fallback 用；PNG 自帶完整背景時被覆蓋看不到） */
+    background:
+      radial-gradient(circle at 22% 26%, var(--accent-soft), transparent 38%),
+      linear-gradient(150deg, var(--surface), var(--surface-2));
+    box-shadow:
+      0 8px 24px color-mix(in oklab, black 8%, transparent),
+      0 1px 2px color-mix(in oklab, black 6%, transparent);
+  }
+  .illustration img,
+  .illustration svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* PNG 與 SVG 都用 contain 確保構圖完整呈現、不被裁切 */
+    object-fit: contain;
+    color: var(--accent-deep); /* 給 SVG 內 currentColor 取用 */
+  }
+  /* 章節頂部寬幅 banner（4:1） */
+  .illustration--banner {
+    aspect-ratio: 4 / 1;
+    margin: 18px 0 22px;
+  }
+  /* 段落內概念圖（3:2） — 居中、放寬、加陰影讓 PNG 浮起來 */
+  .illustration--inline {
+    aspect-ratio: 3 / 2;
+    margin: 20px auto;        /* 自動 margin 居中 */
+    max-width: 720px;         /* 520 → 720，視覺權重更平衡 */
+  }
+
   /* ===================== reusable ===================== */
 
   /* meta info table (overview) */
@@ -687,6 +734,87 @@
   }
   .meta-grid > div:nth-child(even) {
     background: var(--surface);
+  }
+  /* 講堂地圖：等距 3D 風格 PNG（與全站視覺一致），點圖跳 Google Maps */
+  .venue-map {
+    margin: 18px 0 4px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow:
+      0 8px 24px color-mix(in oklab, black 8%, transparent),
+      0 1px 2px color-mix(in oklab, black 5%, transparent);
+  }
+  .venue-map-imglink {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .venue-map-imglink img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.4s ease;
+  }
+  .venue-map-imglink:hover img {
+    transform: scale(1.03);
+    filter: brightness(1.04);
+  }
+  .venue-map-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .venue-map-link {
+    color: var(--accent-deep);
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .venue-map-link:hover {
+    color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .venue-map-imglink img { aspect-ratio: 4 / 3; }
+    .venue-map-caption {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+  }
+
+  /* 上課地點旁的地圖連結 — 與既有資訊融合不搶眼 */
+  .map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 8px;
+    margin-left: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--accent-deep);
+    font-size: 12px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .map-link:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
   }
 
   /* ===================== instructor card ===================== */
@@ -846,13 +974,19 @@
     color: var(--text-primary);
     font-size: 13px;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .toolbox-filters .chip:hover { border-color: var(--accent); }
+  .toolbox-filters .chip:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
   .toolbox-filters .chip.active {
     background: var(--accent);
     color: var(--surface);
     border-color: var(--accent);
+    transform: translateY(0);
+    box-shadow: 0 4px 12px -4px var(--accent);
   }
 
   .toolbox-grid {
@@ -870,12 +1004,32 @@
     border: 1px solid var(--border);
     border-radius: var(--r-md);
     overflow: hidden;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 0.25s ease,
+                border-color 0.18s ease;
   }
   .tool-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px -10px var(--accent);
+    transform: translateY(-4px);
+    box-shadow:
+      0 14px 30px -12px color-mix(in oklab, var(--accent) 55%, transparent),
+      0 4px 8px -4px color-mix(in oklab, black 8%, transparent);
     border-color: var(--accent);
+  }
+  /* hover 時截圖微微放大、加亮，營造 cinematic 感 */
+  .tool-card .tool-screenshot {
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.45s ease;
+  }
+  .tool-card:hover .tool-screenshot {
+    transform: scale(1.04);
+    filter: brightness(1.04);
+  }
+  /* hover 時工具名稱顏色變強調色 */
+  .tool-card .tool-name {
+    transition: color 0.18s ease;
+  }
+  .tool-card:hover .tool-name {
+    color: var(--accent-deep);
   }
   .tool-card.is-hidden { display: none; }
 
@@ -1958,10 +2112,8 @@
 
   // 每個 Day / 單元的情境圖片文案與構圖設定，key 對應 renderDay / renderUnit 的 id。
   const SCENARIO_VISUALS = {
-    day1: { type: 'tool-desk', kicker: 'Day 1 scene', caption: '從行政痛點出發，建立 AI 工具與提示詞的基本工作台。' },
-    day2: { type: 'media-studio', kicker: 'Day 2 scene', caption: '把海報、投影片與短影片串成同一條多媒體製作線。' },
-    day3: { type: 'document-flow', kicker: 'Day 3 scene', caption: '讓規章、逐字稿、發票與表單進入可查核的整理流程。' },
-    day4: { type: 'agent-workshop', kicker: 'Day 4 scene', caption: '把前 3 天累積的提示詞封裝成可展示、可重用的 Agent Skill。' },
+    // Day 級的 hero scenario 已停用（hero 改成純文字 + 巨型數字構圖，避免抽象 SVG 看起來像佔位符）
+    // unit 級才保留實拍風格 PNG 場景圖
     'day1-u1': { type: 'tool-map', src: 'assets/scenarios/day1-u1.png', kicker: 'tool setup', caption: '帳號登入與工具定位：先分清模型、工具與行政場景。' },
     'day1-u2': { type: 'prompt-lab', src: 'assets/scenarios/day1-u2.png', kicker: 'prompt lab', caption: 'RTFC 提示詞實驗室：把口語稿、長文與爛提示詞逐步修成可用輸出。' },
     'day1-u3': { type: 'gem-builder', src: 'assets/scenarios/day1-u3.png', kicker: 'gem builder', caption: '把今天常用的提示詞封裝成一個可以重複呼叫的 Gem。' },
@@ -2054,7 +2206,7 @@
       figure.append(el('img', {
         src: visual.src,
         alt: visual.caption,
-        loading: extraClass.includes('day-hero-visual') ? 'eager' : 'lazy',
+        loading: 'lazy',
         decoding: 'async'
       }));
     } else {
@@ -2065,6 +2217,37 @@
       el('span', {}, visual.caption)
     ));
     return figure;
+  }
+
+  /**
+   * 渲染概念類插圖（手寫 SVG，由 assets/illustrations/ 載入）。
+   * @param {string} name SVG 檔案名（不含副檔名與資料夾）
+   * @param {'banner'|'inline'} variant 容器版型；banner = 章節頂部 4:1，inline = 段落內 3:2
+   * @param {string} alt 替代文字，作為無法載入時的可讀說明
+   * @returns {HTMLElement} 包好失敗保險的 .illustration 容器
+   */
+  function renderIllustration(name, variant = 'inline', alt = '') {
+    const container = el('div', { class: `illustration illustration--${variant}` });
+    const img = el('img', {
+      // PNG 優先（AI 生圖視覺更豐富）；失敗則退回 SVG（手寫概念圖）；都沒有時隱藏容器
+      src: `assets/illustrations/${name}.png`,
+      alt: alt || name,
+      // banner 通常是章節頂部視覺重點（above-the-fold），不延遲；inline 才 lazy
+      loading: variant === 'banner' ? 'eager' : 'lazy',
+      decoding: 'async'
+    });
+    img.addEventListener('error', () => {
+      if (img.dataset.fallbackTried) {
+        // 第二次（SVG 也失敗）→ 整個容器隱藏，不留破圖
+        container.style.display = 'none';
+      } else {
+        // 第一次（PNG 不存在）→ 退回 SVG
+        img.dataset.fallbackTried = '1';
+        img.src = `assets/illustrations/${name}.svg`;
+      }
+    });
+    container.append(img);
+    return container;
   }
 
   /**
@@ -2099,23 +2282,63 @@
     // 三格統計卡
     const totalClassHours = m.days.reduce((acc, d) => acc + d.hours, 0);
     root.append(el('div', { class: 'day-header-grid' },
-      statCell('總時數', `${totalClassHours + 4}H`, '4 天 + 4H 線上自學'),
+      statCell('總時數', `${totalClassHours + 4}H`, '4 天 + 4H 數位自學'),
       statCell('任務數', String(allTaskIds.length), '可勾選追蹤'),
       statCell('教學素材', String(C.materials.length), '規章 + Skill 範本')
     ));
 
     root.append(el('h3', {}, '課程基本資訊'));
     const meta = el('div', { class: 'meta-grid' });
+
+    // 上課地點：若 meta.mapUrl 存在則在文字後附上「Google Maps」可點連結
+    const locationCell = el('div', {}, m.location);
+    if (m.mapUrl) {
+      locationCell.append(document.createTextNode('　'));
+      locationCell.append(el('a', {
+        href: m.mapUrl,
+        target: '_blank',
+        rel: 'noopener',
+        class: 'map-link',
+        title: '在 Google Maps 開啟'
+      }, '📍 地圖'));
+    }
+
     [
-      ['計畫名稱', m.program],
-      ['主辦單位', m.organizer],
-      ['上課日期', m.dates],
-      ['上課地點', m.location],
-      ['課程型態', m.format],
-      ['招生人數', m.capacity],
-      ['授課講師', m.instructor]
-    ].forEach(([k,v]) => { meta.append(el('div',{},k), el('div',{},v)); });
+      ['計畫名稱', el('div', {}, m.program)],
+      ['主辦單位', el('div', {}, m.organizer)],
+      ['上課日期', el('div', {}, m.dates)],
+      ['上課地點', locationCell],
+      ['課程型態', el('div', {}, m.format)],
+      ['授課講師', el('div', {}, m.instructor)]
+    ].forEach(([k, vEl]) => { meta.append(el('div', {}, k), vEl); });
     root.append(meta);
+
+    // 講堂位置：本機等距 3D 風格地圖 PNG（與全站視覺語彙一致），
+    // 點圖開新分頁前往 Google Maps 看實時路線
+    const mapWrap = el('div', { class: 'venue-map' });
+    const link = m.mapUrl
+      ? el('a', { href: m.mapUrl, target: '_blank', rel: 'noopener', title: '在 Google Maps 開啟', class: 'venue-map-imglink' })
+      : el('div', { class: 'venue-map-imglink' });
+    link.append(el('img', {
+      src: 'assets/illustrations/maps.png',
+      alt: '上課地點地圖（台北市電腦商業同業公會周邊）',
+      loading: 'lazy',
+      decoding: 'async'
+    }));
+    mapWrap.append(link);
+    // 圖下方的 caption 列：地址 + 在 Google Maps 開啟
+    const cap = el('div', { class: 'venue-map-caption' });
+    cap.append(el('span', {}, '📍 ' + m.location.split('+')[0].trim()));
+    if (m.mapUrl) {
+      cap.append(el('a', {
+        href: m.mapUrl,
+        target: '_blank',
+        rel: 'noopener',
+        class: 'venue-map-link'
+      }, '在 Google Maps 開啟 →'));
+    }
+    mapWrap.append(cap);
+    root.append(mapWrap);
 
     root.append(el('h3', {}, '整體課程目標'));
     const goalList = el('ul', { class: 'list' });
@@ -2379,8 +2602,8 @@
     });
     meta.append(stats);
     hero.append(meta);
-    const dayVisual = renderScenarioVisual(dayId, 'day-hero-visual');
-    if (dayVisual) hero.append(dayVisual);
+    // Day 級右側抽象 SVG 場景圖已移除：unit 內已有實拍風格的 scenario PNG，
+    // hero 只保留「巨型數字 + 標題文字 + 統計」三段式構圖，視覺焦點不分散
 
     root.append(hero);
 
@@ -2509,6 +2732,10 @@
     const w = el('div', { class: 'concept' });
     if (c.heading) w.append(el('div', { class: 'concept-heading' }, c.heading));
     if (c.body) w.append(el('div', { class: 'concept-body' }, c.body));
+    // 概念插圖（手寫 SVG）— 出現在 body 之後、list/table 之前
+    if (c.illustration) {
+      w.append(renderIllustration(c.illustration, 'inline', c.heading || c.illustration));
+    }
     if (c.list && c.list.length) {
       const kv = el('div', { class: 'kv' });
       c.list.forEach(([k,v]) => {
@@ -2635,6 +2862,9 @@
       el('h2', {}, '教學素材總覽'),
       el('div', { class: 'lead' }, '所有實作會用到的規章、SOP、政策、Skill 範本與測驗題庫，全部隨課程包一起發放。每份素材標明在哪一天哪個段落使用 — 確保你不會在實作時找不到原始檔。')
     ));
+
+    // 章節頂部 banner：呈現多種文件類型彙整的視覺主題
+    root.append(renderIllustration('materials-overview', 'banner', '教學素材總覽：多種文件類型彙整'));
 
     const tbl = el('table', { class: 't' });
     tbl.innerHTML = `<thead><tr>
@@ -3011,9 +3241,15 @@
       updateQuizScoreUI();
       toast('已清除所有進度');
     });
-    $('#jump-quiz').addEventListener('click', () => {
-      $('#quiz').scrollIntoView({ behavior: 'smooth' });
-    });
+    // 「前往結訓測驗」按鈕：依 SHOW_QUIZ flag 決定保留或整顆隱藏
+    const jumpQuizBtn = $('#jump-quiz');
+    if (SHOW_QUIZ) {
+      jumpQuizBtn.addEventListener('click', () => {
+        $('#quiz').scrollIntoView({ behavior: 'smooth' });
+      });
+    } else {
+      jumpQuizBtn.style.display = 'none';
+    }
     $('#theme-toggle').addEventListener('click', () => {
       const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       applyTheme(next);
@@ -3059,6 +3295,16 @@
   }
 
   // ============================================================
+  //  單元預設全部展開：避免學員每滑到一個 unit 就要手動點開
+  //  - .content 套用 CSS zoom 時 IntersectionObserver 與 scrollIntoView 行為不可靠，
+  //    所以改用最簡單可靠的策略：頁面渲染完直接 open=true
+  //  - 學員仍可手動點 summary 收合特定 unit，互動完整保留
+  // ============================================================
+  function setupAutoExpandUnits() {
+    $$('details.unit').forEach(u => { u.open = true; });
+  }
+
+  // ============================================================
   //  init
   // ============================================================
   function init() {
@@ -3080,6 +3326,7 @@
     updateQuizScoreUI();
     setupScrollSpy();
     setupFadeIn();
+    setupAutoExpandUnits();
 
     // 若 URL 有 hash，跳到該章節
     if (location.hash) {

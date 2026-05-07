@@ -8,6 +8,8 @@ node_modules/
 data/verify-*.png
 data/error-snapshot.png
 data/instructor-channel.png
+data/illustrations-*.png
+data/design-audit/
 
 # Illustration audit (本機一次性工具，腳本與產出皆不入庫)
 scripts/audit-illustrations.mjs
