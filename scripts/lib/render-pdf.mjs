@@ -79,7 +79,7 @@ $body$
       // 等所有 compositor stages 完成（base64 圖片需要這個才會被印進 PDF）
       '--run-all-compositor-stages-before-draw',
       // 給 base64 解碼足夠時間（單位 ms），對含 26+ 個 base64 PNG 的長文有用
-      '--virtual-time-budget=10000',
+      '--virtual-time-budget=15000',
       // 產 tagged PDF：讓 PDF 閱讀器側邊欄能從 h1/h2/h3 自動建立目錄樹（PDF outline / bookmarks）
       '--export-tagged-pdf',
       `--print-to-pdf=${path.resolve(outPath)}`,

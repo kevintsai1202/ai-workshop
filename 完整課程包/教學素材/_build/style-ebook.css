@@ -129,6 +129,13 @@ img.tool-shot {
   display: block;
   margin: 12px auto;
 }
+img.illustration {
+  max-width: 90%;
+  max-height: 380px;
+  display: block;
+  margin: 16px auto 6px;
+  border-radius: 8px;
+}
 /* 一般圖片 fallback */
 img {
   max-width: 100%;

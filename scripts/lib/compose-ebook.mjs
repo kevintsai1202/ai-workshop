@@ -207,13 +207,62 @@ export function composeOverview(s) {
 }
 
 /**
+ * 把 assets/illustrations/<name> 讀成 base64 markdown 圖片標籤
+ * 優先 SVG（檔案 6-9 KB，向量、可放大）；fallback PNG（含 AI 生圖細節，但 2-3 MB）
+ * file:// 直接引用會被 Edge headless 的安全策略擋掉，所以改用 base64 內嵌
+ * 找不到檔案時回傳空字串（不擋 build）
+ */
+async function embedIllustration(name, alt = '') {
+  if (!name) return '';
+  // SVG 優先：小檔（~7 KB vs PNG 2-3 MB）對 base64 內嵌與 Edge 解碼都更友善
+  const exts = ['.svg', '.png'];
+  for (const ext of exts) {
+    const p = path.join(ROOT, 'assets', 'illustrations', name + ext);
+    try {
+      const buf = await fs.readFile(p);
+      const mime = ext === '.svg' ? 'image/svg+xml' : 'image/png';
+      const b64 = buf.toString('base64');
+      return `![${alt || name}](data:${mime};base64,${b64}){.illustration}`;
+    } catch { /* try next ext */ }
+  }
+  return '';
+}
+
+/**
+ * 清理 dayContent.md 中會在電子書脈絡下變成死連結的內容
+ * - 移除「對應大綱 / 共用案例 / 教學素材」這類本機路徑導引 blockquote
+ * - 把其他「相對路徑」的 markdown link 改寫為純文字（保留 https://）
+ */
+function cleanDayContentLinks(md) {
+  // 1) 整段移除常見的「導引 blockquote」（出現在每份 dayContent 開頭）
+  //    格式：> 對應大綱：[..](..)｜共用案例：[..](..)｜教學素材：[..](..)
+  let out = md.replace(/^>\s*對應大綱[\s\S]*?教學素材[^\n]*\n/m, '');
+
+  // 2) 把所有非絕對 URL 的 markdown link 改成純文字
+  //    匹配 [text](url)，但若 url 以 http:// / https:// / mailto: 開頭則保留原 link
+  out = out.replace(
+    /\[([^\]]+)\]\((?!https?:\/\/|mailto:)[^)]+\)/g,
+    '$1'
+  );
+
+  // 3) 同樣處理本機相對的圖片引用 ![alt](path)，避免 pandoc 嘗試載入不存在的檔案
+  out = out.replace(
+    /!\[([^\]]*)\]\((?!https?:\/\/|data:)[^)]+\)/g,
+    ''
+  );
+
+  return out;
+}
+
+/**
  * Day N 章節
  * 結構：N.0 學習目標 + 時程表
- *       N.A 整份 dayContent.md 作為講師講義（h1 降階為 h2）
- *       N.1 ~ N.M 各 unit（goals 條列、prompts、tasks ☐、unit 內素材引用）
- * 註：unit.concepts 不在電子書呈現（內容已被 dayContent.md 涵蓋且更完整）
+ *       N.A 整份 dayContent.md 作為講師講義（h1 降階為 h2、清理死連結）
+ *       N.1 ~ N.M 各 unit（含概念示意圖 / 學習目標 / 提示詞 / 任務 ☐ / 素材引用）
+ * 註：unit.concepts 的文字內容已被 dayContent.md 涵蓋故不重複；
+ *     但 concepts[].illustration 對應的圖片會嵌入到該 unit 區塊。
  */
-export function composeDay(day, dayContent, dayNumber) {
+export async function composeDay(day, dayContent, dayNumber) {
   const out = [];
   // 章節標題：去掉 course-data.js 中 "Day N｜" 的前綴（因為已在標題中）
   const cleanTitle = day.title.replace(/^Day \d+｜/, '');
@@ -232,20 +281,37 @@ export function composeDay(day, dayContent, dayNumber) {
   });
   out.push(``);
 
-  // N.A 章節導論：整份 dayContent.md（第一個 h1 降階為 h2，避免污染 TOC）
-  const adjusted = dayContent
+  // N.A 章節導論：整份 dayContent.md
+  // - 清理本機相對連結與圖片（在 PDF 中會變死連結 file://D:/...）
+  // - 第一個 h1 降階為 h2、第二層 h2 降為 h3，避免污染 TOC
+  const cleaned = cleanDayContentLinks(dayContent);
+  const adjusted = cleaned
     .replace(/^# /m, '## ')
     .replace(/^## /gm, '### ');
   out.push(`## ${dayNumber}.A 講師講義`, ``);
   out.push(adjusted, ``);
 
   // N.1 ~ N.M 各 unit
-  (day.units || []).forEach((u, idx) => {
+  for (let idx = 0; idx < (day.units || []).length; idx++) {
+    const u = day.units[idx];
     const num = `${dayNumber}.${idx + 1}`;
     out.push(`## ${num} ${u.title}`, ``);
     if (u.subtitle) out.push(`*${u.subtitle}*`, ``);
     if (u.time) out.push(`時段：${u.time}`, ``);
     out.push(``);
+
+    // 概念示意圖：unit.concepts[].illustration 對應 assets/illustrations/<name>.png
+    const concepts = (u.concepts || []).filter(c => c.illustration);
+    if (concepts.length > 0) {
+      out.push(`### 概念示意圖`, ``);
+      for (const c of concepts) {
+        const imgMd = await embedIllustration(c.illustration, c.heading || c.illustration);
+        if (imgMd) {
+          out.push(imgMd, ``);
+          if (c.heading) out.push(`*${c.heading}*`, ``);
+        }
+      }
+    }
 
     if ((u.goals || []).length > 0) {
       out.push(`### 學習目標`, ``);
@@ -277,7 +343,7 @@ export function composeDay(day, dayContent, dayNumber) {
       });
       out.push(``);
     }
-  });
+  }
 
   return out.join('\n');
 }
