@@ -94,6 +94,44 @@ UI 樣式（色彩、字體、間距、佈局）全部在 `index.html` 的 `<sty
 
 ---
 
+## 建構電子書（PDF）
+
+把整個工作坊內容打包成單一 PDF 電子書（含 4 天課綱、提示詞、任務、結訓測驗、教學素材附錄）：
+
+```powershell
+npm run build:ebook                  # 產出 dist/工作坊電子書.pdf（約 7 MB / 90+ 頁）
+npm run build:ebook -- --md-only     # 只產中間 markdown（debug）
+npm run build:ebook -- --keep-html   # 保留中間 HTML（debug 版面）
+```
+
+電子書結構：
+
+| 章節 | 內容 |
+|---|---|
+| 封面 + 目錄 | 自動產生 |
+| 第 0 章 | 課程總覽、共用案例設定、講師簡介 |
+| 第 1–4 章 | Day 1–4（含時程表、講師講義、各單元提示詞與紙本任務 ☐） |
+| 第 5 章 | 結訓測驗（紙本作答區，無答案） |
+| 附錄 A | 教學素材總覽表 |
+| 附錄 B | 11 份輔助素材（.md/.csv/.yaml）全文嵌入 |
+| 附錄 C | 8 份規章 PDF 索引（每份附 QR Code 指向 GitHub raw URL） |
+| 附錄 D | 結訓測驗解答 |
+| 附錄 E | 工具圖鑑（6 工具，含截圖與官網 QR Code） |
+| 附錄 F | 講師熱門 YouTube 影片（含 QR Code） |
+
+**前置需求**：
+
+- pandoc（`winget install pandoc`）
+- Microsoft Edge 或 Google Chrome（用 headless 模式印 PDF）
+- Node 18+
+
+**設計與實作文件**：
+
+- 設計：[docs/superpowers/specs/2026-05-07-workshop-ebook-design.md](docs/superpowers/specs/2026-05-07-workshop-ebook-design.md)
+- 實作計畫：[docs/superpowers/plans/2026-05-07-workshop-ebook.md](docs/superpowers/plans/2026-05-07-workshop-ebook.md)
+
+---
+
 ## 課程資料來源
 
 所有內容來自隨課程包提供的：
