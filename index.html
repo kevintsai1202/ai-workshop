@@ -1785,6 +1785,12 @@
 
   const C = window.COURSE;
 
+  // ---------- 學員可見性開關 ----------
+  // 對學員隱藏「前後測機制」與「結訓證書要件」這兩塊資訊。
+  // 未來若改回對學員揭露：把對應 flag 改 true 即可（資料仍保留在 course-data.js）。
+  const SHOW_QUIZ = false;                  // 結訓測驗章節（後測本身）
+  const SHOW_COMPLETION_REQUIREMENTS = false; // 「結訓條件」H3 + list（出席率、前後測等門檻）
+
   // ---------- 工具函式 ----------
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -1964,7 +1970,7 @@
     'day3-u1': { type: 'source-citation', src: 'assets/scenarios/day3-u1.png', kicker: 'grounded work', caption: '讓 NotebookLM 只依據上傳來源產生公告、回覆與會議紀錄。' },
     'day3-u2': { type: 'finance-grid', src: 'assets/scenarios/day3-u2.png', kicker: 'ops cleanup', caption: '把亂格式請購單、FAQ、發票與合規規則整理成表格。' },
     'day4-u1': { type: 'skill-yaml', src: 'assets/scenarios/day4-u1.png', kicker: 'skill design', caption: '拆解輸入、輸出與觸發條件，完成第一版 Skill 範本。' },
-    'day4-u2': { type: 'showcase-stage', src: 'assets/scenarios/day4-u2.png', kicker: 'showcase', caption: '測試 Skill、準備 3 分鐘展示，完成後測與結訓。' }
+    'day4-u2': { type: 'showcase-stage', src: 'assets/scenarios/day4-u2.png', kicker: 'showcase', caption: '測試 Skill、準備 3 分鐘展示，總結結訓。' }
   };
 
   // 共用案例品牌視覺，key 對應 course-data.js 的 sharedCase.brands[].id。
@@ -2132,10 +2138,13 @@
       root.append(renderInstructorCard(window.INSTRUCTOR));
     }
 
-    root.append(el('h3', {}, '結訓條件'));
-    const ul = el('ul', { class: 'list' });
-    m.completion.forEach(c => ul.append(el('li',{},c)));
-    root.append(ul);
+    // 結訓條件（含出席率與前後測門檻）— 對學員隱藏，由 SHOW_COMPLETION_REQUIREMENTS 控制
+    if (SHOW_COMPLETION_REQUIREMENTS) {
+      root.append(el('h3', {}, '結訓條件'));
+      const ul = el('ul', { class: 'list' });
+      m.completion.forEach(c => ul.append(el('li',{},c)));
+      root.append(ul);
+    }
 
     return root;
   }
@@ -2945,7 +2954,9 @@
     const nav = $('#nav');
     nav.innerHTML = '';
     let lastGroup = '';
-    NAV_ITEMS.forEach(item => {
+    // 依學員可見性開關過濾掉被隱藏的章節（如結訓測驗）
+    const visibleItems = NAV_ITEMS.filter(item => SHOW_QUIZ || item.id !== 'quiz');
+    visibleItems.forEach(item => {
       if (item.group !== lastGroup) {
         const sec = el('div', { class: 'nav-section' });
         sec.append(el('div', { class: 'nav-section-title' }, item.group));
@@ -3061,7 +3072,7 @@
     root.append(renderDay('day4'));
     root.append(renderMaterials());
     root.append(renderToolbox());
-    root.append(renderQuiz());
+    if (SHOW_QUIZ) root.append(renderQuiz());
 
     renderSidebar();
     setupGlobalEvents();
