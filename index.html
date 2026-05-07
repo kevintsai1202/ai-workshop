@@ -1761,6 +1761,81 @@
   }
   .dh-cell .stat-value { font-size: 18px; }
 
+  /* === 素材 Modal：頁內 iframe，避免主頁跳轉 === */
+  /* 結構：overlay（半透明遮罩）+ frame（白底浮層）+ iframe（內容） */
+  .material-modal {
+    position: fixed; inset: 0;
+    display: none;
+    z-index: 200;          /* 高於 sidebar(10) 與 toast(100) */
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+  }
+  .material-modal.show { display: flex; }
+  .mm-overlay {
+    position: absolute; inset: 0;
+    background: color-mix(in oklab, #000 55%, transparent);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    cursor: zoom-out;
+  }
+  .mm-frame {
+    position: relative;
+    width: min(1200px, 100%);
+    height: min(900px, 100%);
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 14px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .mm-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface, var(--bg));
+    border-bottom: 1px solid var(--border);
+  }
+  .mm-title {
+    flex: 1;
+    min-width: 0;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--fg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mm-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .mm-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.2;
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+    color: var(--fg);
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 120ms, color 120ms;
+  }
+  .mm-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .mm-iframe {
+    flex: 1;
+    width: 100%;
+    border: 0;
+    background: var(--bg);
+  }
+  @media (max-width: 720px) {
+    .material-modal { padding: 0; }
+    .mm-frame { border-radius: 0; height: 100%; }
+  }
+
   .toast {
     position: fixed;
     bottom: 28px;
@@ -1888,6 +1963,24 @@
 </div>
 
 <div class="toast" id="toast">已複製</div>
+
+<!-- ============================================================
+     MATERIAL MODAL — 素材檢視浮層（頁內 iframe，避免主頁跳轉）
+     PDF 由瀏覽器內建 viewer 預覽；.md/.csv/.yaml 走 viewer.html
+     ============================================================ -->
+<div class="material-modal" id="material-modal" aria-hidden="true" role="dialog" aria-labelledby="mm-title">
+  <div class="mm-overlay" data-mm-close></div>
+  <div class="mm-frame" role="document">
+    <div class="mm-head">
+      <div class="mm-title" id="mm-title">素材</div>
+      <div class="mm-actions">
+        <a class="mm-btn" id="mm-open-tab" href="#" target="_blank" rel="noopener" title="在新分頁開啟">↗ 新分頁</a>
+        <button class="mm-btn mm-close" type="button" data-mm-close title="關閉（Esc）" aria-label="關閉素材檢視">✕</button>
+      </div>
+    </div>
+    <iframe class="mm-iframe" id="mm-iframe" title="素材內容" referrerpolicy="no-referrer"></iframe>
+  </div>
+</div>
 
 <!-- ============================================================
      COURSE DATA — 課程完整資料（外部檔案，artifact 版本會 inline）
@@ -2027,32 +2120,111 @@
       // 課堂實作素材_Day1 / Day2 / Day3 — 預設給 Day1，學員可從 pdf/ 同層找到其他兩份
       if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return pdfBase + '課堂實作素材_Day1.pdf';
     }
-    // 拆分後的單獨素材（每個只看自己這一份）
-    if (name.includes('品牌調性')) return '完整課程包/教學素材/品牌調性指南.md';
-    if (name.includes('老闆口語稿')) return '完整課程包/教學素材/老闆口語稿.md';
-    if (name.includes('爛提示詞')) return '完整課程包/教學素材/3段爛提示詞.md';
-    if (name.includes('會議錄音逐字稿') || name.includes('錄音逐字稿')) return '完整課程包/教學素材/會議錄音逐字稿範本.md';
-    if (name.includes('請購單')) return '完整課程包/教學素材/亂格式請購單.csv';
-    if (name.includes('客訴 10 則') || name.includes('雜亂客訴')) return '完整課程包/教學素材/雜亂客訴10則.md';
-    if (name.includes('Skill 範本')) return '完整課程包/教學素材/發票自動整理_Skill範本.yaml';
-    // 教學素材的 .md 全文版（未指定 PDF type 時 fallback 到 .md，例如總覽表格、講師備課用）
-    if (name.includes('員工差勤')) return '完整課程包/教學素材/綠野選物_員工差勤與休假管理辦法.md';
-    if (name.includes('教育訓練')) return '完整課程包/教學素材/綠野選物_新進員工教育訓練手冊.md';
-    if (name.includes('新品上架')) return '完整課程包/教學素材/綠野選物_新品上架公告作業辦法.md';
-    if (name.includes('FAQ官方版') || name.includes('FAQ 官方版')) return '完整課程包/教學素材/暖光咖啡_FAQ官方版.md';
-    if (name.includes('退換貨')) return '完整課程包/教學素材/暖光咖啡_商品退換貨政策.md';
-    if (name.includes('客訴處理')) return '完整課程包/教學素材/暖光咖啡_客訴處理SOP.md';
-    if (name.includes('進貨與庫存')) return '完整課程包/教學素材/暖光咖啡_食材進貨與庫存管理辦法.md';
-    if (name.includes('公司費用')) return '完整課程包/教學素材/公司費用報支管理辦法.md';
-    if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return '完整課程包/教學素材/課堂實作素材_Day1.md';
-    if (name.includes('課程輔助文件')) return '完整課程包/課程輔助文件.md';
-    if (name.includes('共用案例設定')) return '完整課程包/共用案例設定.md';
-    return null;
+    // 拆分後的單獨素材：先算原始路徑，再統一包裝成 viewer.html?file=...
+    // 這樣 .md / .csv / .yaml 點開都會進到統一的閱讀器（美化渲染 + 一鍵複製 + 下載原檔）
+    const rawPath = (() => {
+      if (name.includes('品牌調性')) return '完整課程包/教學素材/品牌調性指南.md';
+      if (name.includes('老闆口語稿')) return '完整課程包/教學素材/老闆口語稿.md';
+      if (name.includes('爛提示詞')) return '完整課程包/教學素材/3段爛提示詞.md';
+      if (name.includes('會議錄音逐字稿') || name.includes('錄音逐字稿')) return '完整課程包/教學素材/會議錄音逐字稿範本.md';
+      if (name.includes('請購單')) return '完整課程包/教學素材/亂格式請購單.csv';
+      if (name.includes('客訴 10 則') || name.includes('雜亂客訴')) return '完整課程包/教學素材/雜亂客訴10則.md';
+      if (name.includes('Skill 範本')) return '完整課程包/教學素材/發票自動整理_Skill範本.yaml';
+      // 教學素材的 .md 全文版（未指定 PDF type 時 fallback 到 .md）
+      if (name.includes('員工差勤')) return '完整課程包/教學素材/綠野選物_員工差勤與休假管理辦法.md';
+      if (name.includes('教育訓練')) return '完整課程包/教學素材/綠野選物_新進員工教育訓練手冊.md';
+      if (name.includes('新品上架')) return '完整課程包/教學素材/綠野選物_新品上架公告作業辦法.md';
+      if (name.includes('FAQ官方版') || name.includes('FAQ 官方版')) return '完整課程包/教學素材/暖光咖啡_FAQ官方版.md';
+      if (name.includes('退換貨')) return '完整課程包/教學素材/暖光咖啡_商品退換貨政策.md';
+      if (name.includes('客訴處理')) return '完整課程包/教學素材/暖光咖啡_客訴處理SOP.md';
+      if (name.includes('進貨與庫存')) return '完整課程包/教學素材/暖光咖啡_食材進貨與庫存管理辦法.md';
+      if (name.includes('公司費用')) return '完整課程包/教學素材/公司費用報支管理辦法.md';
+      if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return '完整課程包/教學素材/課堂實作素材_Day1.md';
+      if (name.includes('課程輔助文件')) return '完整課程包/課程輔助文件.md';
+      if (name.includes('共用案例設定')) return '完整課程包/共用案例設定.md';
+      return null;
+    })();
+    return rawPath ? `viewer.html?file=${encodeURIComponent(rawPath)}` : null;
   }
 
   const escapeHTML = s => String(s).replace(/[&<>"']/g, ch => (
     { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[ch]
   ));
+
+  // ============================================================
+  //  素材 Modal：頁內 iframe 開啟，避免主頁跳轉
+  //  - 對 PDF 直接 iframe 預覽（依賴瀏覽器內建 PDF viewer）
+  //  - 對 .md/.csv/.yaml 載入 viewer.html?file=...（已含美化渲染與下載原檔）
+  //  - ESC、overlay 空白區、✕ 按鈕皆可關閉
+  //  - 關閉時把 iframe.src 設為 about:blank，釋放資源
+  // ============================================================
+  const materialModal = (() => {
+    const root = document.getElementById('material-modal');
+    if (!root) return { open(){}, close(){} };
+
+    const frame = document.getElementById('mm-iframe');
+    const titleEl = document.getElementById('mm-title');
+    const newTabBtn = document.getElementById('mm-open-tab');
+    let lastFocus = null;
+
+    function open(url, name) {
+      if (!url) return;
+      titleEl.textContent = name || '素材檢視';
+      newTabBtn.href = url;
+      frame.src = url;
+      lastFocus = document.activeElement;
+      root.classList.add('show');
+      root.setAttribute('aria-hidden', 'false');
+      // 鎖定背景捲動，避免滑鼠滾輪滲透到主頁
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      if (!root.classList.contains('show')) return;
+      root.classList.remove('show');
+      root.setAttribute('aria-hidden', 'true');
+      // 清空 iframe，避免 PDF/影片在背景繼續載入
+      frame.src = 'about:blank';
+      document.body.style.overflow = '';
+      if (lastFocus && typeof lastFocus.focus === 'function') {
+        try { lastFocus.focus(); } catch (e) { /* ignore */ }
+      }
+    }
+
+    // overlay / ✕ 按鈕：任何標記 data-mm-close 的子節點被點到都關閉
+    root.addEventListener('click', e => {
+      if (e.target.closest('[data-mm-close]')) close();
+    });
+    // 全域 ESC 關閉（只在 modal 開啟時生效）
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') close();
+    });
+
+    return { open, close };
+  })();
+
+  // ---------- click 攔截策略：決定哪些 click 走 modal、哪些走原生 ----------
+  // TODO（請使用者實作）：在「方向 C — 頁內 Modal」中，我們希望多數 click 都進 modal，
+  // 但又不想搶走使用者熟悉的瀏覽器快捷鍵（中鍵新分頁、Ctrl/Cmd+左鍵新分頁、Shift+左鍵新視窗）。
+  //
+  // 規格：回傳 true 代表「攔截，呼叫 modal.open」，回傳 false 代表「放行，由瀏覽器照原生 a[href] 處理」。
+  // 提示：MouseEvent 上 .button（0=左、1=中、2=右）、.ctrlKey、.metaKey、.shiftKey、.altKey 都可用。
+  // 桌面 Mac 用 metaKey、Windows/Linux 用 ctrlKey 表「在新分頁開啟」，要兩者都尊重。
+  function shouldInterceptClick(event) {
+    // 預留 5–7 行：請填入你的判斷邏輯
+    return true;
+  }
+
+  // 全域委派：任何 <a data-material-link> 的點擊都先過 shouldInterceptClick
+  // 攔截 → e.preventDefault() + materialModal.open(href, name)
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-material-link]');
+    if (!a) return;
+    if (!shouldInterceptClick(e)) return;
+    e.preventDefault();
+    const name = a.getAttribute('data-material-name') || a.textContent.trim();
+    materialModal.open(a.href, name);
+  });
 
   // ---------- 收集所有任務 id ----------
   const allTaskIds = (() => {
@@ -2832,11 +3004,16 @@
       const center = el('div');
       const url = getMaterialUrl(m.name, m.type);
       if (url) {
-        // PDF 文件用 download 屬性觸發下載（其他類型仍是 target=_blank 開新分頁檢視）
-        const linkAttrs = { class: 'material-name', href: url };
-        if (m.type === 'PDF 文件') linkAttrs.download = '';
-        else linkAttrs.target = '_blank';
-        const link = el('a', linkAttrs, m.name);
+        // 統一交給 materialModal 處理：頁內 iframe 開啟避免主頁跳轉。
+        // 中鍵 / Ctrl+左鍵 等仍能透過 shouldInterceptClick 放行給瀏覽器原生行為。
+        const link = el('a', {
+          class: 'material-name',
+          href: url,
+          'data-material-link': 'true',
+          'data-material-name': m.name,
+          target: '_blank',          // fallback：若 JS 失效仍能新分頁開啟
+          rel: 'noopener'
+        }, m.name);
         link.style.color = 'var(--accent-deep)';
         link.style.textDecoration = 'none';
         center.append(link);
@@ -2876,10 +3053,10 @@
     const tb = el('tbody');
     C.materials.forEach(m => {
       const url = getMaterialUrl(m.name, m.type);
-      // PDF 文件用 download 屬性觸發下載；其他類型用 target=_blank 開新分頁檢視
-      const linkProps = m.type === 'PDF 文件' ? 'download' : 'target="_blank"';
+      // 統一交由 materialModal 處理：href 仍保留作為 fallback / 中鍵新分頁，
+      // 主左鍵點擊由全域 click 委派攔截後改開頁內 iframe modal。
       const nameHtml = url
-        ? `<a href="${url}" ${linkProps} style="color:var(--accent-deep);text-decoration:none;"><b>${escapeHTML(m.name)}</b></a>`
+        ? `<a href="${url}" data-material-link="true" data-material-name="${escapeHTML(m.name)}" target="_blank" rel="noopener" style="color:var(--accent-deep);text-decoration:none;"><b>${escapeHTML(m.name)}</b></a>`
         : `<b>${escapeHTML(m.name)}</b>`;
       tb.innerHTML += `<tr>
         <td><span class="pill">${m.type}</span></td>

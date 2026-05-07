@@ -10,6 +10,8 @@ data/error-snapshot.png
 data/instructor-channel.png
 data/illustrations-*.png
 data/design-audit/
+visual-audit-*.png
+verify-*.png
 
 # Illustration audit (本機一次性工具，腳本與產出皆不入庫)
 scripts/audit-illustrations.mjs
