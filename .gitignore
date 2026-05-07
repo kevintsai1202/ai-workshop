@@ -25,6 +25,9 @@ data/illustration-audit.md
 # Temporary working files
 tmp/
 
+# 電子書建構產物（每次 build 都會重產）
+dist/
+
 # OS junk
 .DS_Store
 Thumbs.db
