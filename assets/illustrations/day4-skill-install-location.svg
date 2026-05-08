@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Antigravity Skill 安裝位置：全域 ~/.gemini/antigravity/skills/ 與工作區 .agent/skills/，含 macOS / Windows 路徑差異與 Gemini CLI 區隔">
+  <title>Antigravity Skill 安裝位置</title>
+  <desc>顯示 Antigravity skill 兩個安裝範圍：全域目錄 ~/.gemini/antigravity/skills/ 跨所有專案共用，工作區目錄 .agent/skills/ 僅當前專案使用且優先於全域。同時對照 macOS / Windows 路徑差異與 Gemini CLI 不同位置。</desc>
+
+  <!-- 區段標籤 -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1" fill="currentColor" opacity="0.6">
+    <text x="40" y="36">GLOBAL · 跨專案</text>
+    <text x="320" y="36">WORKSPACE · 當前專案</text>
+  </g>
+
+  <!-- ====== 左側：全域路徑卡 ====== -->
+  <g transform="translate(40 60)">
+    <rect x="0" y="0" width="240" height="220" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+
+    <!-- 標題 -->
+    <g transform="translate(20 28)">
+      <!-- house icon (home) -->
+      <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 6 L 8 -2 L 16 6"/>
+        <path d="M2 6 L 2 14 L 14 14 L 14 6"/>
+      </g>
+      <text x="26" y="10" font-family="inherit" font-size="13" font-weight="700" fill="currentColor">使用者主目錄</text>
+    </g>
+
+    <!-- macOS / Linux 路徑 -->
+    <g transform="translate(20 60)">
+      <text x="0" y="0" font-family="inherit" font-size="11" font-weight="700" fill="currentColor" opacity="0.85">macOS / Linux</text>
+      <rect x="0" y="8" width="200" height="28" rx="4" fill="currentColor" opacity="0.1"/>
+      <text x="8" y="26" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor">~/.gemini/antigravity/skills/</text>
+    </g>
+
+    <!-- Windows 路徑 -->
+    <g transform="translate(20 110)">
+      <text x="0" y="0" font-family="inherit" font-size="11" font-weight="700" fill="currentColor" opacity="0.85">Windows</text>
+      <rect x="0" y="8" width="200" height="28" rx="4" fill="currentColor" opacity="0.1"/>
+      <text x="8" y="20" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="currentColor">%USERPROFILE%\.gemini\</text>
+      <text x="8" y="32" font-family="ui-monospace, Menlo, monospace" font-size="9" fill="currentColor">  antigravity\skills\</text>
+    </g>
+
+    <!-- 說明 -->
+    <g transform="translate(20 165)">
+      <text x="0" y="0" font-family="inherit" font-size="11" fill="currentColor" opacity="0.7">所有專案共用，</text>
+      <text x="0" y="16" font-family="inherit" font-size="11" fill="currentColor" opacity="0.7">推薦放個人常用 skill。</text>
+      <g transform="translate(0 30)">
+        <rect x="0" y="-12" width="64" height="18" rx="4" fill="currentColor" opacity="0.18"/>
+        <text x="32" y="1" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">推薦</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ====== 右側：工作區路徑卡 ====== -->
+  <g transform="translate(320 60)">
+    <rect x="0" y="0" width="240" height="220" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="2"/>
+
+    <!-- 標題 -->
+    <g transform="translate(20 28)">
+      <!-- folder icon (project) -->
+      <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 4 L 8 4 L 12 0 L 22 0 L 22 14 L 0 14 Z"/>
+      </g>
+      <text x="32" y="10" font-family="inherit" font-size="13" font-weight="700" fill="currentColor">專案根目錄</text>
+    </g>
+
+    <!-- 跨平台路徑 -->
+    <g transform="translate(20 60)">
+      <text x="0" y="0" font-family="inherit" font-size="11" font-weight="700" fill="currentColor" opacity="0.85">macOS / Linux / Windows</text>
+      <rect x="0" y="8" width="200" height="28" rx="4" fill="currentColor" opacity="0.1"/>
+      <text x="8" y="26" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor">&lt;project&gt;/.agent/skills/</text>
+    </g>
+
+    <!-- 優先順序提示 -->
+    <g transform="translate(20 110)">
+      <text x="0" y="0" font-family="inherit" font-size="11" font-weight="700" fill="currentColor" opacity="0.85">優先順序</text>
+      <rect x="0" y="8" width="200" height="36" rx="4" fill="currentColor" opacity="0.08"/>
+      <text x="8" y="22" font-family="inherit" font-size="11" fill="currentColor">workspace</text>
+      <text x="92" y="22" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">&gt;</text>
+      <text x="108" y="22" font-family="inherit" font-size="11" fill="currentColor">global</text>
+      <text x="8" y="38" font-family="inherit" font-size="9" fill="currentColor" opacity="0.6">同名 skill 工作區會覆蓋全域</text>
+    </g>
+
+    <!-- 說明 -->
+    <g transform="translate(20 165)">
+      <text x="0" y="0" font-family="inherit" font-size="11" fill="currentColor" opacity="0.7">僅限當前專案，</text>
+      <text x="0" y="16" font-family="inherit" font-size="11" fill="currentColor" opacity="0.7">適合公司/客戶特定 skill。</text>
+      <g transform="translate(0 30)">
+        <rect x="0" y="-12" width="80" height="18" rx="4" fill="rgba(255,255,255,0.7)" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+        <text x="40" y="1" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor" opacity="0.8">特殊用途</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ====== 底部：跨工具差異警告 ====== -->
+  <g transform="translate(40 300)">
+    <rect x="0" y="0" width="520" height="60" rx="8" fill="currentColor" opacity="0.08"/>
+    <rect x="0" y="0" width="520" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 4"/>
+
+    <text x="20" y="22" font-family="inherit" font-size="12" font-weight="700" fill="currentColor">⚠ 跨工具路徑差異</text>
+
+    <g transform="translate(20 38)" font-family="ui-monospace, Menlo, monospace" font-size="10" fill="currentColor" opacity="0.85">
+      <text x="0" y="0">Antigravity → ~/.gemini/antigravity/skills/</text>
+      <text x="280" y="0">Gemini CLI → ~/.gemini/skills/</text>
+      <text x="0" y="14" opacity="0.6">Codex App → 安裝介面內 / Plugins 頁</text>
+      <text x="280" y="14" opacity="0.6">Claude Code → .claude/skills/</text>
+    </g>
+  </g>
+
+  <!-- 底部註記 -->
+  <text x="300" y="385" text-anchor="middle" font-family="inherit" font-size="10" fill="currentColor" opacity="0.55">同一份 SKILL.md 可跨工具，**只是放置路徑不同** — 跨工具共用建議用 symbolic link</text>
+</svg>

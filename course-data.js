@@ -311,7 +311,7 @@ window.COURSE = {
               rows: [
                 ['1️⃣ 官方預建立 Gem', 'Gemini App 側邊欄已內建', '入門者'],
                 ['2️⃣ 自訂 Gem', 'Gem 管理工具 → 新增 Gem', '行政應用主力（今天親手做）'],
-                ['3️⃣ Google Labs 的 Gem', 'labs.google', '進階嘗鮮者（Day 4 開場深入）']
+                ['3️⃣ Google Labs 的 Gem', 'labs.google', '進階嘗鮮者（課後自學）']
               ]
             }
           },
@@ -792,15 +792,15 @@ window.COURSE = {
     title: 'Day 4｜AI 代理協作、成果展示與小測驗',
     date: '6/3（六） 09:00 ~ 16:30',
     hours: '6.5 小時',
-    learningGoal: '完成 Antigravity 與 Codex 的本機安裝，理解 Antigravity、Codex 與 Agent Skills 的基本能力，並以範本親自建立專屬 Skill，最後完成成果展示與課後小測驗。',
+    learningGoal: '上午完成 Antigravity 桌面端安裝並理解 Agent Skills 基本能力，以範本親自建立專屬 Skill；下午認識插件 (Plugin) 與 Skills 的包含關係、完成 Codex App 安裝與 Plugin 試裝，並透過 skills.sh 拓展課後資源，最後完成課後小測驗。',
     schedule: [
       ['09:00 ~ 09:30', '開場 + 環境檢查', '確認筆電狀態、安裝權限'],
-      ['09:30 ~ 12:00', '單元 1 上半：工具安裝 + Skill 概念', 'Antigravity / Codex 安裝、Skill 三要素'],
+      ['09:30 ~ 12:00', '單元 1 上半：工具安裝 + Skill 概念', 'Antigravity 安裝、Skill 三要素（Codex App 下午介紹）'],
       ['12:00 ~ 13:00', '午休', ''],
       ['13:00 ~ 14:30', '單元 1 下半：範本拆解 + Skill 初稿', '拆解示範 Skill、AI 協助填初稿'],
       ['14:30 ~ 15:30', '單元 2 上半：學員建立專屬 Skill', '一對一巡堂、個人化微調'],
-      ['15:30 ~ 16:00', '成果展示', '每人 3 分鐘，抽選 5-8 位'],
-      ['16:00 ~ 16:30', '結訓', '頒證、合照']
+      ['15:30 ~ 16:00', 'Skills 進階探索', '插件 vs Skills、Codex Plugin、Codex App 安裝、skills.sh'],
+      ['16:00 ~ 16:30', '結訓', '合照']
     ],
     units: [
       {
@@ -808,36 +808,65 @@ window.COURSE = {
         title: '單元 1｜工具安裝 + Agent Skills 概念',
         time: '09:30 ~ 14:30',
         goals: [
-          '知道 Google Labs 是什麼，理解 Antigravity 是從 Labs 出身的「未來工具」。',
           '完成 Antigravity 桌面端安裝、能開啟新專案。',
-          '完成 Codex CLI（或 Codex 整合）安裝、能跑 hello world。',
           '用一句話說出 Agent Skill 的「輸入、輸出、觸發條件」。',
           '能拆解一個現成 Skill 並改寫成自己的版本。'
         ],
         concepts: [
           {
-            heading: 'Google Labs：實驗性產品孵化中心',
-            body: 'Day 1 我們提到 Gem 三大來源 — 第三種「Google Labs 的 Gem」，今天兌現。',
-            table: {
-              head: ['工具', '出身', '現況', '本課程怎麼用'],
-              rows: [
-                ['NotebookLM', 'Labs（2023）', '已正式上線', 'Day 1 介紹、Day 3 主力'],
-                ['Flow', 'Labs（2025）', '已正式上線', 'Day 2 影片實作'],
-                ['Antigravity', 'Labs（今天我們要裝它）', '仍在 Labs 階段', 'Day 4 主力'],
-                ['Whisk / Storybook', 'Labs', '部分仍實驗中', '視時間帶逛']
-              ]
-            },
-            note: '今天 Labs 玩到的東西，明年可能變主流。'
+            heading: 'Skill 資料夾結構（一個 Skill = 一個資料夾）',
+            illustration: 'day4-skill-folder-structure',
+            body: '依 agentskills.io 規範：頂層資料夾名 = name 欄位，內含必要 SKILL.md，可選 references/、scripts/、assets/ 子目錄。',
+            list: [
+              ['SKILL.md', '✅ 必要 — metadata（YAML frontmatter）+ 指令本體（Markdown body）'],
+              ['references/', '⚠️ 選填 — 補充文件（如公司規章 PDF），AI 按需載入'],
+              ['scripts/', '⚠️ 選填 — 可執行腳本（依 agent 實作支援的語言）'],
+              ['assets/', '⚠️ 選填 — 模板、圖片、靜態資源'],
+              ['命名規則', '資料夾名與 name 欄位必須完全相同，否則 agent 載不到此 skill']
+            ],
+            note: '範例：invoice-to-excel/ 資料夾內含 SKILL.md，公司差勤辦法 PDF 放在 references/expense-policy.pdf。'
           },
           {
-            heading: 'Agent Skill 三要素',
+            heading: 'Agent Skill 結構（agentskills.io 官方規範）',
             illustration: 'day4-skill-encapsulation',
+            body: '一個 Skill 是「資料夾 + SKILL.md」。SKILL.md 含 YAML frontmatter（name + description）與 Markdown body（指令）。',
             list: [
-              ['Input（輸入）', '資料/檔案/觸發詞 — 例：發票照片、用戶輸入「幫我整理發票」'],
-              ['Output（輸出）', '結構化結果 — 例：Markdown 表格、Excel 寫入、Email 送出'],
-              ['Trigger（觸發）', '何時自動啟動 — description 寫得越具體，AI 越容易判斷該觸發']
+              ['資料夾', '名稱 = name 欄位（如 invoice-to-excel/），可選含 scripts/、references/、assets/'],
+              ['name（必填）', '1-64 字，lowercase + hyphen，不可底線/大寫/連續 hyphen，必須與資料夾同名'],
+              ['description（必填）', '1-1024 字，同時說明「做什麼」+「什麼時候用」— AI 靠這段判斷觸發'],
+              ['Markdown body', '指令本體：步驟、輸出格式、處理規則、邊界情況。建議 < 5000 tokens']
             ],
-            note: 'description 必須寫得非常詳細具體，因為 AI 會根據這段文字決定何時要自動觸發這個 Skill。'
+            note: '其餘欄位（license / compatibility / metadata / allowed-tools）皆選填，多數 Skill 不需要。觸發機制是 progressive disclosure：啟動時只讀 name+description，符合才載入完整 body。'
+          },
+          {
+            heading: 'Antigravity Skill 安裝位置（依官網）',
+            illustration: 'day4-skill-install-location',
+            body: 'Antigravity 啟動時自動掃描兩個目錄：全域（跨專案）與工作區（當前專案）。寫好的 SKILL.md 整個資料夾複製到對應位置即可。',
+            table: {
+              head: ['範圍', 'macOS / Linux', 'Windows'],
+              rows: [
+                ['全域（推薦）', '~/.gemini/antigravity/skills/<name>/', '%USERPROFILE%\\.gemini\\antigravity\\skills\\<name>\\'],
+                ['工作區（覆蓋全域）', '<project>/.agent/skills/<name>/', '<project>\\.agent\\skills\\<name>\\']
+              ]
+            },
+            list: [
+              ['優先順序', '同名 skill 工作區會覆蓋全域'],
+              ['驗證安裝', '重啟 Antigravity 對話串 → progressive disclosure 自動偵測'],
+              ['跨工具差異', 'Gemini CLI 用 ~/.gemini/skills/（不含 antigravity 子目錄），Codex 用 Plugins UI、Claude Code 用 .claude/skills/'],
+              ['跨工具共用', '用 symbolic link：ln -s ~/.gemini/skills ~/.gemini/antigravity/skills（Windows 用 mklink /D）']
+            ],
+            note: '同一份 SKILL.md 可跨工具使用，差別只在「放置路徑不同」。第一次安裝後務必重啟對話串。'
+          },
+          {
+            heading: 'skill-creator：官方 meta-skill（用 skill 寫 skill）',
+            body: 'Anthropic 推出的官方 Skill — 它本身就是 Skill，但專門用來幫你寫其他 Skill。比直接讓 AI 自由發揮品質更高。',
+            list: [
+              ['它做什麼', '透過 5-7 個問題引導你想清楚（任務、觸發場景、輸入、輸出），再自動產出符合規範的 SKILL.md'],
+              ['還可做什麼', '跑測試案例驗證觸發準確度、跑 description 最佳化迭代（最多 5 輪）'],
+              ['安裝指令', 'npx skills add https://github.com/anthropics/skills --skill skill-creator'],
+              ['使用方式', '在 Codex / Claude / 其他 agent 中直接說「啟動 skill-creator，幫我寫一個 Skill」']
+            ],
+            note: '自己寫 Skill 像自己寫程式 — 你會慢慢學會。用 skill-creator 像有資深前輩問對問題，幫你抓 description 寫法、命名規則、邊界情況。'
           },
           {
             heading: 'Gem → Skill 升級',
@@ -856,61 +885,107 @@ window.COURSE = {
         prompts: [
           {
             id: 'd4-p1',
-            title: 'Skill 範本：發票自動整理（YAML）',
-            note: '複製此範本去改寫成你自己的 Skill',
+            title: 'Skill 範本：發票自動整理（SKILL.md，agentskills.io 官方格式）',
+            note: '此為 SKILL.md 純內容；資料夾結構請見上方插圖（資料夾名須與 name 相同）',
             text: `---
-name: auto_invoice_parser
-description: |
-  將發票照片自動辨識並整理成 Markdown 表格，同時進行初步的財務合規性檢查。
-  使用時機：收到一堆發票照片需要報帳，或需要審核同事的報帳發票是否符合公司規定時。
-trigger:
-  - 用戶上傳發票的圖片檔案
-  - 用戶輸入「幫我整理發票」
-inputs:
-  - name: invoice_images
-    type: image
-    required: true
-    description: 1 到多張發票照片
-outputs:
-  - name: excel_table
-    type: markdown_table
-    description: 包含日期、金額、品項、會計科目與合規檢查的表格
-prompt: |
-  角色：你是專業且嚴謹的財務稽核專員。
-  任務：請辨識上傳的發票照片，並整理成報帳 Markdown 表格。
+name: invoice-to-excel
+description: 把多張發票照片辨識並整理成 Markdown 表格，含日期、金額、商家、品項、報支科目，並自動標示違規（如餐飲超過 150 元）。使用時機：每月報帳、整理收據、或需要稽核同事報帳合規性時。
+---
 
-  欄位必須為：
-  | 報帳日期 | 商家名稱 | 發票號碼 | 金額（含稅） | 品項摘要 | 報支科目 | 合規檢查 |
+# 發票自動整理
 
-  處理規則：
-  1. 【報支科目】請根據品項自動分類（如：交通費、誤餐費、辦公用品等）。
-  2. 【合規檢查】：請核對金額與品項，若餐飲費超過 150 元，標示「❌ 違規超標」；若為高鐵票，標示「✅ 符合」。
-  3. 無法辨識的文字請填「待人工確認」。
----`
+## 角色與任務
+
+你是專業且嚴謹的財務稽核專員。請辨識使用者上傳的發票照片，並整理成 Markdown 表格。
+
+## 輸出格式
+
+| 報帳日期 | 商家名稱 | 發票號碼 | 金額（含稅） | 品項摘要 | 報支科目 | 合規檢查 |
+| --- | --- | --- | --- | --- | --- | --- |
+
+## 處理規則
+
+1. **報支科目**：根據品項自動分類（交通費、誤餐費、辦公用品等）
+2. **合規檢查**：
+   - 餐飲超過 150 元 → 標示「❌ 違規超標」
+   - 高鐵票 → 標示「✅ 符合」
+   - 其他依公司差勤辦法判斷
+3. **無法辨識**：填「待人工確認」
+
+## 知識來源
+
+請參考公司費用報支管理辦法第二章報支標準（可放在 references/ 目錄供 skill 載入）。`
           },
           {
             id: 'd4-p2',
-            title: 'AI 協助填 Skill 初稿（給 Codex / Gemini）',
-            note: '把 Day 1~3 提示詞庫貼進去，要 AI 幫你打草稿',
-            text: `我有一段每天會用到的提示詞（如下），請幫我把它包裝成 Agent Skill 的 YAML 範本。
-請務必填好：
-- name（snake_case）
-- description（一段話，AI 會依此決定何時觸發）
-- trigger（2-3 條觸發條件）
-- inputs / outputs（型別、說明）
-- prompt（完整 RTFC，原樣保留我的限制條件）
+            title: 'AI 協助寫 SKILL.md（手動路徑：給 Codex / Claude / Gemini）',
+            note: '把 Day 1~3 提示詞庫貼進去，要 AI 幫你打草稿。依 agentskills.io 官方規範產出。',
+            text: `我有一段每天會用到的提示詞（如下），請幫我包裝成符合 agentskills.io 官方規範的 SKILL.md。
+
+要求：
+1. 產出標準 SKILL.md 格式（YAML frontmatter + Markdown body）
+2. frontmatter 只填必要欄位：
+   - name：1-64 字，全部小寫 + hyphen，不可底線、不可大寫、不可首尾或連續 hyphen
+   - description：1-1024 字，必須同時說明「做什麼」+「什麼時候用」
+3. Markdown body 含：角色定位、輸出格式、處理規則、邊界情況
+4. 完整 RTFC 規則保留在 body 內，不要丟掉我的限制條件
 
 [此處貼上你的提示詞]`
+          },
+          {
+            id: 'd4-p3',
+            title: 'skill-creator：用官方 meta-skill 寫 Skill（推薦路徑）',
+            note: '安裝後在 Codex/Claude 對它說「幫我寫一個 Skill」，它會問你 5-7 個問題然後產出 SKILL.md',
+            text: `# 安裝指令（從 skills.sh）
+npx skills add https://github.com/anthropics/skills --skill skill-creator
+
+# 安裝完成後，在 agent 對話中啟動它：
+請啟動 skill-creator，幫我寫一個 Skill。
+我想做的事情是：[此處用一兩句話描述你的目標任務]
+
+# skill-creator 會引導你跑完三階段：
+# 1. 意圖捕捉：問 5-7 個問題逼你想清楚（做什麼？什麼時候用？輸入是？輸出是？）
+# 2. 草稿產出：自動寫出符合官方規範的 SKILL.md
+# 3. description 最佳化：跑觸發測試，迭代到 description 能準確被啟動（最多 5 輪）`
+          },
+          {
+            id: 'd4-p4',
+            title: 'Antigravity Skill 安裝指令（PowerShell / Bash）',
+            note: '寫好 SKILL.md 後放進 Antigravity 的三種方式 — 任選其一，安裝後重啟對話串即可',
+            text: `# ── 方法 A：手動拷貝（最直觀） ──
+mkdir -p ~/.gemini/antigravity/skills
+cp -R ./invoice-to-excel ~/.gemini/antigravity/skills/
+
+# ── 方法 B：/learn 命令（從 agentskill.sh 裝社群 skill） ──
+# 一次性註冊 /learn 命令：
+git clone https://github.com/agentskill-sh/ags.git ~/.gemini/antigravity/skills/learn
+
+# 之後在 Antigravity 對話中：
+#   /learn seo                                ← 搜尋
+#   /learn @anthropic/seo-content-optimizer   ← 安裝特定 skill
+#   /learn trending                           ← 看熱門 skill
+
+# ── 方法 C：npx 安裝器（批次或單一） ──
+npx antigravity-awesome-skills --antigravity                ← 完整社群庫（1400+ 個）
+npx @rmyndharis/antigravity-skills install <skill-name>     ← 單一 skill
+
+# ── 安裝後驗證 ──
+# 1. 重啟 Antigravity 對話串（progressive disclosure 在啟動時掃描）
+# 2. 對話輸入 skill 觸發場景文字（例：「幫我整理發票」）
+# 3. 若沒觸發，檢查：資料夾名 = name？SKILL.md 在根層？description 含關鍵字？
+
+# 路徑速查：
+#   全域（推薦）：~/.gemini/antigravity/skills/<name>/SKILL.md
+#   工作區（覆蓋全域）：.agent/skills/<name>/SKILL.md`
           }
         ],
         tasks: [
           { id: 'd4-u1-t1', label: '完成 Antigravity 桌面端安裝、能開新專案' },
-          { id: 'd4-u1-t2', label: '完成 Codex CLI（或整合）安裝、能跑 hello world' },
           { id: 'd4-u1-t3', label: '逐行拆解講師的「發票辨識 Skill」範本，標記三要素' },
           { id: 'd4-u1-t4', label: '挑一條 Day 1~3 提示詞，請 AI 協助填成 Skill 初稿' }
         ],
         materials: [
-          { id: 'd4-m1', name: 'Skill 範本檔案', type: 'YAML', desc: '發票自動整理 Skill — 學員 fork 用' },
+          { id: 'd4-m1', name: 'Skill 範本檔案', type: 'MD', desc: '發票自動整理 SKILL.md（依 agentskills.io 官方規範）— 學員 fork 用' },
           { id: 'd4-m2', name: '公司費用報支管理辦法', type: 'PDF 文件', desc: '範例 Skill 的合規規則來源' }
         ]
       },
@@ -920,7 +995,8 @@ prompt: |
         time: '14:30 ~ 16:30',
         goals: [
           '完成個人化的 Agent Skill 草稿（基於 Day 1~3 提示詞庫）。',
-          '能上台 3 分鐘說清楚 Skill 的輸入、輸出、觸發、應用情境。',
+          '能用一句話說明插件 (Plugin) 與 Agent Skills 的包含關係。',
+          '完成 Codex App 安裝，並在 Codex 內裝 1 個 Plugin（或從 skills.sh 挑 1 個 Skill）。',
           '通過課後小測驗，達結訓標準。'
         ],
         concepts: [
@@ -935,22 +1011,64 @@ prompt: |
             ]
           },
           {
-            heading: '成果展示 3 分鐘格式',
+            heading: '插件 (Plugin) vs Skills：誰包含誰',
+            body: 'Plugin 是容器，Skills 是元件。Plugin 通常打包多個 Skills，再加上 Apps（外部服務連結）和 MCP Servers。',
+            table: {
+              head: ['維度', '插件（Plugin）', 'Agent Skills'],
+              rows: [
+                ['角色', '容器（打包多個功能模組）', '單一元件（指令模板）'],
+                ['包含內容', 'Skills + Apps + MCP Servers', 'YAML/Markdown 定義（input / output / description）'],
+                ['例子', 'GitHub Workflow、Slack 自動化插件', 'PR 審閱、發票整理、會議紀錄'],
+                ['修改門檻', '通常需懂程式', 'YAML 檔可直接編輯'],
+                ['使用方式', '裝來用', '裝來用 or 自己寫（今天上午做的事）']
+              ]
+            },
+            note: 'Plugin 是禮盒，Skill 是禮盒裡的物件。下一段以 Codex 為例看實際運作。'
+          },
+          {
+            heading: 'Codex 三件事：Plugin / Skills / Apps',
+            body: 'Codex 是 OpenAI 推出的 coding agent，有三種介面：Codex App（桌面）、Codex CLI（Day 1 已裝）、IDE Extension。Codex 的 Plugin 內含三類元件。',
+            table: {
+              head: ['名稱', '是什麼', 'Codex 內例子'],
+              rows: [
+                ['Plugin', '容器，打包多個元件', 'GitHub Workflow 插件'],
+                ['Skills', 'Plugin 內的指令模板', 'PR 自動審閱、Issue 摘要'],
+                ['Apps', '外部服務連結（ChatGPT 帳號驗證）', 'GitHub、Slack、Google Drive']
+              ]
+            },
+            note: '安裝方式：Codex App 內 Plugins 頁面 → 「+」或 Add to Codex；CLI 內輸入 codex /plugins → Install plugin。'
+          },
+          {
+            heading: 'Codex App 安裝（桌面版）',
+            body: 'Codex App 是 Codex 的桌面 GUI 工具，跟 Day 1 裝的 CLI 不同介面。提供多執行緒並行、Git Worktree 整合、視覺化介面。',
             list: [
-              ['30 秒', '我是誰、我做什麼工作、最常痛點'],
-              ['1 分鐘', 'Skill 三要素：輸入是什麼、輸出是什麼、什麼時候觸發'],
-              ['1 分鐘', '現場 demo 一次（事先準備好 sample input）'],
-              ['30 秒', '下一步：回公司會把它用在哪']
-            ]
+              ['下載', 'developers.openai.com/codex/app'],
+              ['平台', 'macOS（Apple Silicon / Intel）、Windows；Linux 規劃中'],
+              ['登入', 'ChatGPT 帳號 或 OpenAI API Key'],
+              ['方案', 'ChatGPT Plus / Pro / Business / Edu / Enterprise（免費版暫不支援）'],
+              ['特色', '多執行緒並行、Git Worktree 整合、視覺化介面']
+            ],
+            note: '為什麼裝？多執行緒讓你不用排隊等任務跑完；GUI 對行政人員比 CLI 友善。'
+          },
+          {
+            heading: 'skills.sh：跨工具 Skills 寶庫',
+            body: 'Vercel 維護的 Agent Skills 開源生態系——支援 Codex、Claude Code、Cursor、GitHub Copilot、Windsurf 等 18+ 種 AI 代理。',
+            list: [
+              ['網站', 'skills.sh — 主題、排行榜、代理篩選三種瀏覽方式'],
+              ['安裝指令', 'npx skills add <owner/repo>（範例：npx skills add anthropics/skill-pdf）'],
+              ['投稿', 'GitHub 開源，開發者可發 PR 投稿'],
+              ['安全提醒', '第三方 Skill 可能讀取資料，安裝前看 description 與原始碼']
+            ],
+            note: '課後第一週先逛 5 個跟你工作有關的 Skill，挑 1 個裝起來實測；長期把 skills.sh 加入書籤，每月看一次。'
           }
         ],
         prompts: [],
         tasks: [
           { id: 'd4-u2-t1', label: '完成個人化 Agent Skill 草稿（含三要素、AI 協助填好）' },
           { id: 'd4-u2-t2', label: '在 Antigravity 內測試 Skill 至少跑通一次' },
-          { id: 'd4-u2-t3', label: '準備 3 分鐘成果展示腳本（依上方格式）' },
+          { id: 'd4-u2-t3', label: '完成 Codex App 安裝，並在 Codex 內裝 1 個 Plugin（或從 skills.sh 挑 1 個 Skill）' },
           { id: 'd4-u2-t4', label: '完成課後小測驗（8 題）— 達結訓標準' },
-          { id: 'd4-u2-t5', label: '繳交結訓回饋表、領取結訓證書' }
+          { id: 'd4-u2-t5', label: '繳交結訓回饋表' }
         ],
         materials: []
       }
@@ -962,7 +1080,7 @@ prompt: |
     ],
     expected: [
       '完成個人化的 Agent Skill 草稿。',
-      '完成成果展示。',
+      '完成 Codex App 安裝，認識插件與 Skills 包含關係，並能運用 skills.sh 拓展資源。',
       '完成 Day 1~3 提示詞 → Day 4 個人化 Skill 的堆疊產出。'
     ]
   },
@@ -979,7 +1097,7 @@ prompt: |
     { id: 'm-7', name: '暖光咖啡_食材進貨與庫存管理辦法', type: 'PDF 文件', size: '單章', usedIn: ['Day 3 進貨表示範'], desc: '提供品項分類規則供 AI 自動歸類' },
     { id: 'm-8', name: '公司費用報支管理辦法', type: 'PDF 文件', size: '完整辦法', usedIn: ['Day 3 表單清理 + 發票合規', 'Day 4 Skill 範本'], desc: '第四條誤餐費 150 元上限 — 合規檢查依據' },
     { id: 'm-9', name: '課堂實作素材_Day1 / Day2 / Day3', type: 'PDF 文件', size: '三份', usedIn: ['對應日'], desc: '當日實作專用素材' },
-    { id: 'm-10', name: '課程輔助文件（口語稿 / 會議逐字稿 / 亂表單 / 客訴 / Skill YAML / 測驗）', type: 'MD', size: '6 大區塊', usedIn: ['全部 4 天'], desc: '所有實作素材的彙整文件' }
+    { id: 'm-10', name: '課程輔助文件（口語稿 / 會議逐字稿 / 亂表單 / 客訴 / SKILL.md 範本 / 測驗）', type: 'MD', size: '6 大區塊', usedIn: ['全部 4 天'], desc: '所有實作素材的彙整文件' }
   ],
 
   // ========== 課後測驗 ==========

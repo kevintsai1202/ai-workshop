@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Skill 資料夾結構：invoice-to-excel/ 內含 SKILL.md（必要）+ references/、scripts/、assets/（選填）">
+  <title>Skill 資料夾結構</title>
+  <desc>顯示符合 agentskills.io 規範的 Skill 資料夾結構：頂層是 invoice-to-excel/，內含必要檔案 SKILL.md，以及選填的 references/、scripts/、assets/ 子目錄。</desc>
+
+  <!-- 階段標籤 -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1" fill="currentColor" opacity="0.6">
+    <text x="40" y="36">FOLDER STRUCTURE</text>
+    <text x="380" y="36">必要 vs 選填</text>
+  </g>
+
+  <!-- ====== 左側：資料夾樹狀結構 ====== -->
+  <g transform="translate(40 60)" font-family="ui-monospace, Menlo, monospace" font-size="14" fill="currentColor">
+    <!-- 根資料夾 -->
+    <g transform="translate(0 0)">
+      <!-- folder icon -->
+      <g stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.5)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 4 L 10 4 L 14 0 L 28 0 L 28 18 L 0 18 Z"/>
+      </g>
+      <text x="38" y="14" font-weight="700">invoice-to-excel/</text>
+      <text x="220" y="14" font-size="10" opacity="0.55" fill="currentColor">← 資料夾名 = name 欄位</text>
+    </g>
+
+    <!-- SKILL.md (必要) -->
+    <g transform="translate(28 40)">
+      <line x1="0" y1="-22" x2="0" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="0" x2="14" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <!-- file icon -->
+      <g transform="translate(20 -8)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.85)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 0 L 14 0 L 18 4 L 18 18 L 0 18 Z"/>
+        <path d="M14 0 L 14 4 L 18 4" fill="currentColor" fill-opacity="0.15"/>
+      </g>
+      <text x="44" y="6" font-weight="700">SKILL.md</text>
+      <g transform="translate(140 -2)">
+        <rect x="0" y="-10" width="68" height="18" rx="4" fill="currentColor" opacity="0.18"/>
+        <text x="34" y="3" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor">必要</text>
+      </g>
+      <text x="218" y="6" font-size="10" opacity="0.55" fill="currentColor">← metadata + 指令</text>
+    </g>
+
+    <!-- references/ (選填) -->
+    <g transform="translate(28 90)">
+      <line x1="0" y1="-44" x2="0" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="0" x2="14" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <!-- folder icon -->
+      <g transform="translate(20 -10)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.5)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 4 L 8 4 L 11 0 L 22 0 L 22 16 L 0 16 Z"/>
+      </g>
+      <text x="50" y="6">references/</text>
+      <g transform="translate(160 -2)">
+        <rect x="0" y="-10" width="68" height="18" rx="4" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+        <text x="34" y="3" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor" opacity="0.8">選填</text>
+      </g>
+      <text x="238" y="6" font-size="10" opacity="0.55" fill="currentColor">← 公司規章 PDF</text>
+    </g>
+
+    <!-- references/expense-policy.pdf (sub) -->
+    <g transform="translate(56 130)">
+      <line x1="0" y1="-32" x2="0" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+      <line x1="0" y1="0" x2="14" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+      <!-- file icon -->
+      <g transform="translate(20 -8)" stroke="currentColor" stroke-width="1.5" fill="rgba(255,255,255,0.7)" stroke-linecap="round" stroke-linejoin="round" opacity="0.7">
+        <path d="M0 0 L 12 0 L 16 4 L 16 16 L 0 16 Z"/>
+      </g>
+      <text x="42" y="6" font-size="13" opacity="0.7">expense-policy.pdf</text>
+    </g>
+
+    <!-- scripts/ (選填) -->
+    <g transform="translate(28 175)">
+      <line x1="0" y1="-129" x2="0" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="0" x2="14" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <!-- folder icon -->
+      <g transform="translate(20 -10)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.5)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 4 L 8 4 L 11 0 L 22 0 L 22 16 L 0 16 Z"/>
+      </g>
+      <text x="50" y="6">scripts/</text>
+      <g transform="translate(160 -2)">
+        <rect x="0" y="-10" width="68" height="18" rx="4" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+        <text x="34" y="3" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor" opacity="0.8">選填</text>
+      </g>
+      <text x="238" y="6" font-size="10" opacity="0.55" fill="currentColor">← 可執行腳本</text>
+    </g>
+
+    <!-- assets/ (選填) -->
+    <g transform="translate(28 215)">
+      <line x1="0" y1="-169" x2="0" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <line x1="0" y1="0" x2="14" y2="0" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+      <!-- folder icon -->
+      <g transform="translate(20 -10)" stroke="currentColor" stroke-width="2" fill="rgba(255,255,255,0.5)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 4 L 8 4 L 11 0 L 22 0 L 22 16 L 0 16 Z"/>
+      </g>
+      <text x="50" y="6">assets/</text>
+      <g transform="translate(160 -2)">
+        <rect x="0" y="-10" width="68" height="18" rx="4" fill="rgba(255,255,255,0.6)" stroke="currentColor" stroke-width="1.5" opacity="0.7"/>
+        <text x="34" y="3" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="currentColor" opacity="0.8">選填</text>
+      </g>
+      <text x="238" y="6" font-size="10" opacity="0.55" fill="currentColor">← 模板、圖片資源</text>
+    </g>
+  </g>
+
+  <!-- ====== 右側：說明卡 ====== -->
+  <g transform="translate(380 60)" font-family="inherit" fill="currentColor">
+    <!-- 卡片背景 -->
+    <rect x="0" y="0" width="200" height="270" rx="10" fill="rgba(255,255,255,0.5)" stroke="currentColor" stroke-width="2"/>
+
+    <text x="100" y="22" text-anchor="middle" font-size="13" font-weight="700">命名規則</text>
+    <line x1="20" y1="32" x2="180" y2="32" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+
+    <g font-family="ui-monospace, Menlo, monospace" font-size="11" fill="currentColor">
+      <text x="20" y="52">✅ invoice-to-excel</text>
+      <text x="20" y="68" opacity="0.6">❌ Invoice-To-Excel</text>
+      <text x="20" y="84" opacity="0.6">❌ auto_invoice</text>
+      <text x="20" y="100" opacity="0.6">❌ pdf--parser</text>
+      <text x="20" y="116" opacity="0.6">❌ -invoice</text>
+    </g>
+
+    <text x="100" y="148" text-anchor="middle" font-size="13" font-weight="700">資料夾名 = name</text>
+    <line x1="20" y1="158" x2="180" y2="158" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+    <g font-size="11" fill="currentColor" opacity="0.75">
+      <text x="20" y="176">兩者必須完全相同。</text>
+      <text x="20" y="192">若不同，agent 會載</text>
+      <text x="20" y="208">不到這個 skill。</text>
+    </g>
+
+    <text x="100" y="234" text-anchor="middle" font-size="13" font-weight="700">SKILL.md 必要</text>
+    <line x1="20" y1="244" x2="180" y2="244" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+    <g font-size="11" fill="currentColor" opacity="0.75">
+      <text x="20" y="260">其他子目錄全選填。</text>
+    </g>
+  </g>
+
+  <!-- 底部註記 -->
+  <text x="300" y="380" text-anchor="middle" font-family="inherit" font-size="11" fill="currentColor" opacity="0.55">依 agentskills.io 官方規範 — 一個 skill = 一個資料夾 + 一份 SKILL.md</text>
+</svg>

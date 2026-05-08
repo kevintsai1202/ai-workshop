@@ -122,24 +122,150 @@ Aspect ratio: 3:2 horizontal.
 
 ## 5. `day4-skill-encapsulation.png` （inline 3:2）
 
-**插入位置**：Day 4 unit 1「Agent Skill 三要素」
+**插入位置**：Day 4 unit 1「Agent Skill 結構（agentskills.io 官方規範）」
 **輸出路徑**：`assets/illustrations/day4-skill-encapsulation.png`
 **aspect ratio**：`3:2`
-**主題**：Input / Output / Trigger 三要素被封裝成可重用的 Skill 包裝盒
+**主題**：Skill = 資料夾 + SKILL.md（含 YAML frontmatter `name` + `description` 與 Markdown body）。Progressive disclosure 機制：agent 啟動只讀 metadata，匹配才載入 body。
 
 **Prompt（英文）：**
 ```
-A clean wooden desk with three small labeled boxes on the left ("Input",
-"Output", "Trigger") visually feeding into a beautifully wrapped gift-box style
-package in the center labeled "SKILL.yaml" with a ribbon on top. On the right,
-a laptop screen shows a terminal with three skill commands listed (@invoice,
-@meeting, @faq-bot) inside an "Antigravity" application window. Subtle dotted-
-line connections from the three boxes converging into the gift box, then a
-single arrow from the gift box to the laptop. Warm natural lighting.
+A clean wooden desk scene illustrating the agentskills.io specification. On
+the left, an open folder labeled "invoice-to-excel/" containing a prominent
+text file labeled "SKILL.md" (with two visible sub-folders: "references/" and
+"scripts/" tucked beside it). The SKILL.md file is shown opened with two
+clearly readable sections: a small YAML header at the top showing
+"name: invoice-to-excel" and "description: ..." (truncated), and below it a
+markdown body labeled "# Instructions" with bullet steps. In the middle, a
+glowing magnifying glass hovers over the description line, with a small label
+"description = trigger + purpose" pointing to it. On the right, a laptop screen
+shows a terminal with three installed skills listed (skill-creator, invoice-
+to-excel, meeting-summary) inside an "Agent" application window, and a small
+"Discovery → Activation → Execution" stepped arrow flowing toward the laptop.
+Warm natural lighting, top-down angle, illustrative flat-vector style with
+subtle paper texture. No "SKILL.yaml" filename anywhere — only "SKILL.md".
 
 [Style anchor as above]
 Aspect ratio: 3:2 horizontal.
 ```
+
+**重點檢查（產圖後逐項對照）：**
+
+- ✅ 檔名是 `SKILL.md`，**不是** `SKILL.yaml`
+- ✅ 出現「資料夾 + SKILL.md」結構（含 references/、scripts/ 子目錄）
+- ✅ frontmatter 顯示 `name:` 與 `description:` 兩個欄位（無 trigger / inputs / outputs / steps / prompt）
+- ✅ 有 `description = trigger + purpose` 的標註，呼應官方「做什麼 + 何時用」雙重作用
+- ✅ progressive disclosure 三階段（Discovery → Activation → Execution）以箭頭呈現
+- ✅ 終端內列出已安裝 Skill 中含 `skill-creator`（呼應課程內容）
+
+---
+
+## 6. `day4-skill-folder-structure.png` （inline 3:2）
+
+**插入位置**：Day 4 unit 1「Skill 資料夾結構（agentskills.io 官方規範）」概念區塊
+**輸出路徑**：`assets/illustrations/day4-skill-folder-structure.png`
+**aspect ratio**：`3:2`
+**主題**：一個 Skill 的標準資料夾佈局，視覺化展示「invoice-to-excel/ 內含 SKILL.md（必要）+ references/、scripts/、assets/（選填）」與命名規則。**取代原本嵌在 d4-p1 提示詞範本上方的 ASCII 樹狀備註，用圖示呈現。**
+
+**Prompt（英文）：**
+```
+A clean illustrative diagram of a directory tree representing an Agent Skill
+folder structure on the left, with annotations on the right. The tree shows:
+
+- Top-level folder labeled "invoice-to-excel/" with a small note "name field"
+  pointing to the folder name.
+- Inside the folder, indented with tree connectors (├── └──):
+  - A prominent file labeled "SKILL.md" with a green/highlighted "Required"
+    badge next to it and a small note "metadata + instructions".
+  - A subfolder "references/" with a faded "Optional" badge and inside it a
+    PDF-style icon labeled "expense-policy.pdf".
+  - A subfolder "scripts/" with "Optional" badge.
+  - A subfolder "assets/" with "Optional" badge.
+
+On the right side, a vertical info card showing:
+- Heading "Naming rules" with code-style examples in monospace font:
+  - "✅ invoice-to-excel" (green)
+  - "❌ Invoice-To-Excel" (gray, struck-through feel)
+  - "❌ auto_invoice" (gray)
+  - "❌ pdf--parser" (gray)
+  - "❌ -invoice" (gray)
+- Heading "Folder name = name" with a brief note that they must be identical.
+- Heading "SKILL.md required" noting other subdirectories are optional.
+
+Style: flat-vector illustration with subtle paper texture, monospace font for
+code/path strings, warm natural lighting. Bottom caption: "agentskills.io
+specification — one skill = one folder + SKILL.md".
+
+Aspect ratio: 3:2 horizontal.
+```
+
+**重點檢查（產圖後逐項對照）：**
+
+- ✅ 樹狀根目錄寫 `invoice-to-excel/`（不是其他名字）
+- ✅ `SKILL.md` 有「Required / 必要」標籤
+- ✅ `references/`、`scripts/`、`assets/` 三個子目錄都標「Optional / 選填」
+- ✅ 命名規則卡呈現 ✅ 與 ❌ 對照（含底線、大寫、連續 hyphen 三種反例）
+- ✅ 標註「資料夾名 = name 欄位」
+- ✅ 底部引用 agentskills.io
+
+---
+
+## 7. `day4-skill-install-location.png` （inline 3:2）
+
+**插入位置**：Day 4 unit 1「Antigravity Skill 安裝位置」概念區塊（緊接資料夾結構之後）
+**輸出路徑**：`assets/illustrations/day4-skill-install-location.png`
+**aspect ratio**：`3:2`
+**主題**：Antigravity skill 兩個安裝範圍對比（Global vs Workspace）+ 跨平台路徑（macOS/Linux/Windows）+ 跨工具差異警告（Antigravity vs Gemini CLI vs Codex vs Claude Code）。**讓學員一眼看清楚 SKILL.md 寫好之後該放哪。**
+
+**Prompt（英文）：**
+```
+A clean illustrative reference card showing where to install Agent Skills for
+Google Antigravity, with a side-by-side two-card layout on top and a warning
+strip on the bottom.
+
+Top-left card titled "GLOBAL · cross-project":
+- Small home icon labeled "User home directory"
+- Subsection "macOS / Linux" with monospace path:
+  ~/.gemini/antigravity/skills/
+- Subsection "Windows" with monospace path:
+  %USERPROFILE%\.gemini\antigravity\skills\
+- Caption "Shared across all projects. Recommended for personal skills."
+- Small green badge labeled "Recommended"
+
+Top-right card titled "WORKSPACE · current project":
+- Small folder icon labeled "Project root"
+- Subsection "macOS / Linux / Windows" with monospace path:
+  <project>/.agent/skills/
+- Subsection "Priority" showing "workspace > global" with a brief note
+  "same-name skill in workspace overrides global"
+- Caption "Project-specific only. Useful for company- or client-specific
+  skills."
+- Small neutral badge labeled "Special use"
+
+Bottom warning strip with dashed border, labeled "⚠ Cross-tool path
+differences", listing four tool→path pairs in monospace:
+- Antigravity → ~/.gemini/antigravity/skills/
+- Gemini CLI → ~/.gemini/skills/
+- Codex App → installed via Plugins UI
+- Claude Code → .claude/skills/
+
+Bottom caption: "Same SKILL.md works across tools — just different install
+paths. Use symbolic links to share."
+
+Style: flat-vector illustration, monospace font for paths, warm natural
+lighting, paper texture. Use color-coding subtly: blue for paths, green for
+"Recommended", yellow for the warning strip.
+
+Aspect ratio: 3:2 horizontal.
+```
+
+**重點檢查（產圖後逐項對照）：**
+
+- ✅ Global 卡分別列出 macOS/Linux 路徑（`~/.gemini/antigravity/skills/`）與 Windows 路徑（`%USERPROFILE%\.gemini\antigravity\skills\`）
+- ✅ Workspace 卡顯示 `<project>/.agent/skills/` 與優先順序「workspace > global」
+- ✅ 底部警告區塊明確列出 4 個工具的不同 skill 路徑（Antigravity / Gemini CLI / Codex App / Claude Code）
+- ✅ 標示「Recommended」與「Special use」徽章區分兩種範圍的使用建議
+- ✅ 底部提到「symbolic link」跨工具共用方案
+- ✅ 路徑全部用 monospace 字型，視覺化區隔指令與說明文字
 
 ---
 

@@ -2129,7 +2129,7 @@
       if (name.includes('會議錄音逐字稿') || name.includes('錄音逐字稿')) return '完整課程包/教學素材/會議錄音逐字稿範本.md';
       if (name.includes('請購單')) return '完整課程包/教學素材/亂格式請購單.csv';
       if (name.includes('客訴 10 則') || name.includes('雜亂客訴')) return '完整課程包/教學素材/雜亂客訴10則.md';
-      if (name.includes('Skill 範本')) return '完整課程包/教學素材/發票自動整理_Skill範本.yaml';
+      if (name.includes('Skill 範本')) return '完整課程包/教學素材/發票自動整理_SKILL.md';
       // 教學素材的 .md 全文版（未指定 PDF type 時 fallback 到 .md）
       if (name.includes('員工差勤')) return '完整課程包/教學素材/綠野選物_員工差勤與休假管理辦法.md';
       if (name.includes('教育訓練')) return '完整課程包/教學素材/綠野選物_新進員工教育訓練手冊.md';
@@ -2293,8 +2293,8 @@
     'day2-u2': { type: 'video-flow', src: 'assets/scenarios/day2-u2.png', kicker: 'video flow', caption: '以關鍵幀為核心，將圖片轉成 8-16 秒短片成品。' },
     'day3-u1': { type: 'source-citation', src: 'assets/scenarios/day3-u1.png', kicker: 'grounded work', caption: '讓 NotebookLM 只依據上傳來源產生公告、回覆與會議紀錄。' },
     'day3-u2': { type: 'finance-grid', src: 'assets/scenarios/day3-u2.png', kicker: 'ops cleanup', caption: '把亂格式請購單、FAQ、發票與合規規則整理成表格。' },
-    'day4-u1': { type: 'skill-yaml', src: 'assets/scenarios/day4-u1.png', kicker: 'skill design', caption: '拆解輸入、輸出與觸發條件，完成第一版 Skill 範本。' },
-    'day4-u2': { type: 'showcase-stage', src: 'assets/scenarios/day4-u2.png', kicker: 'showcase', caption: '測試 Skill、準備 3 分鐘展示，總結結訓。' }
+    'day4-u1': { type: 'skill-yaml', src: 'assets/scenarios/day4-u1.png', kicker: 'skill design', caption: '依 agentskills.io 官方規範拆解 SKILL.md（name + description + Markdown body），完成第一版 Skill 範本。' },
+    'day4-u2': { type: 'showcase-stage', src: 'assets/scenarios/day4-u2.png', kicker: 'skills explore', caption: '測試 Skill、安裝 Codex App 與 Plugin、逛 skills.sh，總結結訓。' }
   };
 
   // 共用案例品牌視覺，key 對應 course-data.js 的 sharedCase.brands[].id。
