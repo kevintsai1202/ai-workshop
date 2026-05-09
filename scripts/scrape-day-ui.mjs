@@ -70,6 +70,36 @@ const TARGETS = [
   // 學員看不出怎麼建 Gem。改畫 SVG 並標上 ①②③④⑤ 對應 5 步驟，教學效果更明確。
   // 故移除此 scrape 目標，避免重跑爬蟲時又把無效部落格截圖蓋回去（PNG 不存在時
   // renderIllustration() 會自動 fallback 到 SVG）。
+
+  // ====== 2026-05-09 新增 ======
+  // ⚠️ ChatGPT 註冊頁無法 headless scrape — chatgpt.com 全站被 Cloudflare turnstile 擋住，
+  // 截到的只是「Verify you are human」對學員無教學價值。
+  // 改用手繪 SVG `day1-tools-signup.svg` 統合呈現 4 個工具的註冊入口。
+  // 若未來要重抓，請改用 CDP 模式（scripts/start-cdp-chrome.ps1 + --cdp）繞過驗證。
+  {
+    // Day 4 unit 2「Codex App 安裝（桌面版）」用 — OpenAI Codex 桌面下載頁
+    // 與 d4-u1 的 Antigravity 下載頁（已有）對照，學員看到同樣的 macOS/Windows/Linux 三欄式選擇
+    id: 'codex-app',
+    day: 4,
+    url: 'https://developers.openai.com/codex/app',
+    waitText: ['Codex', 'Download', 'macOS', 'Windows'],
+    scrollY: 0,
+    viewport: { width: 1280, height: 800 },
+    clip: { x: 0, y: 0, width: 1280, height: 800 },
+    out: 'day4-codex-app-install.png'
+  },
+  {
+    // Day 4 unit 2「skills.sh：跨工具 Skills 寶庫」用 — Vercel 維護的 Agent Skills 開源生態系
+    // 首頁含主題分類、排行榜、代理篩選三種瀏覽方式，學員從這裡找跟自己工作有關的 Skill
+    id: 'skills-sh',
+    day: 4,
+    url: 'https://skills.sh',
+    waitText: ['Skills', 'agent', 'install', 'Skills'],
+    scrollY: 0,
+    viewport: { width: 1280, height: 800 },
+    clip: { x: 0, y: 0, width: 1280, height: 800 },
+    out: 'day4-skills-sh.png'
+  }
 ];
 
 // 解析 CLI 參數

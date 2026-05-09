@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Day 1 工具註冊入口總覽：Gemini / NotebookLM / Antigravity / ChatGPT 四個工具的網址、帳號類型與對應任務 ID">
+  <title>Day 1 四工具註冊入口總覽</title>
+  <desc>Day 1 unit 1 需完成的 4 個工具帳號註冊：(1) Gemini － gemini.google.com － 個人 Google 帳號 (2) NotebookLM － notebooklm.google.com － 個人 Google 帳號 (3) Antigravity － antigravity.google/download － 個人 Gmail，三平台下載 (4) ChatGPT / Codex － chatgpt.com － ChatGPT 帳號（手機驗證）。所有工具皆建議用個人 Gmail，公司 Workspace 帳號可能受 IT 政策限制。</desc>
+
+  <!-- ====== 標題列 ====== -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1.2" fill="currentColor" opacity="0.55">
+    <text x="20" y="20">DAY 1 ／ 4 個工具註冊入口</text>
+    <text x="466" y="20" text-anchor="end" opacity="0.7">建議用個人 Gmail</text>
+  </g>
+
+  <!-- ============================================================
+       2x2 卡片網格
+       卡片大小 270×165，間距 14px，左上起點 (20, 30)
+       ============================================================ -->
+
+  <!-- ====== 卡片 1：Gemini（左上） ====== -->
+  <g transform="translate(20 30)">
+    <rect x="0" y="0" width="270" height="165" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- Logo：簡化版 Gemini 「四芒星」 -->
+    <g transform="translate(20 18)">
+      <path d="M 16,0 L 21,11 L 32,16 L 21,21 L 16,32 L 11,21 L 0,16 L 11,11 Z"
+            fill="currentColor" opacity="0.85"/>
+    </g>
+
+    <!-- 工具名 -->
+    <text x="64" y="28" font-family="inherit" font-size="17" font-weight="700" fill="currentColor">Gemini</text>
+    <text x="64" y="44" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">通用對話與內容生成</text>
+
+    <!-- URL 列 -->
+    <g transform="translate(20 70)">
+      <rect x="0" y="0" width="230" height="22" rx="4" fill="currentColor" fill-opacity="0.08"/>
+      <text x="10" y="15" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">gemini.google.com</text>
+    </g>
+
+    <!-- 條件說明 -->
+    <g transform="translate(20 102)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">✓ 個人 Google 帳號</text>
+      <text x="0" y="14" opacity="0.6">✗ 公司 Workspace（IT 可能擋）</text>
+    </g>
+
+    <!-- 任務 ID badge -->
+    <g transform="translate(206 134)">
+      <rect x="0" y="0" width="48" height="18" rx="9" fill="currentColor" fill-opacity="0.85"/>
+      <text x="24" y="13" font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">d1-u1-t1</text>
+    </g>
+  </g>
+
+  <!-- ====== 卡片 2：NotebookLM（右上） ====== -->
+  <g transform="translate(310 30)">
+    <rect x="0" y="0" width="270" height="165" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- Logo：簡化筆記本（左側書脊 + 上方頁緣） -->
+    <g transform="translate(20 16)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.85)">
+      <rect x="0" y="0" width="28" height="34" rx="3"/>
+      <line x1="6" y1="0" x2="6" y2="34" stroke-width="1"/>
+      <line x1="12" y1="10" x2="22" y2="10" stroke-width="1.5" opacity="0.6"/>
+      <line x1="12" y1="18" x2="22" y2="18" stroke-width="1.5" opacity="0.6"/>
+      <line x1="12" y1="26" x2="20" y2="26" stroke-width="1.5" opacity="0.6"/>
+    </g>
+
+    <!-- 工具名 -->
+    <text x="64" y="28" font-family="inherit" font-size="17" font-weight="700" fill="currentColor">NotebookLM</text>
+    <text x="64" y="44" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">以你資料為唯一來源的 AI 筆記本</text>
+
+    <!-- URL 列 -->
+    <g transform="translate(20 70)">
+      <rect x="0" y="0" width="230" height="22" rx="4" fill="currentColor" fill-opacity="0.08"/>
+      <text x="10" y="15" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">notebooklm.google.com</text>
+    </g>
+
+    <!-- 條件說明 -->
+    <g transform="translate(20 102)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">✓ 同上 Google 帳號</text>
+      <text x="0" y="14" opacity="0.6">免費版每月 50 sources</text>
+    </g>
+
+    <!-- 任務 ID badge -->
+    <g transform="translate(206 134)">
+      <rect x="0" y="0" width="48" height="18" rx="9" fill="currentColor" fill-opacity="0.85"/>
+      <text x="24" y="13" font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">d1-u1-t2</text>
+    </g>
+  </g>
+
+  <!-- ====== 卡片 3：Antigravity（左下） ====== -->
+  <g transform="translate(20 209)">
+    <rect x="0" y="0" width="270" height="165" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- Logo：上向三角（Antigravity 反重力意象） -->
+    <g transform="translate(20 18)" fill="currentColor" opacity="0.85">
+      <path d="M 16,0 L 32,28 L 0,28 Z"/>
+      <!-- 內部小箭頭表示「向上」 -->
+      <path d="M 16,8 L 23,21 L 9,21 Z" fill="rgba(255,255,255,0.85)"/>
+    </g>
+
+    <!-- 工具名 -->
+    <text x="64" y="28" font-family="inherit" font-size="17" font-weight="700" fill="currentColor">Antigravity</text>
+    <text x="64" y="44" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">桌面型 agent-first IDE（Day 4 用）</text>
+
+    <!-- URL 列 -->
+    <g transform="translate(20 70)">
+      <rect x="0" y="0" width="230" height="22" rx="4" fill="currentColor" fill-opacity="0.08"/>
+      <text x="10" y="15" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">antigravity.google/download</text>
+    </g>
+
+    <!-- 條件說明（含三平台 chip） -->
+    <g transform="translate(20 102)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">✓ 個人 Gmail（不支援 Workspace）</text>
+      <g transform="translate(0 8)">
+        <rect x="0" y="0" width="42" height="14" rx="3" fill="currentColor" fill-opacity="0.15"/>
+        <text x="21" y="10" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">macOS</text>
+        <rect x="46" y="0" width="50" height="14" rx="3" fill="currentColor" fill-opacity="0.15"/>
+        <text x="71" y="10" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">Windows</text>
+        <rect x="100" y="0" width="36" height="14" rx="3" fill="currentColor" fill-opacity="0.15"/>
+        <text x="118" y="10" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">Linux</text>
+      </g>
+    </g>
+
+    <!-- 任務 ID badge -->
+    <g transform="translate(206 134)">
+      <rect x="0" y="0" width="48" height="18" rx="9" fill="currentColor" fill-opacity="0.85"/>
+      <text x="24" y="13" font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">d1-u1-t3</text>
+    </g>
+  </g>
+
+  <!-- ====== 卡片 4：ChatGPT / Codex（右下） ====== -->
+  <g transform="translate(310 209)">
+    <rect x="0" y="0" width="270" height="165" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- Logo：簡化 OpenAI 六瓣花型（用六條線交叉） -->
+    <g transform="translate(36 34)" stroke="currentColor" stroke-width="2" fill="none" opacity="0.85">
+      <circle cx="0" cy="0" r="14" fill="rgba(255,255,255,0.6)"/>
+      <line x1="-12" y1="0" x2="12" y2="0"/>
+      <line x1="-6" y1="-10" x2="6" y2="10"/>
+      <line x1="-6" y1="10" x2="6" y2="-10"/>
+    </g>
+
+    <!-- 工具名 -->
+    <text x="64" y="28" font-family="inherit" font-size="17" font-weight="700" fill="currentColor">ChatGPT / Codex</text>
+    <text x="64" y="44" font-family="inherit" font-size="10" fill="currentColor" opacity="0.6">註冊 ChatGPT 後即可用 Codex CLI</text>
+
+    <!-- URL 列 -->
+    <g transform="translate(20 70)">
+      <rect x="0" y="0" width="230" height="22" rx="4" fill="currentColor" fill-opacity="0.08"/>
+      <text x="10" y="15" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="700" fill="currentColor">chatgpt.com</text>
+    </g>
+
+    <!-- 條件說明 -->
+    <g transform="translate(20 102)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">✓ Email + 手機驗證</text>
+      <text x="0" y="14" opacity="0.6">免費版可用；Plus 解鎖 Codex App</text>
+    </g>
+
+    <!-- 任務 ID badge -->
+    <g transform="translate(206 134)">
+      <rect x="0" y="0" width="48" height="18" rx="9" fill="currentColor" fill-opacity="0.85"/>
+      <text x="24" y="13" font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">d1-u1-t4</text>
+    </g>
+  </g>
+
+  <!-- ====== 底部備註 ====== -->
+  <g transform="translate(0 392)" font-family="ui-monospace, Menlo, monospace" font-size="9.5" fill="currentColor" opacity="0.6">
+    <text x="300" y="0" text-anchor="middle">⚠ 公司 Workspace 帳號可能被 IT 政策擋；遇到問題改用個人 Gmail 註冊即可</text>
+  </g>
+</svg>

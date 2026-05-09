@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="Flow 工作流四步驟示意圖：(1) 用 Nano Banana 產出 2-3 張一致風格關鍵幀 (2) 把每張圖丟給 Veo 產出 3-5 秒動畫 (3) 在 Flow 編輯器拼接 (4) 加字幕與配樂">
+  <title>Flow 工作流四步驟（關鍵幀模式）</title>
+  <desc>展示 Flow（Google Labs）製作 8-16 秒短片的完整四步驟：關鍵幀生成（Nano Banana）→ 動畫產出（Veo）→ 串接編輯 → 字幕配樂。每個步驟用箭頭連接，上方標示工具與輸出規格，下方標示重點與時長。</desc>
+
+  <!-- ====== 階段標籤 ====== -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1.2" fill="currentColor" opacity="0.55">
+    <text x="20" y="20">DAY 2 ／ FLOW WORKFLOW</text>
+    <text x="490" y="20" text-anchor="end" opacity="0.7">關鍵幀模式</text>
+  </g>
+
+  <!-- ============================================================
+       4 個步驟方塊水平排列，間距用箭頭連接
+       每個方塊 120×220，間距 14px（含箭頭）；左起 (16, 50)
+       ============================================================ -->
+
+  <!-- ====== 步驟 1：關鍵幀生成 ====== -->
+  <g transform="translate(16 50)">
+    <rect x="0" y="0" width="124" height="280" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- 編號圓 -->
+    <g transform="translate(14 14)">
+      <circle cx="11" cy="11" r="11" fill="currentColor"/>
+      <text x="11" y="15" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">1</text>
+    </g>
+    <text x="40" y="22" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">關鍵幀</text>
+    <text x="40" y="34" font-family="inherit" font-size="9" fill="currentColor" opacity="0.55">Nano Banana</text>
+
+    <!-- 三張一致風格圖（mock） -->
+    <g transform="translate(14 50)">
+      <!-- 圖 1 -->
+      <g transform="translate(0 0)">
+        <rect x="0" y="0" width="32" height="42" rx="3" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+        <circle cx="16" cy="14" r="5" fill="currentColor" opacity="0.55"/>
+        <path d="M 8,30 Q 16,22 24,30 L 24,40 L 8,40 Z" fill="currentColor" opacity="0.55"/>
+      </g>
+      <!-- 圖 2 -->
+      <g transform="translate(40 0)">
+        <rect x="0" y="0" width="32" height="42" rx="3" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+        <circle cx="14" cy="14" r="5" fill="currentColor" opacity="0.55"/>
+        <path d="M 6,30 Q 16,22 26,30 L 26,40 L 6,40 Z" fill="currentColor" opacity="0.55"/>
+        <line x1="22" y1="22" x2="28" y2="14" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+      </g>
+      <!-- 圖 3 -->
+      <g transform="translate(80 0)">
+        <rect x="0" y="0" width="32" height="42" rx="3" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+        <circle cx="20" cy="14" r="5" fill="currentColor" opacity="0.55"/>
+        <path d="M 12,30 Q 20,22 28,30 L 28,40 L 12,40 Z" fill="currentColor" opacity="0.55"/>
+      </g>
+    </g>
+
+    <!-- 一致性提示 -->
+    <g transform="translate(14 110)">
+      <rect x="0" y="0" width="96" height="22" rx="4" fill="currentColor" fill-opacity="0.12"/>
+      <text x="48" y="15" font-family="inherit" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">⭐ 角色一致</text>
+    </g>
+
+    <!-- 步驟說明 -->
+    <g transform="translate(14 144)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">產出 2-3 張</text>
+      <text x="0" y="14">同一場景／角色</text>
+      <text x="0" y="28">不同瞬間的圖</text>
+    </g>
+
+    <!-- 輸入／輸出 -->
+    <g transform="translate(14 220)" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="currentColor" opacity="0.6">
+      <text x="0" y="0">IN  ▸ 文字描述</text>
+      <text x="0" y="12">OUT ▸ PNG ×3</text>
+    </g>
+
+    <!-- 時長 chip -->
+    <g transform="translate(14 256)">
+      <rect x="0" y="0" width="74" height="14" rx="7" fill="currentColor" fill-opacity="0.15"/>
+      <text x="37" y="10" font-family="inherit" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">~5 分鐘</text>
+    </g>
+  </g>
+
+  <!-- 箭頭 1→2 -->
+  <g transform="translate(143 175)" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.55">
+    <line x1="0" y1="0" x2="14" y2="0"/>
+    <path d="M 14,-4 L 22,0 L 14,4 Z"/>
+  </g>
+
+  <!-- ====== 步驟 2：動畫片段 ====== -->
+  <g transform="translate(166 50)">
+    <rect x="0" y="0" width="124" height="280" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- 編號圓 -->
+    <g transform="translate(14 14)">
+      <circle cx="11" cy="11" r="11" fill="currentColor"/>
+      <text x="11" y="15" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">2</text>
+    </g>
+    <text x="40" y="22" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">動畫片段</text>
+    <text x="40" y="34" font-family="inherit" font-size="9" fill="currentColor" opacity="0.55">Veo</text>
+
+    <!-- 三段影片條（每張圖→一段影片） -->
+    <g transform="translate(14 52)">
+      <g transform="translate(0 0)">
+        <rect x="0" y="0" width="96" height="22" rx="3" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+        <!-- play icon -->
+        <path d="M 6,6 L 14,11 L 6,16 Z" fill="currentColor" opacity="0.7"/>
+        <line x1="20" y1="11" x2="60" y2="11" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+        <text x="68" y="14" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">3 秒</text>
+      </g>
+      <g transform="translate(0 28)">
+        <rect x="0" y="0" width="96" height="22" rx="3" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+        <path d="M 6,6 L 14,11 L 6,16 Z" fill="currentColor" opacity="0.7"/>
+        <line x1="20" y1="11" x2="64" y2="11" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+        <text x="68" y="14" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">5 秒</text>
+      </g>
+      <g transform="translate(0 56)">
+        <rect x="0" y="0" width="96" height="22" rx="3" fill="rgba(255,255,255,0.9)" stroke="currentColor" stroke-width="1"/>
+        <path d="M 6,6 L 14,11 L 6,16 Z" fill="currentColor" opacity="0.7"/>
+        <line x1="20" y1="11" x2="60" y2="11" stroke="currentColor" stroke-width="2" opacity="0.4"/>
+        <text x="68" y="14" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">4 秒</text>
+      </g>
+    </g>
+
+    <!-- 提示 -->
+    <g transform="translate(14 144)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">每張圖 → 1 段</text>
+      <text x="0" y="14">subtle motion</text>
+      <text x="0" y="28">+ slow pan</text>
+    </g>
+
+    <!-- 輸入／輸出 -->
+    <g transform="translate(14 220)" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="currentColor" opacity="0.6">
+      <text x="0" y="0">IN  ▸ PNG + 提示</text>
+      <text x="0" y="12">OUT ▸ MP4 ×3</text>
+    </g>
+
+    <!-- 點數 chip -->
+    <g transform="translate(14 256)">
+      <rect x="0" y="0" width="96" height="14" rx="7" fill="currentColor" fill-opacity="0.15"/>
+      <text x="48" y="10" font-family="inherit" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">~20-40 點/段</text>
+    </g>
+  </g>
+
+  <!-- 箭頭 2→3 -->
+  <g transform="translate(293 175)" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.55">
+    <line x1="0" y1="0" x2="14" y2="0"/>
+    <path d="M 14,-4 L 22,0 L 14,4 Z"/>
+  </g>
+
+  <!-- ====== 步驟 3：串接 ====== -->
+  <g transform="translate(316 50)">
+    <rect x="0" y="0" width="124" height="280" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- 編號圓 -->
+    <g transform="translate(14 14)">
+      <circle cx="11" cy="11" r="11" fill="currentColor"/>
+      <text x="11" y="15" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">3</text>
+    </g>
+    <text x="40" y="22" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">串接</text>
+    <text x="40" y="34" font-family="inherit" font-size="9" fill="currentColor" opacity="0.55">Flow Editor</text>
+
+    <!-- 時間軸示意 -->
+    <g transform="translate(14 56)">
+      <!-- 時間軸底 -->
+      <line x1="0" y1="34" x2="96" y2="34" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+      <!-- 三段拼接 -->
+      <rect x="0" y="20" width="28" height="16" rx="2" fill="currentColor" fill-opacity="0.45"/>
+      <rect x="30" y="20" width="38" height="16" rx="2" fill="currentColor" fill-opacity="0.65"/>
+      <rect x="70" y="20" width="26" height="16" rx="2" fill="currentColor" fill-opacity="0.45"/>
+      <!-- 時間刻度 -->
+      <g font-family="ui-monospace, Menlo, monospace" font-size="7.5" fill="currentColor" opacity="0.6">
+        <text x="0" y="50">0s</text>
+        <text x="44" y="50" text-anchor="middle">6s</text>
+        <text x="96" y="50" text-anchor="end">12s</text>
+      </g>
+      <!-- 拖拉提示 -->
+      <g transform="translate(40 8)" font-family="inherit" font-size="9" fill="currentColor" opacity="0.6">
+        <text x="0" y="0" text-anchor="middle">⇄ 拖拉</text>
+      </g>
+    </g>
+
+    <!-- 步驟說明 -->
+    <g transform="translate(14 144)" font-family="inherit" font-size="10" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">按敘事順序</text>
+      <text x="0" y="14">拼接 3 段為</text>
+      <text x="0" y="28">完整故事</text>
+    </g>
+
+    <!-- 輸入／輸出 -->
+    <g transform="translate(14 220)" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="currentColor" opacity="0.6">
+      <text x="0" y="0">IN  ▸ MP4 ×3</text>
+      <text x="0" y="12">OUT ▸ 1 條時間軸</text>
+    </g>
+
+    <!-- 時長 chip -->
+    <g transform="translate(14 256)">
+      <rect x="0" y="0" width="74" height="14" rx="7" fill="currentColor" fill-opacity="0.15"/>
+      <text x="37" y="10" font-family="inherit" font-size="9" font-weight="700" text-anchor="middle" fill="currentColor">~3 分鐘</text>
+    </g>
+  </g>
+
+  <!-- 箭頭 3→4 -->
+  <g transform="translate(443 175)" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.55">
+    <line x1="0" y1="0" x2="14" y2="0"/>
+    <path d="M 14,-4 L 22,0 L 14,4 Z"/>
+  </g>
+
+  <!-- ====== 步驟 4：字幕配樂 ====== -->
+  <g transform="translate(466 50)">
+    <rect x="0" y="0" width="124" height="280" rx="10" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- 編號圓 -->
+    <g transform="translate(14 14)">
+      <circle cx="11" cy="11" r="11" fill="currentColor"/>
+      <text x="11" y="15" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">4</text>
+    </g>
+    <text x="40" y="22" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">字幕＋配樂</text>
+    <text x="40" y="34" font-family="inherit" font-size="9" fill="currentColor" opacity="0.55">Flow 內建素材庫</text>
+
+    <!-- 影片播放區 mock -->
+    <g transform="translate(14 52)">
+      <rect x="0" y="0" width="96" height="54" rx="3" fill="rgba(0,0,0,0.5)" stroke="currentColor" stroke-width="1"/>
+      <!-- 字幕條 -->
+      <g transform="translate(8 38)">
+        <rect x="0" y="0" width="80" height="12" rx="2" fill="rgba(255,255,255,0.92)"/>
+        <text x="40" y="9" font-family="inherit" font-size="8" font-weight="700" text-anchor="middle" fill="currentColor">中文 ≤12 字</text>
+      </g>
+      <!-- 播放圖示 -->
+      <path d="M 44,18 L 56,24 L 44,30 Z" fill="rgba(255,255,255,0.9)"/>
+    </g>
+
+    <!-- 配樂波形 -->
+    <g transform="translate(14 116)">
+      <text x="0" y="-2" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">♪ 音樂</text>
+      <g transform="translate(0 4)">
+        <rect x="0" y="6" width="3" height="10" fill="currentColor" opacity="0.5"/>
+        <rect x="6" y="2" width="3" height="14" fill="currentColor" opacity="0.7"/>
+        <rect x="12" y="0" width="3" height="16" fill="currentColor" opacity="0.85"/>
+        <rect x="18" y="3" width="3" height="13" fill="currentColor" opacity="0.7"/>
+        <rect x="24" y="7" width="3" height="9" fill="currentColor" opacity="0.5"/>
+        <rect x="30" y="2" width="3" height="14" fill="currentColor" opacity="0.7"/>
+        <rect x="36" y="5" width="3" height="11" fill="currentColor" opacity="0.6"/>
+        <rect x="42" y="0" width="3" height="16" fill="currentColor" opacity="0.85"/>
+        <rect x="48" y="4" width="3" height="12" fill="currentColor" opacity="0.65"/>
+        <rect x="54" y="8" width="3" height="8" fill="currentColor" opacity="0.5"/>
+        <rect x="60" y="3" width="3" height="13" fill="currentColor" opacity="0.7"/>
+        <rect x="66" y="6" width="3" height="10" fill="currentColor" opacity="0.55"/>
+        <rect x="72" y="1" width="3" height="15" fill="currentColor" opacity="0.8"/>
+        <rect x="78" y="5" width="3" height="11" fill="currentColor" opacity="0.6"/>
+        <rect x="84" y="9" width="3" height="7" fill="currentColor" opacity="0.5"/>
+        <rect x="90" y="3" width="3" height="13" fill="currentColor" opacity="0.7"/>
+      </g>
+    </g>
+
+    <!-- 步驟說明 -->
+    <g transform="translate(14 168)" font-family="inherit" font-size="9.5" fill="currentColor" opacity="0.75">
+      <text x="0" y="0">acoustic /</text>
+      <text x="0" y="13">chill /</text>
+      <text x="0" y="26">cinematic</text>
+    </g>
+
+    <!-- 輸入／輸出 -->
+    <g transform="translate(14 220)" font-family="ui-monospace, Menlo, monospace" font-size="8.5" fill="currentColor" opacity="0.6">
+      <text x="0" y="0">IN  ▸ 時間軸</text>
+      <text x="0" y="12">OUT ▸ 8-16s 成品</text>
+    </g>
+
+    <!-- 完成 chip（綠色強調） -->
+    <g transform="translate(14 256)">
+      <rect x="0" y="0" width="96" height="14" rx="7" fill="currentColor" fill-opacity="0.85"/>
+      <text x="48" y="10" font-family="inherit" font-size="9" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">✓ 完成下載</text>
+    </g>
+  </g>
+
+  <!-- ====== 底部備註 ====== -->
+  <g transform="translate(0 388)" font-family="ui-monospace, Menlo, monospace" font-size="9.5" fill="currentColor" opacity="0.6">
+    <text x="300" y="0" text-anchor="middle">素材模式可跳過步驟 1（直接 1 張參考圖丟 Veo），其餘步驟相同</text>
+  </g>
+</svg>

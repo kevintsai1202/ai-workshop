@@ -220,6 +220,18 @@ window.COURSE = {
               ['也是優秀的學習工具', '把講義／書籍／論文丟進去就能對話問答、產生摘要與 podcast（本課僅點到為止）']
             ],
             note: '🔗 **Day 3 會講進階用法**：包含介面導覽、規章三步驟、Citation 驗證，以及 2026/4 新推出的「**Gemini × NotebookLM 雙向同步 notebook**」— 同一份規章可在兩端切換使用，Gemini 端混搭網路知識寫公告、NotebookLM 端用 Studio 生 Audio Overview。'
+          },
+          {
+            heading: 'G. 動手前：4 個工具的註冊入口',
+            illustration: 'day1-tools-signup',
+            body: '介紹完概念，下面 4 個任務動手把帳號開好。下圖一頁看完所有入口、帳號類型與對應任務 ID，**全部建議用個人 Gmail**（公司 Workspace 帳號可能被 IT 政策擋住）。',
+            list: [
+              ['Gemini → d1-u1-t1', 'gemini.google.com — 個人 Google 帳號'],
+              ['NotebookLM → d1-u1-t2', 'notebooklm.google.com — 同一個 Google 帳號（免費版每月 50 sources）'],
+              ['Antigravity → d1-u1-t3', 'antigravity.google/download — 三平台選一下載；Day 4 才會用到，先裝起來'],
+              ['ChatGPT/Codex → d1-u1-t4', 'chatgpt.com — Email + 手機驗證；註冊後 Codex CLI 可登入用']
+            ],
+            note: '⚠️ Antigravity 與 NotebookLM 的 share / Workspace 限制較多，務必用個人 Gmail；公司信箱遇到限制時不必硬撐。'
           }
         ],
         prompts: [],
@@ -584,6 +596,7 @@ window.COURSE = {
           },
           {
             heading: 'Flow 工作流四步驟（關鍵幀模式）',
+            illustration: 'day2-flow-workflow',
             body: '以下流程為**關鍵幀模式**完整四步。素材模式可跳過步驟 1（直接拿 1 張參考圖丟給 Veo），其餘步驟相同。',
             list: [
               ['1. 關鍵幀', '用 Nano Banana 產出 2-3 張一致風格的場景圖'],
@@ -1154,6 +1167,7 @@ description: 把多張發票照片辨識並整理成 Markdown 表格，含日期
           },
           {
             heading: 'Codex App 安裝（桌面版）',
+            illustration: 'day4-codex-app-install',
             body: 'Codex App 是 Codex 的桌面 GUI 工具，跟 Day 1 裝的 CLI 不同介面。提供多執行緒並行、Git Worktree 整合、視覺化介面。',
             list: [
               ['下載', 'developers.openai.com/codex/app'],
@@ -1166,6 +1180,7 @@ description: 把多張發票照片辨識並整理成 Markdown 表格，含日期
           },
           {
             heading: 'skills.sh：跨工具 Skills 寶庫',
+            illustration: 'day4-skills-sh',
             body: 'Vercel 維護的 Agent Skills 開源生態系——支援 Codex、Claude Code、Cursor、GitHub Copilot、Windsurf 等 18+ 種 AI 代理。',
             list: [
               ['網站', 'skills.sh — 主題、排行榜、代理篩選三種瀏覽方式'],
