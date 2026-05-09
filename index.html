@@ -1873,16 +1873,190 @@
     margin: 24px 0;
   }
 
-  /* responsive small adjustments — desktop-first as briefed */
+  /* ============================================================
+   * Sidebar 背景遮罩（mobile overlay 用）
+   * 在桌機與手機都存在 DOM 元素，但桌機保持完全隱藏不擋互動
+   * ============================================================ */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: oklch(0% 0 0 / 0.42);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 90;                /* 介於 topbar(10) 與 sidebar(100) 之間 */
+    opacity: 0;
+    pointer-events: none;       /* 桌機永遠不擋點擊 */
+    transition: opacity 240ms ease;
+  }
+
+  /* ============================================================
+   * 響應式斷點（mobile-aware adjustments）
+   *
+   * 中尺寸（≤1100px）：縮小 sidebar 與內容區寬度，保留原桌機版面結構
+   * 平板與手機（≤880px）：多欄 grid 統一塌成單欄
+   * 手機（≤768px）：sidebar 改為 overlay 浮層、解除桌機強制 1.35 zoom、
+   *                  全面收斂 padding/字級，避免 viewport 寬度溢出
+   * 極小螢幕（≤480px）：再進一步壓縮 padding 與大標字級
+   *
+   * 注意：不要回去改 .sidebar 為 position: relative — 桌機版的 fixed 架構
+   *       與 .main 的 margin-left 配合是經過驗證的，relative 會破壞動畫與 z-index 安排
+   * ============================================================ */
   @media (max-width: 1100px) {
     :root { --sidebar-w: 240px; --content-max: 760px; }
     body { font-size: 14.5px; }
   }
+
+  /* 平板：多欄 grid 改單欄即可，sidebar 仍可固定顯示 */
   @media (max-width: 880px) {
-    .app { flex-direction: column; }
-    .sidebar { flex: none; position: relative; height: auto; border-right: 0; border-bottom: 1px solid var(--border); margin-left: 0 !important; width: 100%; }
-    .nav { max-height: 200px; }
-    .brand-cards, .role-cards, .row-2, .day-header-grid { grid-template-columns: 1fr; }
+    .brand-cards,
+    .role-cards,
+    .row-2,
+    .day-header-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* 手機 sidebar overlay 拉開時鎖住 body 捲動，避免遮罩下方頁面跟著滑
+     桌機沒有 .sidebar-open 這個 class，body 不會被鎖 */
+  body.sidebar-locked {
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  /* ===== 手機斷點（≤768px）：sidebar overlay 化、整體收斂 ===== */
+  @media (max-width: 768px) {
+    /* 解除桌機強制 1.35 倍 zoom，避免內容溢出視窗（手機本來就近距離閱讀） */
+    :root {
+      --content-zoom: 1;
+      --sidebar-w: 280px;       /* 手機上展開時固定寬度，獨立於桌機尺度 */
+      --header-h: 52px;
+      --content-max: 100%;
+    }
+
+    /* 手機上：sidebar 預設隱藏（脫離側邊欄變成可拉出的浮層） */
+    .sidebar {
+      transform: translateX(-100%);
+      z-index: 100;             /* 蓋過 topbar(10) 與所有內容 */
+      box-shadow: 8px 0 28px -10px oklch(0% 0 0 / 0.35);
+    }
+    /* 桌機的「展開」狀態（無 .sidebar-closed）在手機要保持隱藏，
+       由 JS 改成切換 .sidebar-open 來控制 */
+    .app.sidebar-open .sidebar {
+      transform: translateX(0);
+    }
+    /* 桌機的 .sidebar-closed 在手機沒意義（預設就已隱藏） */
+
+    /* 主內容滿版，永遠不留 sidebar 邊距 */
+    .main,
+    .app.sidebar-closed .main {
+      margin-left: 0;
+    }
+
+    /* 手機版啟用背景遮罩；桌機由下方預設規則保持隱藏 */
+    .app.sidebar-open .sidebar-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* topbar 收斂 padding 與右側按鈕的字級，避免擠到漢堡鈕 */
+    .topbar {
+      padding: 0 14px;
+      gap: 10px;
+    }
+    .topbar-trail { font-size: 11.5px; }
+    .topbar-quick button { padding: 4px 8px; font-size: 11.5px; }
+
+    /* 主內容區留白縮小，使用 vw 自適應 */
+    .content,
+    .app.sidebar-closed .content {
+      padding: 22px 16px 80px;
+      max-width: 100%;
+    }
+    .app.sidebar-closed .content { padding: 22px 16px 80px; }
+
+    /* 章節標題降一級，避免擠出畫面 */
+    section.chapter > header h2 { font-size: 26px; }
+    section.chapter > header .lead { font-size: 14.5px; }
+    section.chapter { margin-bottom: 56px; }
+
+    /* Day hero：數字小一號、padding 縮 */
+    .day-hero {
+      padding: 24px 18px 22px;
+      gap: 18px;
+      grid-template-columns: 1fr;
+    }
+    .day-hero-numeral { font-size: clamp(72px, 22vw, 110px); }
+    .day-hero-title { font-size: clamp(22px, 6.5vw, 30px); }
+    .day-hero-stats { gap: 14px; flex-wrap: wrap; }
+
+    /* unit accordion：summary padding 壓縮、標題降級 */
+    .unit summary { padding: 14px 16px; gap: 8px; }
+    .unit-title { font-size: 16px; }
+    .unit-body { padding: 4px 16px 18px; }
+
+    /* kv-row 200px 鍵欄在手機放不下，改垂直堆疊 */
+    .kv-row {
+      grid-template-columns: 1fr;
+    }
+    .kv-key {
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
+    }
+    .kv-val { padding: 10px 12px; }
+
+    /* materials list：70px tag 欄保留，但右側 meta 自動換行 */
+    .material-row {
+      grid-template-columns: 60px 1fr;
+      gap: 10px;
+      padding: 10px 12px;
+    }
+    .material-row .material-meta {
+      grid-column: 1 / -1;
+      text-align: left;
+      font-size: 10.5px;
+    }
+
+    /* toolbox grid：縮小卡片最小寬度，2 欄密度比單欄好 */
+    .toolbox-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .tool-card-body { padding: 10px 12px; }
+    .tool-name { font-size: 14px; }
+    .tool-tagline { font-size: 12px; }
+
+    /* 講師影片網格：在窄螢幕 1 欄，避免縮圖過小 */
+    .instructor-videos-grid {
+      grid-template-columns: 1fr;
+    }
+
+    /* 表格易讀性：手機上允許橫向捲動避免被擠扁 */
+    table.t {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* prompt-card / concept 內距收斂 */
+    .concept-heading { padding-right: 0; }
+    .copy-btn-corner,
+    .concept > .prompt-copy-btn { position: static; margin-top: 6px; display: inline-block; }
+
+    /* nav-zoom 控制在手機沒意義（zoom 已鎖定 1，pinch zoom 接管），整段隱藏避免誤導 */
+    .nav-zoom { display: none; }
+  }
+
+  /* ===== 極小螢幕（≤480px，iPhone SE 等）：再進一步壓縮 ===== */
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+    h1 { font-size: 26px; }
+    section.chapter > header h2 { font-size: 22px; }
+    .content { padding: 18px 12px 70px; }
+    .topbar { padding: 0 10px; }
+    .topbar-trail { font-size: 11px; }
+    /* 結訓測驗按鈕在極小螢幕字太擠，改用簡短文字（由 JS 也可改，但 CSS overflow 即可） */
+    .topbar-quick button { padding: 4px 6px; }
   }
 
   /* skip-link for accessibility */
@@ -1971,6 +2145,12 @@
 
     <div class="content" id="main-content"></div>
   </main>
+
+  <!-- ============================================================
+       SIDEBAR BACKDROP — 手機版浮層遮罩（桌機透明 0 / 不擋點擊）
+       點擊可關閉 sidebar；只在 .app.sidebar-open 時可見且可互動
+       ============================================================ -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
 </div>
 
 <div class="toast" id="toast">已複製</div>
@@ -2054,12 +2234,61 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   // ---------- Sidebar Toggle ----------
+  // 桌機（>768px）：toggle .sidebar-closed 來「收合」原本顯示的側邊欄
+  // 手機（≤768px）：toggle .sidebar-open 把原本隱藏的側邊欄拉出成 overlay
+  // 這樣的雙模設計讓桌機與手機各自符合直覺，無需在 resize 時清除 class
   const sidebarToggleBtn = $('#sidebar-toggle');
+  const sidebarBackdrop = $('#sidebar-backdrop');
+  const appEl = $('.app');
+  // matchMedia 不會跟著 resize 改變引用，所以每次點擊都即時讀取狀態
+  const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+  /** 關閉手機版浮層 sidebar；桌機呼叫不會有副作用。同時解除 body 捲動鎖。 */
+  const closeMobileSidebar = () => {
+    if (appEl) appEl.classList.remove('sidebar-open');
+    document.body.classList.remove('sidebar-locked');
+  };
+
+  /** 同步 body.sidebar-locked 與 .app.sidebar-open 狀態（手機才會生效） */
+  const syncBodyLock = () => {
+    if (!appEl) return;
+    const open = appEl.classList.contains('sidebar-open');
+    document.body.classList.toggle('sidebar-locked', open && isMobile());
+  };
+
   if (sidebarToggleBtn) {
     sidebarToggleBtn.addEventListener('click', () => {
-      $('.app').classList.toggle('sidebar-closed');
+      if (!appEl) return;
+      if (isMobile()) {
+        appEl.classList.toggle('sidebar-open');
+      } else {
+        appEl.classList.toggle('sidebar-closed');
+      }
+      syncBodyLock();
     });
   }
+
+  // 點擊背景遮罩關閉手機版 sidebar
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+  }
+
+  // Esc 鍵也可關閉手機版 sidebar，符合鍵盤使用者預期
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMobile()) closeMobileSidebar();
+  });
+
+  // 視窗 resize 跨越斷點時清理狀態：從手機放大到桌機要清掉 sidebar-open，
+  // 從桌機縮到手機要清掉 sidebar-closed，避免兩個 class 同時存在造成混亂
+  let lastIsMobile = isMobile();
+  window.addEventListener('resize', () => {
+    const nowMobile = isMobile();
+    if (nowMobile !== lastIsMobile && appEl) {
+      appEl.classList.remove('sidebar-open', 'sidebar-closed');
+      document.body.classList.remove('sidebar-locked');
+      lastIsMobile = nowMobile;
+    }
+  });
 
   // ---------- 內容縮放控制（透過 CSS 變數 --content-zoom 套到 .content） ----------
   // sidebar 本身不受影響（CSS 寫死 sidebar 沒套用此變數）；用 localStorage 持久化使用者偏好
@@ -2079,13 +2308,21 @@
   const zoomInBtn = $('#zoom-in');
   const zoomOutBtn = $('#zoom-out');
   const zoomResetBtn = $('#zoom-reset');
+  // 偵測手機尺寸：手機上交給原生 pinch-to-zoom，自訂縮放設定不該蓋過 media query 規則
+  const zoomMobileMQ = window.matchMedia('(max-width: 768px)');
   // 將縮放值套用到 :root 並更新 UI（含端點按鈕 disabled 狀態）
   const applyZoom = (z) => {
     // 浮點誤差修正：四捨五入到 step 倍數
     z = Math.round(z / ZOOM_STEP) * ZOOM_STEP;
     z = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z));
     currentZoom = z;
-    document.documentElement.style.setProperty('--content-zoom', z.toString());
+    // 手機：移除 inline style，讓 @media (max-width: 768px) 的 --content-zoom: 1 生效
+    // 桌機：維持原本邏輯，inline 寫入使用者選擇的縮放值
+    if (zoomMobileMQ.matches) {
+      document.documentElement.style.removeProperty('--content-zoom');
+    } else {
+      document.documentElement.style.setProperty('--content-zoom', z.toString());
+    }
     if (zoomPctEl) zoomPctEl.textContent = Math.round(z * 100) + '%';
     if (zoomOutBtn) zoomOutBtn.disabled = z <= ZOOM_MIN + 1e-6;
     if (zoomInBtn) zoomInBtn.disabled = z >= ZOOM_MAX - 1e-6;
@@ -2094,6 +2331,8 @@
   if (zoomInBtn) zoomInBtn.addEventListener('click', () => applyZoom(currentZoom + ZOOM_STEP));
   if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => applyZoom(currentZoom - ZOOM_STEP));
   if (zoomResetBtn) zoomResetBtn.addEventListener('click', () => applyZoom(ZOOM_DEFAULT));
+  // 跨越手機/桌機斷點時重套縮放，避免從桌機縮成手機後 inline style 殘留
+  zoomMobileMQ.addEventListener('change', () => applyZoom(currentZoom));
   applyZoom(currentZoom); // 初次套用
   const el = (tag, attrs = {}, ...children) => {
     const node = document.createElement(tag);
@@ -3522,6 +3761,8 @@
         e.preventDefault();
         const target = document.getElementById(item.id);
         if (target) {
+          // 手機：先收回浮層 sidebar 再捲動，使用者才看得到目的章節
+          if (isMobile()) closeMobileSidebar();
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
           history.replaceState(null, '', '#' + item.id);
         }
