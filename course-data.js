@@ -71,11 +71,11 @@ window.COURSE = {
       ['{語氣}', '溫暖、親切', '文青、療癒']
     ],
     tools: [
-      ['Gemini', '文案撰寫、改寫、長文摘要、生圖（Nano Banana）、生投影片（Canvas）', 'Day 1、2、3'],
-      ['NotebookLM', '來源資料整理、會議錄音摘要、發票辨識', 'Day 3'],
-      ['Flow', 'AI 影片工具（Nano Banana 生圖 + Veo 生影片）', 'Day 2'],
-      ['Antigravity', 'Agent 協作、Skill 執行環境', 'Day 4'],
-      ['Codex', '程式碼/腳本生成、Skill 開發輔助', 'Day 4']
+      ['Gemini', '文案撰寫、改寫、長文摘要、生圖（Nano Banana）、生投影片（Canvas）；**免費版**：30 prompts/日 + 20 圖/日 + 5 Deep Research/月', 'Day 1、2、3'],
+      ['Flow', 'AI 影片工具（Nano Banana 生圖 + Veo 生影片）；**免費版**：50 credits/日 ≈ 12 段 8 秒影片', 'Day 2'],
+      ['NotebookLM', '來源資料整理、會議錄音摘要、發票辨識；**免費版**：50 對話/日 + 3 Audio Overview/日 + 50 sources/notebook', 'Day 1、3'],
+      ['Antigravity', 'Agent 協作、Skill 執行環境', 'Day 1、4'],
+      ['Codex', '程式碼/腳本生成、Skill 開發輔助', 'Day 1、4']
     ],
     deliverables: [
       ['Day 1', '個人提示詞庫（公告、通知、會議紀錄各 1 份）'],
@@ -113,6 +113,29 @@ window.COURSE = {
           '完成 4 個工具的帳號註冊與登入。'
         ],
         concepts: [
+          {
+            heading: '行政 / 財務 AI 應用趨勢（2026）— 為什麼這 4 天值得來',
+            illustration: 'day1-industry-trends-2026',
+            body: 'AI 工具導入企業的速度比想像快——**91% 企業已用 AI**（2023 年僅 55%）。對行政與財務工作來說，這不是「未來的事」而是「現在的標配」。**重點不是 AI 會不會取代你，而是「會用 AI 的同事正在比你少花 2-3.5 小時/週」。**',
+            table: {
+              head: ['指標', '數據', '對行政學員的意義'],
+              rows: [
+                ['🌐 全球企業 AI 採用率', '91%（2026）／ 78%（2024）／ 55%（2023）', '從「先進企業專屬」變成「同事都在用」'],
+                ['⏱ 行政文書平均工時節省', '**2-3.5 小時/週**', '一週多出半天可做更高價值的工作'],
+                ['💰 企業 AI 投資回報', '每 $1 投入 → $3.70 產出', '公司有理由持續投入 AI 工具預算'],
+                ['🇹🇼 台灣企業 AI 導入率', '約 30%（連兩年）', '台灣略落後全球，**政府正大力推**（含本課程）'],
+                ['🏢 Microsoft 365 Copilot', '2,000 萬付費企業席次（2026/4）', '七個月翻倍 — Office 全家桶 AI 化是大勢'],
+                ['🔍 HR 履歷 AI 用率', '58%（2026） vs 35%（2023）', '**行政相關職能 AI 滲透速度最快**']
+              ]
+            },
+            list: [
+              ['📌 行政人員 AI 三大應用', '流程自動化、決策支援、文件處理（依台灣產業 AI 化大調查）'],
+              ['📌 財務具體場景', 'AI agent 自動匹配發票 ↔ 分錄、即時標記異常 — 從「小時」縮為「秒」'],
+              ['📌 政府支持', '經濟部「服務業 AI 人才培育計畫」、數發部「AI 產業生態人才賦能計畫」（**本課程屬於這類補助案**）'],
+              ['📌 趨勢底線', '工作不會消失但會「**重塑**」— 文書時間↓、規劃 / 溝通 / 把關時間↑']
+            ],
+            note: '📊 **資料來源**（2026 主要調查）：[Federal Reserve Notes（2026/4）](https://www.federalreserve.gov/econres/notes/feds-notes/monitoring-ai-adoption-in-the-u-s-economy-20260403.html)、[Microsoft 365 Copilot 20M Seats（2026/4/29）](https://news.microsoft.com/source/features/digital-transformation/accenture-is-rolling-out-copilot-to-a-workforce-the-size-of-denver/)、[台灣產業 AI 化大調查（AIF）](https://aif.tw/event/ai-research/)、[BCG: AI Will Reshape More Jobs Than It Replaces](https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces)。'
+          },
           {
             heading: 'A. 生成式 AI 的本質：機率預測機',
             body: '別把 AI 當神，它是「接龍機」：你給它一段話，它預測下一個字最可能是什麼，然後一直接下去。',
@@ -156,9 +179,23 @@ window.COURSE = {
             list: [
               ['免費版夠用', '完整跑完 4 天課程不需付費'],
               ['NotebookLM 同源', 'Google 自家，行政場景無可替代'],
+              ['🔗 雙向同步 Notebook（2026/4 新功能）', 'Gemini 側欄與 NotebookLM 共用同一個 notebook — sources、custom instructions 雙向同步。**同一份規章可在 Gemini 端混搭 web 搜尋寫公告、在 NotebookLM 端用 Studio 生 Audio Overview**（Day 3 詳細介紹）'],
               ['Workspace 深度整合', '90% 行政人員天天用 Gmail / Docs / Drive'],
               ['中文長文強', '會議紀錄、長公告等台灣行政場景']
             ]
+          },
+          {
+            heading: 'D-1. Gemini 介面導覽（第一次打開看到什麼）',
+            illustration: 'day1-gemini-ui',
+            body: 'gemini.google.com 是學員打字的第一站。畫面分三區：左側 sidebar（歷史對話 + 設定）、頂端 nav（關於 / 應用程式 / 訂閱 / 企業用途）、中央 chat input + 四個模式按鈕（撰寫 / 方案 / 研究 / 學習）。',
+            list: [
+              ['Chat input', '中央輸入框 — Gemini 主舞台。打字送出'],
+              ['四個模式按鈕', '撰寫 / 方案 / 研究 / 學習 — 不同模式有不同 prompt 模板，輕鬆切換用途'],
+              ['新對話按鈕', '左側 sidebar **上方**的「新對話」按鈕 — **新題目務必開新對話**，避免歷史污染答案'],
+              ['左側 sidebar', '展開可看歷史對話清單、設定、Gem 庫'],
+              ['頂端「登入」', '需 Google 帳號（建議用個人 Gmail，公司 Workspace 帳號可能受 IT 政策限制）']
+            ],
+            note: '行政學員優先級：先學會「+ 新對話」+「四個模式按鈕」即可上手。常見錯誤：所有問題都接在同一對話 → 答案越來越偏；應該每個新題目開新對話。'
           },
           {
             heading: 'E. 為什麼要學「多工具」？',
@@ -166,8 +203,8 @@ window.COURSE = {
               head: ['工具', '一句話定位', '行政場景對應'],
               rows: [
                 ['Gemini', '通用對話與內容生成', '寫公告、改文案、長文摘要'],
-                ['NotebookLM', '以你提供的資料為唯一來源的 AI 筆記本', '會議錄音轉摘要、發票辨識、企業內部資料整理'],
                 ['Flow', 'Google AI 影片工具（Nano Banana 生圖 + Veo 生影片）', '製作門市開幕／新品宣傳的 8-16 秒短影片'],
+                ['NotebookLM', '以你提供的資料為唯一來源的 AI 筆記本', '會議錄音轉摘要、發票辨識、企業內部資料整理'],
                 ['Antigravity', '桌面型 AI 代理（IDE-like），可幫你自動跑流程', '把多步驟工作打包成 Skill 自動執行'],
                 ['Codex', '偏程式碼與腳本生成的 AI 工具', '能在電腦處理的工作都能交給它']
               ]
@@ -181,7 +218,8 @@ window.COURSE = {
               ['不會幻想', '不會引用網路上的資訊'],
               ['對行政與財務工作', '無可取代的優點：不能讓 AI 幻想出公司沒有的數據'],
               ['也是優秀的學習工具', '把講義／書籍／論文丟進去就能對話問答、產生摘要與 podcast（本課僅點到為止）']
-            ]
+            ],
+            note: '🔗 **Day 3 會講進階用法**：包含介面導覽、規章三步驟、Citation 驗證，以及 2026/4 新推出的「**Gemini × NotebookLM 雙向同步 notebook**」— 同一份規章可在兩端切換使用，Gemini 端混搭網路知識寫公告、NotebookLM 端用 Studio 生 Audio Overview。'
           }
         ],
         prompts: [],
@@ -362,7 +400,7 @@ window.COURSE = {
       ['09:30 ~ 12:00', '單元 1：海報 + 投影片實作', 'Nano Banana 出海報、Canvas 直接生 .pptx'],
       ['12:00 ~ 13:00', '午休', ''],
       ['13:00 ~ 14:00', '單元 2 上半：影片基本概念 + Flow 介紹', 'PASA、圖片→影片原理'],
-      ['14:00 ~ 16:30', '單元 2 下半：Flow 影片實作', '8-16 秒短片成品 + 互評']
+      ['14:00 ~ 16:30', '單元 2 下半：Flow 影片實作', '8-16 秒短片成品 + 個人完善']
     ],
     units: [
       {
@@ -510,11 +548,42 @@ window.COURSE = {
           '理解「圖片→影片」與「角色一致性」的關係。',
           '完成 Flow 工作流：關鍵幀 → 1-2 個動畫片段 → 字幕配樂。',
           '產出 8-16 秒個人化短片。',
-          '能依互評回饋持續修正素材。'
+          '能依自我檢核（角色一致 / 3 秒 hook / HSC 結構）持續修正素材。'
         ],
         concepts: [
           {
-            heading: 'Flow 工作流四步驟',
+            heading: 'Flow 介面導覽（labs.google/flow 進入頁）',
+            illustration: 'day2-flow-ui',
+            body: 'Flow 是 Google Labs 的 AI 影片創作工具，整合 Nano Banana 生圖 + Veo 生影片。進入 labs.google/flow 看到 hero 區（其他用戶作品的 tile mosaic 背景 + Flow logo + Create with Flow CTA），按下 CTA 進入登入流程，登入後進 storyboard editor。',
+            list: [
+              ['Hero 區', '用戶作品的 tile mosaic — 短影片、AI 動畫、storytelling 範例，直觀感受 Flow 能做什麼'],
+              ['Create with Flow', '主入口按鈕 — 按下後進入登入；**免費帳號每日 150 點額度**即可開始用'],
+              ['Scroll to Explore', '繼續往下捲：功能介紹、定價、Showcase 案例'],
+              ['Storyboard editor（登入後）', '時間軸介面：分段 → 關鍵幀 → 提示詞 → 生成 — 詳見下面「Flow 工作流四步驟」']
+            ],
+            note: '💡 **Flow 免費可用**：登入 Google 帳號後**每日 150 點額度**，夠完整跑完課程實作（一段 8 秒影片約耗 20-40 點，可生 4-6 段測試）。⚠️ 但 Google 沒承諾免費額度永久存在 — 不知何時會取消，重度使用或商用建議訂閱 Google AI Pro / Ultra。'
+          },
+          {
+            heading: 'Flow 兩種圖生影片模式：關鍵幀 vs 素材',
+            body: 'Flow 的 Veo 引擎接受兩種圖片輸入方式，**選錯模式會直接決定影片風格與可控度**。動手前先想清楚要哪一種。',
+            table: {
+              head: ['模式', '輸入', '產出特性', '適用場景'],
+              rows: [
+                ['**關鍵幀（Frames）**', '2 張圖：起始幀 + 結束幀', 'AI 生成「從起點到終點」的過渡動畫，**動作軌跡可控**', '人物從 A 動作 → B 動作、鏡頭推拉、開門關門等明確「狀態轉變」'],
+                ['**素材（Ingredients）**', '1-N 張參考圖（人物 / 物件 / 場景）', 'AI 把參考圖**當素材**重新組合生成新動畫，**畫面自由但可控度低**', '已有人物 / 商品照，要 AI 自由發揮「這人在某情境動作」']
+              ]
+            },
+            list: [
+              ['關鍵幀模式 ⭐ 優點', '動作可預期；起終姿勢、構圖完全你決定'],
+              ['關鍵幀模式痛點', '需先準備兩張一致的圖（用 Nano Banana 維持人物一致）— 工序多但結果穩'],
+              ['素材模式 ⭐ 優點', '只需 1 張人物 / 商品照即可上手；AI 想像力比關鍵幀大、出片快'],
+              ['素材模式痛點', '動作軌跡 AI 自己猜，可能違反你預期；需要多次重生挑可用版本']
+            ],
+            note: '行政學員選法則：**第一次玩用素材模式**（門檻最低、出片快、看到神奇感）；要做**精準的店家開門 / 員工動作示範**等敘事影片，再進階用關鍵幀模式。本日課堂主用素材模式，學員時間夠才嘗試關鍵幀。'
+          },
+          {
+            heading: 'Flow 工作流四步驟（關鍵幀模式）',
+            body: '以下流程為**關鍵幀模式**完整四步。素材模式可跳過步驟 1（直接拿 1 張參考圖丟給 Veo），其餘步驟相同。',
             list: [
               ['1. 關鍵幀', '用 Nano Banana 產出 2-3 張一致風格的場景圖'],
               ['2. 動畫片段', '把每張圖丟給 Veo，產出 3-5 秒影片'],
@@ -539,8 +608,7 @@ window.COURSE = {
         tasks: [
           { id: 'd2-u2-t1', label: '產出 2-3 張一致風格的關鍵幀（用自家品牌主視覺照）' },
           { id: 'd2-u2-t2', label: '把每張關鍵幀轉成 3-5 秒動畫片段' },
-          { id: 'd2-u2-t3', label: '在 Flow 串接片段、加字幕配樂，產出 8-16 秒成品' },
-          { id: 'd2-u2-t4', label: '互評：和左右鄰兵交換看影片，給 1 個亮點 + 1 個改進點' }
+          { id: 'd2-u2-t3', label: '在 Flow 串接片段、加字幕配樂，產出 8-16 秒成品' }
         ],
         materials: []
       }
@@ -554,7 +622,7 @@ window.COURSE = {
       '產出一張 IG 海報、一份 8 頁投影片、一支 8-16 秒短片。',
       '理解並能說明「圖片→影片」與「角色一致性」的關係。',
       '體驗完整的 Flow 工作流。',
-      '能依互評回饋持續修正素材。'
+      '能依自我檢核重點（角色一致 / 3 秒 hook / HSC 結構）持續修正素材。'
     ]
   },
 
@@ -595,6 +663,19 @@ window.COURSE = {
             ]
           },
           {
+            heading: 'NotebookLM 介面導覽（notebooklm.google.com 進入頁）',
+            illustration: 'day3-notebooklm-ui',
+            body: 'NotebookLM 是 Google 的「以你提供的資料為唯一來源」AI 筆記本。未登入看到 marketing 頁（瞭解任何事物 + 上傳來源 + 即時分析）；登入後切換到實際介面 — 三欄結構：Sources（左）/ Chat（中）/ Studio（右）。',
+            list: [
+              ['進入頁（未登入）', '看到「瞭解任何事物」hero + 試用按鈕；下方介紹 Sources 上傳與即時分析功能'],
+              ['Sources（左欄）', '上傳 PDF / 網頁 / YouTube 影片 / Google 文件 — NotebookLM 的回答只會依你上傳的內容，**不會腦補**'],
+              ['Chat（中欄）', '對 Sources 提問 — 每個回答都附引用時間戳（Citation），點擊跳到原文段落'],
+              ['Studio（右欄）', '生成 Audio Overview / 心智圖 / 學習指南 / 簡報 — 把 Sources 自動轉成多種輸出格式'],
+              ['「我的筆記本」（登入後首頁）', 'grid 排列；每個筆記本是獨立 sources + chat 沙盒，**不互相污染**']
+            ],
+            note: '行政學員核心場景：上傳公司規章 PDF → 問「員工差勤辦法第幾條規定加班費上限？」NotebookLM 會引用條文回答，比直接 ChatGPT 更穩、不腦補規章內容。Day 3 整天會大量用這套。'
+          },
+          {
             heading: '基於內部規章生成的「三步驟」',
             list: [
               ['1. 餵資料', '將厚重的 PDF（員工手冊、SOP、退換貨政策）丟入 NotebookLM'],
@@ -617,6 +698,17 @@ window.COURSE = {
           {
             heading: 'NotebookLM 殺手鐧：來源引用（Citation）',
             body: '它每給你一個答案，都會標明「這段是錄音裡第幾分幾秒講的」。意思是：你能驗證它沒亂講。這是它優於 ChatGPT、Gemini 的關鍵。'
+          },
+          {
+            heading: 'Gemini × NotebookLM 連動：兩端共用同一個 notebook（2026/4 新功能）',
+            body: '2026 年 4 月 Google 推出「Notebooks in Gemini」— Gemini App 側欄多了 Notebooks 區，與 NotebookLM **雙向同步**：source、custom instruction、命名三項在哪一端改，另一端自動更新。讓你按任務切換工具但**共用同一個知識庫**。',
+            list: [
+              ['啟用方式', '兩條路：(1) Gemini App 側欄點「**新增 notebook**」開新；(2) 在 NotebookLM 建的 notebook **自動出現**在 Gemini 側欄'],
+              ['Gemini 端優勢', '對話可**混合 sources + 網路搜尋**回答 — 適合需要拿規章對照外部法規 / 業界做法的情境'],
+              ['NotebookLM 端優勢', '⭐ **Studio 功能**（Audio Overview / Video Overview / Mind Map / 簡報）只在這邊用，Gemini 端目前不支援'],
+              ['行政場景範例', '上傳規章到 notebook → Gemini 端寫公告（混 web 知識補背景）→ 切 NotebookLM 用 Studio 生 Audio Overview 給同事邊走邊聽']
+            ],
+            note: '⚠️ **限制與適用**：(1) 含 Gemini 對話的 notebook 無法 share；(2) NotebookLM 已 share 的 notebook 不會出現在 Gemini；(3) 不適用 18 歲以下、Workspace、Education 帳號；(4) 目前限 **Google AI Ultra / Pro / Plus 訂閱（網頁版）**，**免費版陸續開放中**。若帳號尚未開通，本卡僅當「了解未來功能」介紹，主流程仍以 NotebookLM 單獨使用為主。'
           }
         ],
         prompts: [
@@ -797,7 +889,7 @@ window.COURSE = {
       ['09:00 ~ 09:30', '開場 + 環境檢查', '確認筆電狀態、安裝權限'],
       ['09:30 ~ 12:00', '單元 1 上半：工具安裝 + Skill 概念', 'Antigravity 安裝、Skill 三要素（Codex App 下午介紹）'],
       ['12:00 ~ 13:00', '午休', ''],
-      ['13:00 ~ 14:30', '單元 1 下半：範本拆解 + Skill 初稿', '拆解示範 Skill、AI 協助填初稿'],
+      ['13:00 ~ 14:30', '單元 1 下半：安裝 Skill + 範本拆解 + 自製初稿', '社群 / 自製兩種來源安裝、範本拆解、AI 協助填初稿'],
       ['14:30 ~ 15:30', '單元 2 上半：學員建立專屬 Skill', '一對一巡堂、個人化微調'],
       ['15:30 ~ 16:00', 'Skills 進階探索', '插件 vs Skills、Codex Plugin、Codex App 安裝、skills.sh'],
       ['16:00 ~ 16:30', '結訓', '合照']
@@ -814,34 +906,60 @@ window.COURSE = {
         ],
         concepts: [
           {
-            heading: 'Skill 資料夾結構（一個 Skill = 一個資料夾）',
-            illustration: 'day4-skill-folder-structure',
-            body: '依 agentskills.io 規範：頂層資料夾名 = name 欄位，內含必要 SKILL.md，可選 references/、scripts/、assets/ 子目錄。',
+            heading: 'Antigravity 桌面端安裝（前置）',
+            illustration: 'day4-antigravity-install',
+            body: '裝 skill 之前先把 Antigravity 本身裝起來。Antigravity 是 Google Labs 推出的 agent-first 桌面 IDE，採個人 Gmail 帳號登入；下載頁三欄並列 macOS / Windows / Linux，挑你的作業系統按下載鍵即可。',
             list: [
-              ['SKILL.md', '✅ 必要 — metadata（YAML frontmatter）+ 指令本體（Markdown body）'],
-              ['references/', '⚠️ 選填 — 補充文件（如公司規章 PDF），AI 按需載入'],
-              ['scripts/', '⚠️ 選填 — 可執行腳本（依 agent 實作支援的語言）'],
-              ['assets/', '⚠️ 選填 — 模板、圖片、靜態資源'],
-              ['命名規則', '資料夾名與 name 欄位必須完全相同，否則 agent 載不到此 skill']
+              ['下載頁', 'antigravity.google/download — macOS / Windows / Linux 三欄並列，依你的作業系統選'],
+              ['macOS', 'Apple Silicon 或 Intel 二擇一，.dmg 拖入 Applications 即完成安裝'],
+              ['Windows', 'x64 或 ARM64 二擇一（系統需求 Windows 10 64 bit 以上），下載 .exe 雙擊安裝'],
+              ['Linux', '單一安裝檔（需 glibc ≥ 2.28、glibcxx ≥ 3.4.25）'],
+              ['登入', '個人 Gmail 帳號（公司 Workspace 帳號目前不支援）']
             ],
-            note: '範例：invoice-to-excel/ 資料夾內含 SKILL.md，公司差勤辦法 PDF 放在 references/expense-policy.pdf。'
+            note: '⚠️ 僅從官方 antigravity.google/download 下載；不要從第三方鏡像或要求登入才下載的網站取得安裝檔。Windows SmartScreen 或 macOS Gatekeeper 警告屬正常，按「仍要執行」即可。'
           },
           {
-            heading: 'Agent Skill 結構（agentskills.io 官方規範）',
-            illustration: 'day4-skill-encapsulation',
-            body: '一個 Skill 是「資料夾 + SKILL.md」。SKILL.md 含 YAML frontmatter（name + description）與 Markdown body（指令）。',
+            heading: 'Antigravity 介面導覽（裝好登入後看到什麼）',
+            illustration: 'day4-antigravity-ui',
+            body: 'Antigravity 是 VS Code 為基底的「agent-first」桌面 IDE — 官方文件（antigravity.google/product）把產品分成七個區塊，行政學員只需先掌握 Agent Manager + Browser Use + Artifacts 三塊即可上手。',
             list: [
-              ['資料夾', '名稱 = name 欄位（如 invoice-to-excel/），可選含 scripts/、references/、assets/'],
-              ['name（必填）', '1-64 字，lowercase + hyphen，不可底線/大寫/連續 hyphen，必須與資料夾同名'],
+              ['Agent Manager', '主視窗（mission control）— 並行管理多個代理，跨多個工作區同時派任務'],
+              ['Editor', 'AI 強化的 IDE — 含 Tab 自動完成、命令列、代理協作；行政學員主要用來看代理改了什麼檔'],
+              ['Agent', '能自主跨「編輯器 / 終端機 / 瀏覽器」三個介面執行任務的代理本身'],
+              ['Artifacts', '代理的交付物 — 用結構化方式呈現代理的進度與結果，不只是聊天記錄'],
+              ['User Feedback', '在任何 Artifact 上留評論 — 引導代理朝你要的方向修正，不必整段重講'],
+              ['Knowledge', '從歷史對話自動建立的可重用知識庫 — 同一件事不必每次重新教代理'],
+              ['Browser Use', '代理可以開 Chrome 自動操作網頁（點擊、捲動、打字、讀 console、截圖）— 行政自動化的核心']
+            ],
+            note: '對行政學員的優先級：Agent Manager（看代理工作）+ Browser Use（跑網頁自動化）+ Artifacts（驗收結果）是 80% 使用場景；Editor、Knowledge、User Feedback 進階再學。'
+          },
+          {
+            heading: 'Skill 資料夾結構（一個 Skill = 一個資料夾）',
+            illustration: 'day4-skill-folder-structure',
+            body: '依 agentskills.io 規範：一個 Skill 就是一個資料夾，根層必含 SKILL.md 一份，再視需要加上三類選填子目錄。',
+            list: [
+              ['SKILL.md', '✅ 必要 — Skill 的入口檔，必須放在資料夾根層（內部寫法見下一張卡）'],
+              ['references/', '⚠️ 選填 — 補充知識，**建議放 .md 純文字檔**（如把公司規章另存為 .md），AI 按需載入'],
+              ['scripts/', '⚠️ 選填 — 可執行腳本（依 agent 實作支援的語言）'],
+              ['assets/', '⚠️ 選填 — 模板、圖片、靜態資源']
+            ],
+            note: '範例：invoice-to-excel/ 資料夾內含 SKILL.md，公司差勤辦法另存為 .md 後放在 references/expense-policy.md。💡 **為什麼推薦 .md 而非 PDF**：AI 按需載入 references 時，PDF 要先解析（OCR / text-extract）每次都多花 token；純文字 .md 可直接 tokenize，省成本也讓 AI 抓得更準。'
+          },
+          {
+            heading: 'SKILL.md 內部結構（agentskills.io 官方規範）',
+            illustration: 'day4-skill-encapsulation',
+            body: 'SKILL.md 由兩段組成：上方 YAML frontmatter 寫 metadata（name、description），下方 Markdown body 寫真正的執行指令。',
+            list: [
+              ['name（必填）', '1-64 字，lowercase + hyphen，不可底線/大寫/連續 hyphen — 且必須與資料夾同名，否則 agent 載不到此 skill'],
               ['description（必填）', '1-1024 字，同時說明「做什麼」+「什麼時候用」— AI 靠這段判斷觸發'],
               ['Markdown body', '指令本體：步驟、輸出格式、處理規則、邊界情況。建議 < 5000 tokens']
             ],
-            note: '其餘欄位（license / compatibility / metadata / allowed-tools）皆選填，多數 Skill 不需要。觸發機制是 progressive disclosure：啟動時只讀 name+description，符合才載入完整 body。'
+            note: '其餘 frontmatter 欄位（license / compatibility / metadata / allowed-tools）皆選填，多數 Skill 不需要。觸發機制是 progressive disclosure：啟動時只讀 name+description，符合才載入完整 body。'
           },
           {
-            heading: 'Antigravity Skill 安裝位置（依官網）',
+            heading: 'Skill 放在哪：Antigravity 的掃描目錄（依官網）',
             illustration: 'day4-skill-install-location',
-            body: 'Antigravity 啟動時自動掃描兩個目錄：全域（跨專案）與工作區（當前專案）。寫好的 SKILL.md 整個資料夾複製到對應位置即可。',
+            body: '把 SKILL.md 整個資料夾放到 Antigravity 自動掃描的目錄即可被偵測 — 兩個位置可選：全域（跨專案共用）與工作區（僅當前專案，優先於全域）。',
             table: {
               head: ['範圍', 'macOS / Linux', 'Windows'],
               rows: [
@@ -884,6 +1002,32 @@ window.COURSE = {
         ],
         prompts: [
           {
+            id: 'd4-p4',
+            title: 'Antigravity Skill 安裝指令（PowerShell / Bash）',
+            note: '把 skill 放進 Antigravity 的三種方式：方法 A 給自製 skill、方法 B/C 是裝別人寫好的社群 skill。任選其一，安裝後重啟對話串即可。',
+            text: `# 三種安裝方式任選一種；安裝路徑與跨工具差異見上方概念卡「Antigravity Skill 安裝位置」。
+
+# ── 方法 A：手動拷貝（最直觀） ──
+mkdir -p ~/.gemini/antigravity/skills
+cp -R ./invoice-to-excel ~/.gemini/antigravity/skills/
+
+# ── 方法 B：/learn 命令（從 agentskill.sh 裝社群 skill） ──
+# 一次性註冊 /learn 命令：
+git clone https://github.com/agentskill-sh/ags.git ~/.gemini/antigravity/skills/learn
+
+# 之後在 Antigravity 對話中：
+#   /learn seo                                ← 搜尋
+#   /learn @anthropic/seo-content-optimizer   ← 安裝特定 skill
+#   /learn trending                           ← 看熱門 skill
+
+# ── 方法 C：npx 批次安裝器（Antigravity 專屬，與下午 skills.sh 的 npx skills add 不同工具） ──
+npx antigravity-awesome-skills --antigravity                ← 完整社群庫（1400+ 個）
+npx @rmyndharis/antigravity-skills install <skill-name>     ← 單一 skill
+
+# ── 安裝後 ──
+# 重啟 Antigravity 對話串測試觸發（沒觸發時的檢查清單見上方概念卡）`
+          },
+          {
             id: 'd4-p1',
             title: 'Skill 範本：發票自動整理（SKILL.md，agentskills.io 官方格式）',
             note: '此為 SKILL.md 純內容；資料夾結構請見上方插圖（資料夾名須與 name 相同）',
@@ -914,7 +1058,20 @@ description: 把多張發票照片辨識並整理成 Markdown 表格，含日期
 
 ## 知識來源
 
-請參考公司費用報支管理辦法第二章報支標準（可放在 references/ 目錄供 skill 載入）。`
+請參考公司費用報支管理辦法第二章報支標準（放在 references/expense-policy.md 供 skill 載入）。`
+          },
+          {
+            id: 'd4-p3',
+            title: 'skill-creator：用官方 meta-skill 寫 Skill（推薦路徑）',
+            note: '安裝後在 Codex/Claude 對它說「幫我寫一個 Skill」，它會問你 5-7 個問題然後產出 SKILL.md',
+            text: `# 啟動它（安裝指令見上方概念卡「skill-creator」）：
+請啟動 skill-creator，幫我寫一個 Skill。
+我想做的事情是：[此處用一兩句話描述你的目標任務]
+
+# skill-creator 會引導你跑完三階段：
+# 1. 意圖捕捉：問 5-7 個問題逼你想清楚（做什麼？什麼時候用？輸入是？輸出是？）
+# 2. 草稿產出：自動寫出符合官方規範的 SKILL.md
+# 3. description 最佳化：跑觸發測試，迭代到 description 能準確被啟動（最多 5 輪）`
           },
           {
             id: 'd4-p2',
@@ -931,62 +1088,18 @@ description: 把多張發票照片辨識並整理成 Markdown 表格，含日期
 4. 完整 RTFC 規則保留在 body 內，不要丟掉我的限制條件
 
 [此處貼上你的提示詞]`
-          },
-          {
-            id: 'd4-p3',
-            title: 'skill-creator：用官方 meta-skill 寫 Skill（推薦路徑）',
-            note: '安裝後在 Codex/Claude 對它說「幫我寫一個 Skill」，它會問你 5-7 個問題然後產出 SKILL.md',
-            text: `# 安裝指令（從 skills.sh）
-npx skills add https://github.com/anthropics/skills --skill skill-creator
-
-# 安裝完成後，在 agent 對話中啟動它：
-請啟動 skill-creator，幫我寫一個 Skill。
-我想做的事情是：[此處用一兩句話描述你的目標任務]
-
-# skill-creator 會引導你跑完三階段：
-# 1. 意圖捕捉：問 5-7 個問題逼你想清楚（做什麼？什麼時候用？輸入是？輸出是？）
-# 2. 草稿產出：自動寫出符合官方規範的 SKILL.md
-# 3. description 最佳化：跑觸發測試，迭代到 description 能準確被啟動（最多 5 輪）`
-          },
-          {
-            id: 'd4-p4',
-            title: 'Antigravity Skill 安裝指令（PowerShell / Bash）',
-            note: '寫好 SKILL.md 後放進 Antigravity 的三種方式 — 任選其一，安裝後重啟對話串即可',
-            text: `# ── 方法 A：手動拷貝（最直觀） ──
-mkdir -p ~/.gemini/antigravity/skills
-cp -R ./invoice-to-excel ~/.gemini/antigravity/skills/
-
-# ── 方法 B：/learn 命令（從 agentskill.sh 裝社群 skill） ──
-# 一次性註冊 /learn 命令：
-git clone https://github.com/agentskill-sh/ags.git ~/.gemini/antigravity/skills/learn
-
-# 之後在 Antigravity 對話中：
-#   /learn seo                                ← 搜尋
-#   /learn @anthropic/seo-content-optimizer   ← 安裝特定 skill
-#   /learn trending                           ← 看熱門 skill
-
-# ── 方法 C：npx 安裝器（批次或單一） ──
-npx antigravity-awesome-skills --antigravity                ← 完整社群庫（1400+ 個）
-npx @rmyndharis/antigravity-skills install <skill-name>     ← 單一 skill
-
-# ── 安裝後驗證 ──
-# 1. 重啟 Antigravity 對話串（progressive disclosure 在啟動時掃描）
-# 2. 對話輸入 skill 觸發場景文字（例：「幫我整理發票」）
-# 3. 若沒觸發，檢查：資料夾名 = name？SKILL.md 在根層？description 含關鍵字？
-
-# 路徑速查：
-#   全域（推薦）：~/.gemini/antigravity/skills/<name>/SKILL.md
-#   工作區（覆蓋全域）：.agent/skills/<name>/SKILL.md`
           }
         ],
         tasks: [
           { id: 'd4-u1-t1', label: '完成 Antigravity 桌面端安裝、能開新專案' },
+          { id: 'd4-u1-t5', label: '從 skills.sh 或 /learn 安裝一個社群 Skill 試用（任選一個跟你工作有關的）' },
           { id: 'd4-u1-t3', label: '逐行拆解講師的「發票辨識 Skill」範本，標記三要素' },
           { id: 'd4-u1-t4', label: '挑一條 Day 1~3 提示詞，請 AI 協助填成 Skill 初稿' }
         ],
         materials: [
           { id: 'd4-m1', name: 'Skill 範本檔案', type: 'MD', desc: '發票自動整理 SKILL.md（依 agentskills.io 官方規範）— 學員 fork 用' },
-          { id: 'd4-m2', name: '公司費用報支管理辦法', type: 'PDF 文件', desc: '範例 Skill 的合規規則來源' }
+          { id: 'd4-m2', name: '公司費用報支管理辦法', type: 'PDF 文件', desc: '完整辦法（18 條）— 適合人讀、做學員 Skill 的人類驗收' },
+          { id: 'd4-m3', name: '公司費用報支管理辦法（Skill 精簡版）', type: 'MD', desc: '抽取硬規則 + 合規速查表的 .md 版 — **推薦放進 skill references/**，省 token、AI 取用更準' }
         ]
       },
       {
@@ -1096,6 +1209,7 @@ npx @rmyndharis/antigravity-skills install <skill-name>     ← 單一 skill
     { id: 'm-6', name: '暖光咖啡_客訴處理SOP', type: 'PDF 文件', size: '完整 SOP', usedIn: ['Day 3 FAQ 示範'], desc: '客服 FAQ 撰寫之政策依據' },
     { id: 'm-7', name: '暖光咖啡_食材進貨與庫存管理辦法', type: 'PDF 文件', size: '單章', usedIn: ['Day 3 進貨表示範'], desc: '提供品項分類規則供 AI 自動歸類' },
     { id: 'm-8', name: '公司費用報支管理辦法', type: 'PDF 文件', size: '完整辦法', usedIn: ['Day 3 表單清理 + 發票合規', 'Day 4 Skill 範本'], desc: '第四條誤餐費 150 元上限 — 合規檢查依據' },
+    { id: 'm-8b', name: '公司費用報支管理辦法（Skill 精簡版）', type: 'MD', size: '硬規則 + 合規速查表', usedIn: ['Day 4 Skill references/'], desc: '專為 Skill references/ 設計的精簡 .md — 省 token、AI 取用更準（與 m-8 同源不同用）' },
     { id: 'm-9', name: '課堂實作素材_Day1 / Day2 / Day3', type: 'PDF 文件', size: '三份', usedIn: ['對應日'], desc: '當日實作專用素材' },
     { id: 'm-10', name: '課程輔助文件（口語稿 / 會議逐字稿 / 亂表單 / 客訴 / SKILL.md 範本 / 測驗）', type: 'MD', size: '6 大區塊', usedIn: ['全部 4 天'], desc: '所有實作素材的彙整文件' }
   ],

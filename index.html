@@ -1177,15 +1177,26 @@
   .chapter h4 { margin: 18px 0 8px; color: var(--muted); font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
 
   /* concept block */
-  .concept { margin-top: 18px; }
+  .concept { margin-top: 18px; position: relative; }
   .concept-heading {
     font-family: var(--font-serif);
     font-size: 17px;
     font-weight: 540;
     letter-spacing: -0.01em;
     margin-bottom: 6px;
+    padding-right: 64px; /* 預留空間給右上角 copy 按鈕 */
   }
   .concept-body { color: var(--muted); margin-bottom: 8px; }
+  /* 卡片右上角的 copy 按鈕（沿用 prompt-copy-btn 樣式，僅做絕對定位） */
+  .concept > .prompt-copy-btn,
+  .copy-btn-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  /* table 容器外加的 copy 按鈕 */
+  .table-with-copy { position: relative; margin-top: 12px; }
+  .table-with-copy > .prompt-copy-btn { position: absolute; top: -28px; right: 0; }
 
   /* ===================== unit accordion ===================== */
   .unit {
@@ -2116,6 +2127,8 @@
       if (name.includes('退換貨')) return pdfBase + '暖光咖啡_商品退換貨政策.pdf';
       if (name.includes('客訴處理')) return pdfBase + '暖光咖啡_客訴處理SOP.pdf';
       if (name.includes('進貨與庫存')) return pdfBase + '暖光咖啡_食材進貨與庫存管理辦法.pdf';
+      // 精簡版要先比對：含「精簡版」會優先匹配；否則 fall through 到完整版
+      if (name.includes('精簡版')) return pdfBase + 'expense-policy.pdf';
       if (name.includes('公司費用')) return pdfBase + '公司費用報支管理辦法.pdf';
       // 課堂實作素材_Day1 / Day2 / Day3 — 預設給 Day1，學員可從 pdf/ 同層找到其他兩份
       if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return pdfBase + '課堂實作素材_Day1.pdf';
@@ -2138,6 +2151,8 @@
       if (name.includes('退換貨')) return '完整課程包/教學素材/暖光咖啡_商品退換貨政策.md';
       if (name.includes('客訴處理')) return '完整課程包/教學素材/暖光咖啡_客訴處理SOP.md';
       if (name.includes('進貨與庫存')) return '完整課程包/教學素材/暖光咖啡_食材進貨與庫存管理辦法.md';
+      // 精簡版要先比對：「(Skill 精簡版)」要走 expense-policy.md
+      if (name.includes('精簡版')) return '完整課程包/教學素材/expense-policy.md';
       if (name.includes('公司費用')) return '完整課程包/教學素材/公司費用報支管理辦法.md';
       if (name.includes('實作素材_Day1') || name.includes('課堂實作素材')) return '完整課程包/教學素材/課堂實作素材_Day1.md';
       if (name.includes('課程輔助文件')) return '完整課程包/課程輔助文件.md';
@@ -2150,6 +2165,52 @@
   const escapeHTML = s => String(s).replace(/[&<>"']/g, ch => (
     { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[ch]
   ));
+
+  /**
+   * 極簡 inline markdown 渲染（純 DOM、零 innerHTML、防 XSS）：
+   *   `**粗體**`     → <strong>粗體</strong>
+   *   `[文字](url)`  → <a href="url" target="_blank">文字</a>
+   *
+   * 回傳 DocumentFragment 可直接餵給 el(...) 當 child；textNode 自動 escape，
+   * 連結 URL 只允許安全 protocol（http/https/mailto/相對路徑/錨點），
+   * 其他（特別是 javascript:）一律退回 # 防 XSS。
+   */
+  const SAFE_URL_RE = /^(https?:\/\/|mailto:|#|\/|\.\/|\.\.\/)/i;
+
+  // 把字串中的 **bold** 切成 textNode + <strong> 序列附加到 target
+  const appendBoldSplit = (target, str) => {
+    const matches = [...str.matchAll(/\*\*([^*]+)\*\*/g)];
+    let last = 0;
+    for (const m of matches) {
+      if (m.index > last) target.append(document.createTextNode(str.slice(last, m.index)));
+      const strong = document.createElement('strong');
+      strong.textContent = m[1];
+      target.append(strong);
+      last = m.index + m[0].length;
+    }
+    if (last < str.length) target.append(document.createTextNode(str.slice(last)));
+  };
+
+  const inlineMarkdown = s => {
+    const frag = document.createDocumentFragment();
+    if (s == null) return frag;
+    const str = String(s);
+    const linkMatches = [...str.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g)];
+    let last = 0;
+    for (const m of linkMatches) {
+      if (m.index > last) appendBoldSplit(frag, str.slice(last, m.index));
+      const [whole, text, url] = m;
+      const a = document.createElement('a');
+      a.href = SAFE_URL_RE.test(url) ? url : '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      appendBoldSplit(a, text);
+      frag.append(a);
+      last = m.index + whole.length;
+    }
+    if (last < str.length) appendBoldSplit(frag, str.slice(last));
+    return frag;
+  };
 
   // ============================================================
   //  素材 Modal：頁內 iframe 開啟，避免主頁跳轉
@@ -2708,28 +2769,37 @@
     root.append(roleGrid);
 
     root.append(el('h3', {}, '提示詞模板共用變數'));
+    const tvWrap = el('div', { class: 'table-with-copy' });
+    tvWrap.append(createCopyButton(() => tableToMarkdown(['變數', '暖光咖啡（A）', '綠野選物（B）'], sc.variables)));
     const tv = el('table', { class: 't' });
     tv.innerHTML = '<thead><tr><th>變數</th><th>暖光咖啡（A）</th><th>綠野選物（B）</th></tr></thead>';
     const tvb = el('tbody');
     sc.variables.forEach(r => tvb.innerHTML += `<tr><td><code>${escapeHTML(r[0])}</code></td><td>${r[1]}</td><td>${r[2]}</td></tr>`);
     tv.append(tvb);
-    root.append(tv);
+    tvWrap.append(tv);
+    root.append(tvWrap);
 
     root.append(el('h3', {}, '共用工具集'));
+    const ttWrap = el('div', { class: 'table-with-copy' });
+    ttWrap.append(createCopyButton(() => tableToMarkdown(['工具', '主要用途', '出現天次'], sc.tools)));
     const tt = el('table', { class: 't' });
     tt.innerHTML = '<thead><tr><th>工具</th><th>主要用途</th><th>出現天次</th></tr></thead>';
     const ttb = el('tbody');
     sc.tools.forEach(r => ttb.innerHTML += `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`);
     tt.append(ttb);
-    root.append(tt);
+    ttWrap.append(tt);
+    root.append(ttWrap);
 
     root.append(el('h3', {}, '學員每日產出（堆疊機制）'));
+    const tdWrap = el('div', { class: 'table-with-copy' });
+    tdWrap.append(createCopyButton(() => tableToMarkdown(['天次', '產出'], sc.deliverables)));
     const td = el('table', { class: 't' });
     td.innerHTML = '<thead><tr><th>天次</th><th>產出</th></tr></thead>';
     const tdb = el('tbody');
     sc.deliverables.forEach(r => tdb.innerHTML += `<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`);
     td.append(tdb);
-    root.append(td);
+    tdWrap.append(td);
+    root.append(tdWrap);
 
     root.append(el('div', { class: 'note tip' },
       '每天的作品在隔日仍可被引用，逐步堆疊出個人化的「行政 AI 工具箱」 — Day 4 就是把 Day 1~3 的提示詞封裝成可重用的 Agent Skill。'));
@@ -2899,11 +2969,76 @@
     return det;
   }
 
+  // ---------- 通用 copy 按鈕 + markdown 序列化 ----------
+  /**
+   * 建立可複製按鈕；getText 為函式（延遲取得內容，按下時才序列化）。
+   * 失敗會 fallback 到 textarea + execCommand 確保跨瀏覽器可用。
+   */
+  function createCopyButton(getText, label = '複製') {
+    const btn = el('button', { class: 'prompt-copy-btn', type: 'button' });
+    btn.innerHTML = ICON.copy + `<span>${label}</span>`;
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const text = typeof getText === 'function' ? getText() : String(getText);
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        ta.remove();
+      }
+      btn.classList.add('ok');
+      btn.querySelector('span').textContent = '已複製';
+      toast('已複製到剪貼簿');
+      setTimeout(() => {
+        btn.classList.remove('ok');
+        btn.querySelector('span').textContent = label;
+      }, 1800);
+    });
+    return btn;
+  }
+
+  /** 把 concept 物件序列化成 markdown（含 heading / body / list / table / note） */
+  function conceptToMarkdown(c) {
+    const lines = [];
+    if (c.heading) lines.push(`### ${c.heading}`, '');
+    if (c.body) lines.push(c.body, '');
+    if (c.list && c.list.length) {
+      c.list.forEach(([k, v]) => lines.push(`- **${k}**：${v}`));
+      lines.push('');
+    }
+    if (c.table) {
+      lines.push(`| ${c.table.head.join(' | ')} |`);
+      lines.push(`| ${c.table.head.map(() => '---').join(' | ')} |`);
+      c.table.rows.forEach(r => lines.push(`| ${r.join(' | ')} |`));
+      lines.push('');
+    }
+    if (c.note) lines.push(`> ${c.note}`);
+    return lines.join('\n').trim() + '\n';
+  }
+
+  /** 通用 table 序列化（headings 列 + rows） */
+  function tableToMarkdown(headings, rows) {
+    const lines = [];
+    lines.push(`| ${headings.join(' | ')} |`);
+    lines.push(`| ${headings.map(() => '---').join(' | ')} |`);
+    rows.forEach(r => lines.push(`| ${r.join(' | ')} |`));
+    return lines.join('\n') + '\n';
+  }
+
   // ---------- concept ----------
   function renderConcept(c) {
     const w = el('div', { class: 'concept' });
+    // heading 維持純文字（不需 markdown）；body / list / table cell / note 走 inlineMarkdown 支援 **粗體** 與 [連結](url)
     if (c.heading) w.append(el('div', { class: 'concept-heading' }, c.heading));
-    if (c.body) w.append(el('div', { class: 'concept-body' }, c.body));
+    // 卡片右上角複製按鈕：複製整張卡的 markdown 源碼，方便貼到外部 markdown editor
+    w.append(createCopyButton(() => conceptToMarkdown(c)));
+    if (c.body) w.append(el('div', { class: 'concept-body' }, inlineMarkdown(c.body)));
     // 概念插圖（手寫 SVG）— 出現在 body 之後、list/table 之前
     if (c.illustration) {
       w.append(renderIllustration(c.illustration, 'inline', c.heading || c.illustration));
@@ -2912,21 +3047,30 @@
       const kv = el('div', { class: 'kv' });
       c.list.forEach(([k,v]) => {
         const row = el('div', { class: 'kv-row' });
-        row.append(el('div', { class: 'kv-key' }, k));
-        row.append(el('div', { class: 'kv-val' }, v));
+        row.append(el('div', { class: 'kv-key' }, inlineMarkdown(k)));
+        row.append(el('div', { class: 'kv-val' }, inlineMarkdown(v)));
         kv.append(row);
       });
       w.append(kv);
     }
     if (c.table) {
+      // 改用 createElement 避免 innerHTML 串接；每個 cell 走 inlineMarkdown
       const t = el('table', { class: 't' });
-      t.innerHTML = '<thead><tr>' + c.table.head.map(h => `<th>${h}</th>`).join('') + '</tr></thead>';
+      const thead = el('thead');
+      const headerRow = el('tr');
+      c.table.head.forEach(h => headerRow.append(el('th', {}, inlineMarkdown(h))));
+      thead.append(headerRow);
+      t.append(thead);
       const tb = el('tbody');
-      c.table.rows.forEach(r => tb.innerHTML += '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>');
+      c.table.rows.forEach(r => {
+        const tr = el('tr');
+        r.forEach(cell => tr.append(el('td', {}, inlineMarkdown(cell))));
+        tb.append(tr);
+      });
       t.append(tb);
       w.append(t);
     }
-    if (c.note) w.append(el('div', { class: 'note' }, c.note));
+    if (c.note) w.append(el('div', { class: 'note' }, inlineMarkdown(c.note)));
     return w;
   }
 
