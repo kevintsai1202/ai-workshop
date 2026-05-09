@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-label="建立自訂 Gem 的 5 步驟示意圖：①Gem 管理工具入口 ②名稱欄 ③指令編輯 ④知識上傳 ⑤儲存與預覽">
+  <title>建立自訂 Gem 的 5 步驟</title>
+  <desc>Gemini App Gem Manager 介面示意圖，標示 5 個步驟：(1) 從左側邊欄進入 Gem 管理工具按「新增 Gem」 (2) 輸入具體名稱 (3) 在指令區貼上 RTFC 提示詞並把變動部分改成 {變數} 佔位符 (4) 選填上傳知識檔案 (5) 儲存後在右側預覽窗測試。</desc>
+
+  <!-- ====== 階段標籤 ====== -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="10" font-weight="700" letter-spacing="1" fill="currentColor" opacity="0.55">
+    <text x="14" y="20">GEMINI APP</text>
+    <text x="156" y="20">GEM 編輯器</text>
+    <text x="438" y="20">預覽窗</text>
+  </g>
+
+  <!-- ============================================================
+       左側：Gemini sidebar（步驟 1）
+       ============================================================ -->
+  <g transform="translate(14 30)">
+    <!-- sidebar 外框 -->
+    <rect x="0" y="0" width="130" height="360" rx="8" fill="rgba(255,255,255,0.5)" stroke="currentColor" stroke-width="1.5" opacity="0.85"/>
+
+    <!-- Gemini 標頭 -->
+    <g transform="translate(10 14)">
+      <circle cx="6" cy="6" r="6" fill="currentColor" opacity="0.7"/>
+      <text x="20" y="10" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">Gemini</text>
+    </g>
+
+    <!-- 最近對話 -->
+    <g font-family="inherit" font-size="9" fill="currentColor" opacity="0.5">
+      <text x="10" y="40">最近對話</text>
+      <line x1="10" y1="50" x2="100" y2="50" stroke="currentColor" stroke-width="1"/>
+      <line x1="10" y1="62" x2="90" y2="62" stroke="currentColor" stroke-width="1"/>
+      <line x1="10" y1="74" x2="110" y2="74" stroke="currentColor" stroke-width="1"/>
+    </g>
+
+    <!-- 內建 Gem -->
+    <g font-family="inherit" font-size="9" fill="currentColor" opacity="0.55">
+      <text x="10" y="100" font-weight="700">Gem</text>
+      <text x="10" y="118">學習教練</text>
+      <text x="10" y="132">寫作助手</text>
+      <text x="10" y="146">Brainstormer</text>
+    </g>
+
+    <!-- 分隔線 -->
+    <line x1="10" y1="162" x2="120" y2="162" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+
+    <!-- ★ 步驟 1：Gem 管理工具入口（強調框） -->
+    <g transform="translate(8 172)">
+      <rect x="0" y="0" width="114" height="46" rx="6" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/>
+      <text x="8" y="16" font-family="inherit" font-size="10" font-weight="700" fill="currentColor">⚙ Gem 管理工具</text>
+      <!-- 「新增 Gem」按鈕 -->
+      <g transform="translate(8 22)">
+        <rect x="0" y="0" width="98" height="18" rx="9" fill="currentColor" fill-opacity="0.85"/>
+        <text x="49" y="13" font-family="inherit" font-size="10" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.95)">＋ 新增 Gem</text>
+      </g>
+    </g>
+
+    <!-- 步驟 1 編號 -->
+    <g transform="translate(-2 188)">
+      <circle cx="0" cy="0" r="11" fill="currentColor"/>
+      <text x="0" y="4" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">1</text>
+    </g>
+  </g>
+
+  <!-- ============================================================
+       中央：Gem 編輯表單（步驟 2、3、4、5）
+       ============================================================ -->
+  <g transform="translate(156 30)">
+    <!-- 編輯區外框 -->
+    <rect x="0" y="0" width="270" height="360" rx="8" fill="rgba(255,255,255,0.55)" stroke="currentColor" stroke-width="1.5" opacity="0.9"/>
+
+    <!-- 表單標題 -->
+    <text x="14" y="22" font-family="inherit" font-size="12" font-weight="700" fill="currentColor">建立新的 Gem</text>
+    <line x1="14" y1="30" x2="256" y2="30" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+
+    <!-- ★ 步驟 2：名稱輸入 -->
+    <g transform="translate(14 44)">
+      <text x="0" y="0" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">名稱</text>
+      <rect x="0" y="6" width="242" height="22" rx="4" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <text x="8" y="22" font-family="inherit" font-size="10" fill="currentColor" opacity="0.85">暖光咖啡行政小幫手</text>
+      <!-- 步驟 2 編號 -->
+      <g transform="translate(252 17)">
+        <circle cx="0" cy="0" r="11" fill="currentColor"/>
+        <text x="0" y="4" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">2</text>
+      </g>
+    </g>
+
+    <!-- ★ 步驟 3：指令編輯（含 {變數} 佔位符） -->
+    <g transform="translate(14 88)">
+      <text x="0" y="0" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">指令</text>
+      <rect x="0" y="6" width="242" height="116" rx="4" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <g font-family="ui-monospace, Menlo, monospace" font-size="9" fill="currentColor" opacity="0.8">
+        <text x="8" y="22">你是「暖光咖啡」行政人員，</text>
+        <text x="8" y="36">語氣親切、用詞簡潔。</text>
+        <text x="8" y="56">任務：根據下列資訊撰寫</text>
+        <text x="8" y="70">公告，限 80 字內 ——</text>
+      </g>
+      <!-- {變數} 反白 -->
+      <g transform="translate(8 84)">
+        <rect x="0" y="-10" width="38" height="14" rx="3" fill="currentColor" fill-opacity="0.18"/>
+        <text x="3" y="0" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" fill="currentColor">{日期}</text>
+        <rect x="42" y="-10" width="38" height="14" rx="3" fill="currentColor" fill-opacity="0.18"/>
+        <text x="45" y="0" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" fill="currentColor">{主題}</text>
+        <rect x="84" y="-10" width="38" height="14" rx="3" fill="currentColor" fill-opacity="0.18"/>
+        <text x="87" y="0" font-family="ui-monospace, Menlo, monospace" font-size="9" font-weight="700" fill="currentColor">{對象}</text>
+      </g>
+      <!-- 步驟 3 編號 -->
+      <g transform="translate(252 60)">
+        <circle cx="0" cy="0" r="11" fill="currentColor"/>
+        <text x="0" y="4" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">3</text>
+      </g>
+    </g>
+
+    <!-- ★ 步驟 4：知識上傳（選填） -->
+    <g transform="translate(14 222)">
+      <text x="0" y="0" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.7">知識（選填）</text>
+      <rect x="0" y="6" width="242" height="40" rx="4" fill="rgba(255,255,255,0.5)" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity="0.85"/>
+      <g transform="translate(12 18)">
+        <!-- 文件圖示 -->
+        <g stroke="currentColor" stroke-width="1.5" fill="rgba(255,255,255,0.85)" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+          <path d="M0 0 L 10 0 L 14 4 L 14 18 L 0 18 Z"/>
+        </g>
+        <text x="22" y="14" font-family="inherit" font-size="10" fill="currentColor" opacity="0.85">⬆ 拖曳品牌調性手冊.pdf</text>
+      </g>
+      <!-- 步驟 4 編號 -->
+      <g transform="translate(252 25)">
+        <circle cx="0" cy="0" r="11" fill="currentColor"/>
+        <text x="0" y="4" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">4</text>
+      </g>
+    </g>
+
+    <!-- ★ 步驟 5：儲存按鈕 -->
+    <g transform="translate(14 290)">
+      <rect x="0" y="0" width="80" height="26" rx="13" fill="currentColor" fill-opacity="0.9"/>
+      <text x="40" y="17" font-family="inherit" font-size="11" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">儲存</text>
+      <rect x="92" y="0" width="74" height="26" rx="13" fill="rgba(255,255,255,0.5)" stroke="currentColor" stroke-width="1.5"/>
+      <text x="129" y="17" font-family="inherit" font-size="11" text-anchor="middle" fill="currentColor" opacity="0.85">取消</text>
+      <!-- 步驟 5 編號 -->
+      <g transform="translate(238 13)">
+        <circle cx="0" cy="0" r="11" fill="currentColor"/>
+        <text x="0" y="4" font-family="inherit" font-size="13" font-weight="700" text-anchor="middle" fill="rgba(255,255,255,0.96)">5</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============================================================
+       右側：預覽窗（步驟 5 測試）
+       ============================================================ -->
+  <g transform="translate(438 30)">
+    <rect x="0" y="0" width="148" height="360" rx="8" fill="rgba(255,255,255,0.5)" stroke="currentColor" stroke-width="1.5" opacity="0.85"/>
+
+    <text x="10" y="18" font-family="inherit" font-size="11" font-weight="700" fill="currentColor">即時預覽</text>
+    <line x1="10" y1="26" x2="138" y2="26" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+
+    <!-- 使用者輸入 bubble -->
+    <g transform="translate(10 38)">
+      <rect x="0" y="0" width="128" height="36" rx="6" fill="currentColor" fill-opacity="0.1"/>
+      <text x="8" y="14" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.6">YOU</text>
+      <text x="8" y="28" font-family="inherit" font-size="9" fill="currentColor" opacity="0.85">幫我寫明天店休公告</text>
+    </g>
+
+    <!-- Gem 自動詢問變數 -->
+    <g transform="translate(10 86)">
+      <rect x="0" y="0" width="128" height="80" rx="6" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <text x="8" y="14" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.6">GEM</text>
+      <g font-family="inherit" font-size="9" fill="currentColor" opacity="0.85">
+        <text x="8" y="30">請提供：</text>
+        <text x="8" y="44">• {日期}：5/14</text>
+        <text x="8" y="58">• {主題}：店休</text>
+        <text x="8" y="72">• {對象}：常客</text>
+      </g>
+    </g>
+
+    <!-- 產出公告 bubble -->
+    <g transform="translate(10 178)">
+      <rect x="0" y="0" width="128" height="118" rx="6" fill="rgba(255,255,255,0.85)" stroke="currentColor" stroke-width="1"/>
+      <text x="8" y="14" font-family="inherit" font-size="9" font-weight="700" fill="currentColor" opacity="0.6">輸出</text>
+      <g font-family="inherit" font-size="8.5" fill="currentColor" opacity="0.85">
+        <text x="8" y="30">親愛的常客 ☕</text>
+        <text x="8" y="44">5/14（三）店家</text>
+        <text x="8" y="58">將進行內部教育</text>
+        <text x="8" y="72">訓練，全日店休</text>
+        <text x="8" y="86">一日。造成不便</text>
+        <text x="8" y="100">敬請見諒，期待</text>
+        <text x="8" y="114">再見您 ✨</text>
+      </g>
+    </g>
+
+    <!-- 鉛筆 icon 表示可繼續調整 -->
+    <g transform="translate(120 320)" opacity="0.5">
+      <text x="0" y="0" font-family="inherit" font-size="11" fill="currentColor">✎</text>
+    </g>
+  </g>
+
+  <!-- ====== 底部說明列 ====== -->
+  <g transform="translate(0 384)" font-family="ui-monospace, Menlo, monospace" font-size="9.5" fill="currentColor" opacity="0.65">
+    <text x="22" y="0">① 進入</text>
+    <text x="166" y="0">② 命名</text>
+    <text x="234" y="0">③ 貼提示詞 + {變數}</text>
+    <text x="346" y="0">④ 上傳知識</text>
+    <text x="416" y="0">⑤ 儲存</text>
+    <text x="468" y="0">→ 即時預覽</text>
+  </g>
+</svg>

@@ -65,19 +65,11 @@ const TARGETS = [
     clip: { x: 0, y: 0, width: 2400, height: 1600 },
     out: 'day3-notebooklm-ui.png'
   },
-  {
-    // Day 1 unit 3「建立自訂 Gem 的 5 步驟」用 — Google blog 文章含 Gem Manager UI 動畫 GIF
-    // （Gemini 中文 overview 頁無 UI mockup，blog 文章是少數能取得實際介面圖的公開來源）
-    id: 'gem-builder',
-    day: 1,
-    url: 'https://blog.google/products-and-platforms/products/gemini/google-gems-tips/',
-    waitText: ['Gem', 'Gem Manager', 'Learning'],
-    // 第一張 GIF（Gem Manager 介面）約在頁面 1450px 處；scrollY 對齊到稍前
-    scrollY: 1280,
-    viewport: { width: 2160, height: 1440 },
-    clip: { x: 0, y: 0, width: 2160, height: 1440 },
-    out: 'day1-gem-builder.png'
-  }
+  // Day 1 unit 3 的 Gem Manager 示意圖**已改用手繪 SVG**（assets/illustrations/day1-gem-builder.svg）。
+  // 原因：Google 部落格的 Gem Manager 圖只是抽象灰色 placeholder（不是真正介面截圖），
+  // 學員看不出怎麼建 Gem。改畫 SVG 並標上 ①②③④⑤ 對應 5 步驟，教學效果更明確。
+  // 故移除此 scrape 目標，避免重跑爬蟲時又把無效部落格截圖蓋回去（PNG 不存在時
+  // renderIllustration() 會自動 fallback 到 SVG）。
 ];
 
 // 解析 CLI 參數

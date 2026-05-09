@@ -355,6 +355,7 @@ window.COURSE = {
           },
           {
             heading: '建立自訂 Gem 的 5 步驟',
+            illustration: 'day1-gem-builder',
             list: [
               ['步驟 1', 'Gemini App 左側邊欄 → 「Gem 管理工具」 → 「新增 Gem」'],
               ['步驟 2', '名稱：暖光咖啡行政小幫手（越具體越好）'],
