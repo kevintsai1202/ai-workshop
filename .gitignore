@@ -32,6 +32,9 @@ tmp/
 # 電子書建構產物（每次 build 都會重產）
 dist/
 
+# 企業包班客製資料（含客戶識別資訊與量身議程，不入庫）
+企業包班/
+
 # OS junk
 .DS_Store
 Thumbs.db
