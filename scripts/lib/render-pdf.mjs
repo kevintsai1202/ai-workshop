@@ -1,10 +1,18 @@
-// pandoc + Edge headless → PDF
+// pandoc + playwright（chromium）→ PDF
 // 參考 完整課程包/教學素材/_build/build-pdf.ps1：把 CSS 內嵌到 HTML 模板，
 // 避免 file:// 載入外部 CSS 的相容性問題
+//
+// 為什麼從 Edge headless CLI 切換到 playwright：
+// - Chromium 印 PDF 模式下，CSS Paged Media 的 @page margin boxes（如 @bottom-center）
+//   不支援 content 屬性，無法用 CSS 加頁碼。
+// - --print-to-pdf-header-template / --footer-template 這些 CLI flag 不存在；
+//   只能透過 Chrome DevTools Protocol 的 Page.printToPDF（playwright 的 page.pdf()）傳。
+// - playwright 模組專案已裝（devDependencies），改用它即可獲得 footerTemplate 支援。
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
+import { chromium } from 'playwright';
 
 /**
  * 把 markdown 轉成 PDF
@@ -62,30 +70,52 @@ $body$
       '-o', htmlPath,
     ]);
 
-    // 2. Edge headless: html → pdf
-    console.log('[render-pdf] Edge headless → PDF');
-    const browser = await findBrowser();
-    if (!browser) {
-      throw new Error('找不到 Microsoft Edge 或 Google Chrome：請安裝其一');
-    }
-
+    // 2. playwright headless chromium: html → pdf（含頁碼 footerTemplate）
+    console.log('[render-pdf] playwright → PDF');
+    const browserPath = await findBrowser();
     // file:// URL：absolute path、forward slashes、空格 encode
     const fileUrl = 'file:///' + path.resolve(htmlPath).replace(/\\/g, '/').replace(/ /g, '%20');
 
-    await runCmd(browser, [
-      '--headless=new',
-      '--disable-gpu',
-      '--no-pdf-header-footer',
-      // 等所有 compositor stages 完成（base64 圖片需要這個才會被印進 PDF）
-      '--run-all-compositor-stages-before-draw',
-      // 給 base64 解碼足夠時間（單位 ms），對含 26+ 個 base64 PNG 的長文有用
-      '--virtual-time-budget=15000',
-      // 產 tagged PDF：讓 PDF 閱讀器側邊欄能從 h1/h2/h3 自動建立目錄樹（PDF outline / bookmarks）
-      '--export-tagged-pdf',
-      `--print-to-pdf=${path.resolve(outPath)}`,
-      '--print-to-pdf-no-header',
-      fileUrl,
-    ], { silent: true });
+    // 嘗試使用系統 Edge/Chrome（避免 playwright 自帶的 chromium 沒下載）
+    // 失敗時 fallback 到 playwright 自帶 chromium
+    let browser;
+    try {
+      browser = await chromium.launch(browserPath ? { executablePath: browserPath } : {});
+    } catch (e) {
+      console.log(`[render-pdf]   系統瀏覽器啟動失敗（${e.message.slice(0, 60)}），改用 playwright 內建 chromium`);
+      browser = await chromium.launch();
+    }
+
+    try {
+      const page = await browser.newPage();
+      await page.goto(fileUrl, { waitUntil: 'networkidle' });
+      // 給 base64 SVG 與相對路徑 PNG 圖片足夠的繪製時間
+      await page.waitForTimeout(1500);
+
+      // footer：書名（左）+ 頁碼/總頁數（右）；class="pageNumber" / "totalPages" 由 Chromium 自動填入
+      // 注意：footerTemplate / headerTemplate 內的 CSS 必須 inline（沒有外部 stylesheet）
+      const footerTemplate = `
+<div style="font-size:8pt;width:100%;padding:0 16mm;color:#8a90a0;font-family:'PingFang TC','Microsoft JhengHei','Noto Sans TC',sans-serif;display:flex;justify-content:space-between;align-items:center;">
+  <span style="font-weight:600;letter-spacing:0.05em;">行政與財務 AI 自動化　工作坊電子書</span>
+  <span><span class="pageNumber"></span> / <span class="totalPages"></span></span>
+</div>`;
+      // header 留空（避免 Chromium 在最頂繪製日期/網址等預設文字）
+      const headerTemplate = `<div></div>`;
+
+      await page.pdf({
+        path: path.resolve(outPath),
+        format: 'A4',
+        displayHeaderFooter: true,
+        headerTemplate,
+        footerTemplate,
+        margin: { top: '18mm', bottom: '20mm', left: '16mm', right: '16mm' },
+        printBackground: true,
+        preferCSSPageSize: true,   // 讓 CSS @page 規則優先（封面 :first { margin: 0 } 會接管，footer 在該頁不繪製）
+        tagged: true,              // tagged PDF：讓閱讀器自動建立 outline / bookmarks
+      });
+    } finally {
+      await browser.close();
+    }
 
     // 驗證 PDF 產出
     try {

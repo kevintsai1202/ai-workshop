@@ -1,202 +1,774 @@
-/* 工作坊電子書專用 print CSS — 走 pandoc → HTML → Edge headless --print-to-pdf */
+/* ═══════════════════════════════════════════════════════════════
+   工作坊電子書 — 書籍級 Print CSS
+   走 pandoc → HTML → Edge headless --print-to-pdf
+   設計語彙：教科書 × 設計年鑑（精緻 grid + 卡片化 + 視覺節奏）
+   ═══════════════════════════════════════════════════════════════ */
 
+/* ───── 設計變數 ───── */
+:root {
+  --c-ink: #1a1d22;          /* 主文字 */
+  --c-ink-mute: #545b66;     /* 次要文字 */
+  --c-ink-soft: #8a90a0;     /* 弱化文字 */
+  --c-line: #e2e6ee;         /* 線條 */
+  --c-line-soft: #eef0f5;    /* 弱線條 */
+  --c-bg-soft: #f5f7fb;      /* 弱背景 */
+  --c-brand: #2c4fa5;        /* 品牌主色（深藍） */
+  --c-brand-bright: #4f7cdb; /* 品牌亮色 */
+  --c-accent: #d97706;       /* 強調色（暖橘）*/
+  --c-success: #059669;      /* 成功綠 */
+
+  --r-sm: 4px;
+  --r: 8px;
+  --r-lg: 12px;
+}
+
+/* ───── 頁面與字型 ───── */
 @page {
-  margin: 18mm 16mm;
+  margin: 18mm 16mm 20mm;
   size: A4;
 }
 @page :first { margin: 0; }
 
 body {
   font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui, sans-serif;
-  line-height: 1.7;
-  font-size: 11pt;
-  color: #1a1d22;
-  max-width: 100%;
+  line-height: 1.75;
+  font-size: 10.8pt;
+  color: var(--c-ink);
   margin: 0;
-  padding: 0 8mm;
+  padding: 0 6mm;
+  letter-spacing: 0.005em;
 }
 
-/* ===== 章節分頁 ===== */
+p { margin: 6px 0 10px; }
+strong { color: var(--c-ink); font-weight: 700; }
+em { color: var(--c-ink-mute); font-style: normal; font-size: 95%; }
+
+/* ───── h1 章節：每章換頁 + 章首裝飾 ───── */
 h1 {
   page-break-before: always;
-  font-size: 22pt;
-  border-bottom: 2px solid #4f7cdb;
-  padding-bottom: 6px;
-  margin-top: 0;
-  color: #1a1d22;
+  break-before: page;
+  font-size: 26pt;
+  font-weight: 800;
+  color: var(--c-brand);
+  margin: 8mm 0 6mm;
+  padding: 0 0 6px;
+  border-bottom: 3px solid var(--c-brand);
+  position: relative;
+  letter-spacing: -0.01em;
 }
-/* 封面與目錄不分頁前置 */
-h1.cover, h1#TOC, nav#TOC h1 { page-break-before: avoid; }
+h1::before {
+  content: '';
+  display: block;
+  width: 56px;
+  height: 6px;
+  background: var(--c-accent);
+  margin-bottom: 12px;
+  border-radius: 3px;
+}
 
-/* 封面置中 + 大字 */
+/* TOC、封面不分頁前置 */
+h1.cover, h1#TOC, nav#TOC h1, nav#TOC h2 {
+  page-break-before: avoid;
+  break-before: avoid;
+}
+/* 封面 h1 完全隱藏（封面用 .book-cover 容器自行排版） */
 h1.cover {
-  text-align: center;
-  font-size: 32pt;
-  border-bottom: 0;
-  padding-top: 25vh;
+  display: none;
 }
-h1.cover ~ p { text-align: center; }
-h1.cover ~ hr { width: 60%; margin: 18px auto; border: 0; border-top: 1px solid #4f7cdb; }
 
-/* ===== 章節層級 ===== */
+/* ───── h2 / h3 / h4 ───── */
 h2 {
-  font-size: 16pt;
-  color: #2c4fa5;
-  margin-top: 24px;
-  border-bottom: 1px solid #e2e5ec;
-  padding-bottom: 4px;
+  font-size: 16.5pt;
+  font-weight: 700;
+  color: var(--c-brand);
+  margin: 22px 0 10px;
+  padding: 4px 0 6px;
+  border-bottom: 1px solid var(--c-line);
   page-break-after: avoid;
 }
 h3 {
   font-size: 13pt;
-  color: #1a1d22;
-  margin-top: 18px;
+  font-weight: 700;
+  color: var(--c-ink);
+  margin: 18px 0 8px;
+  padding-left: 10px;
+  border-left: 4px solid var(--c-brand-bright);
   page-break-after: avoid;
 }
 h4 {
   font-size: 11.5pt;
-  color: #4f7cdb;
-  margin-top: 14px;
+  font-weight: 700;
+  color: var(--c-brand-bright);
+  margin: 14px 0 6px;
   page-break-after: avoid;
 }
 
-/* ===== 引言塊 ===== */
-blockquote {
-  border-left: 3px solid #4f7cdb;
-  padding: 8px 14px;
-  margin: 12px 0;
-  background: #f5f7fb;
-  color: #2c4fa5;
+/* ───── 封面排版 ───── */
+.book-cover {
+  height: 277mm;          /* A4 高 297 - 上下 margin 0（@page :first 0） */
+  padding: 30mm 24mm;
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(135deg, #f5f7fb 0%, #e7edfa 100%);
+  page-break-after: always;
+  position: relative;
+  overflow: hidden;
+}
+.book-cover::before {
+  content: '';
+  position: absolute;
+  top: -80mm; right: -80mm;
+  width: 220mm; height: 220mm;
+  background: radial-gradient(circle, rgba(79,124,219,0.18) 0%, rgba(79,124,219,0) 70%);
+  pointer-events: none;
+}
+.book-cover::after {
+  content: '';
+  position: absolute;
+  bottom: -60mm; left: -60mm;
+  width: 180mm; height: 180mm;
+  background: radial-gradient(circle, rgba(217,119,6,0.12) 0%, rgba(217,119,6,0) 70%);
+  pointer-events: none;
+}
+.cover-bar {
+  height: 8px;
+  background: linear-gradient(90deg, var(--c-brand) 0%, var(--c-brand-bright) 50%, var(--c-accent) 100%);
+  border-radius: 4px;
+  margin-bottom: 18mm;
+  position: relative;
+  z-index: 1;
+}
+.cover-bar-bottom { margin: auto 0 0; }
+.cover-eyebrow {
+  font-size: 11pt;
+  letter-spacing: 0.4em;
+  color: var(--c-brand);
+  font-weight: 700;
+  margin-bottom: 4mm;
+  position: relative; z-index: 1;
+}
+.cover-title {
+  font-size: 36pt;
+  font-weight: 800;
+  color: var(--c-ink);
+  line-height: 1.25;
+  margin: 0 0 6mm;
+  letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+  border: none;
+}
+.cover-title::before { display: none; }
+.cover-subtitle {
+  font-size: 14pt;
+  color: var(--c-ink-mute);
+  margin: 0 0 4mm;
+  position: relative; z-index: 1;
+}
+.cover-tagline {
+  font-size: 11pt;
+  color: var(--c-ink-soft);
+  margin: 0 0 10mm;
+  position: relative; z-index: 1;
+}
+.cover-day-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 auto;
+  position: relative; z-index: 1;
+}
+.cover-day-list li {
+  display: flex;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(44,79,165,0.2);
+  font-size: 11pt;
+  line-height: 1.4;
+}
+.cover-day-num {
+  font-weight: 800;
+  color: var(--c-brand);
+  width: 60px;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+.cover-day-title {
+  flex: 1;
+  color: var(--c-ink);
+  font-weight: 600;
+}
+.cover-day-hours {
+  color: var(--c-accent);
+  font-weight: 700;
+  font-size: 10pt;
+  margin-left: 8px;
+}
+.cover-meta {
+  background: rgba(255,255,255,0.7);
+  border-radius: var(--r-lg);
+  padding: 6mm 8mm;
+  margin: 8mm 0 6mm;
+  position: relative; z-index: 1;
+  backdrop-filter: blur(4px);
+}
+.cover-meta-row {
+  display: flex;
+  font-size: 10.5pt;
+  margin-bottom: 4px;
+  line-height: 1.6;
+}
+.cover-meta-row:last-child { margin-bottom: 0; }
+.cover-meta-label {
+  width: 70px;
+  color: var(--c-ink-soft);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  font-size: 9.5pt;
+  flex-shrink: 0;
+}
+.cover-meta-value {
+  color: var(--c-ink);
+  font-weight: 500;
 }
 
-/* ===== 程式碼 / 提示詞 ===== */
+/* ───── 引言 / Callout ───── */
+blockquote {
+  border-left: 4px solid var(--c-brand-bright);
+  background: linear-gradient(90deg, rgba(79,124,219,0.06) 0%, rgba(79,124,219,0) 100%);
+  padding: 10px 16px;
+  margin: 14px 0;
+  color: var(--c-ink);
+  border-radius: 0 var(--r) var(--r) 0;
+  font-size: 10.5pt;
+  page-break-inside: avoid;
+}
+blockquote p { margin: 4px 0; }
+blockquote strong { color: var(--c-brand); }
+
+/* ───── 程式碼 / 提示詞 ───── */
 pre, code {
-  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
 }
 pre {
-  background: #f5f7fb;
-  border-left: 3px solid #4f7cdb;
-  padding: 12px 14px;
-  font-size: 9.5pt;
-  line-height: 1.55;
+  background: #2b2f3a;
+  color: #e8eaef;
+  border: none;
+  padding: 14px 18px;
+  font-size: 9pt;
+  line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-word;
   page-break-inside: avoid;
-  border-radius: 4px;
-}
-code {
-  background: #f5f7fb;
-  padding: 1px 4px;
-  border-radius: 3px;
-  font-size: 9.5pt;
+  border-radius: var(--r);
+  margin: 0 0 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 pre code {
   background: transparent;
   padding: 0;
-  border-radius: 0;
+  color: inherit;
+  font-size: inherit;
+}
+code {
+  background: var(--c-bg-soft);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9pt;
+  color: var(--c-brand);
+  border: 1px solid var(--c-line);
 }
 
-/* ===== 表格 ===== */
+/* 提示詞卡片標題（與後續 pre 視覺連動） */
+.prompt-block {
+  background: var(--c-bg-soft);
+  border: 1px solid var(--c-line);
+  border-bottom: none;
+  border-radius: var(--r) var(--r) 0 0;
+  padding: 8px 14px;
+  margin: 14px 0 0;
+  page-break-inside: avoid;
+  page-break-after: avoid;
+}
+.prompt-block + pre {
+  border-radius: 0 0 var(--r) var(--r);
+  margin-top: 0;
+  border-top: 3px solid var(--c-accent);
+}
+.prompt-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.prompt-badge {
+  background: var(--c-accent);
+  color: white;
+  font-size: 8.5pt;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.prompt-title {
+  font-weight: 700;
+  font-size: 11pt;
+  color: var(--c-ink);
+}
+.prompt-note {
+  font-size: 9.5pt;
+  color: var(--c-ink-mute);
+  margin-top: 4px;
+  padding-left: 4px;
+  border-left: 2px solid var(--c-line);
+  padding-left: 8px;
+}
+
+/* ───── 表格 ───── */
 table {
   border-collapse: collapse;
   width: 100%;
   margin: 12px 0;
   font-size: 10pt;
   page-break-inside: avoid;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r);
+  overflow: hidden;
 }
 th, td {
-  border: 1px solid #e2e5ec;
-  padding: 6px 10px;
+  border-bottom: 1px solid var(--c-line);
+  padding: 7px 12px;
   vertical-align: top;
   text-align: left;
 }
+tr:last-child td { border-bottom: none; }
 thead th {
-  background: #f0f2f5;
+  background: var(--c-brand);
+  color: white;
   font-weight: 700;
+  font-size: 9.8pt;
+  letter-spacing: 0.05em;
+  border-bottom: none;
 }
+tbody tr:nth-child(even) { background: var(--c-bg-soft); }
 
-/* ===== 圖片：QR Code 與工具截圖 ===== */
+/* ───── 圖片 ───── */
 img.qr {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   display: block;
-  margin: 8px 0;
 }
 img.tool-shot {
-  max-width: 80%;
-  max-height: 480px;
-  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r);
   display: block;
-  margin: 12px auto;
+}
+img.video-thumb {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: var(--r);
+  display: block;
 }
 img.illustration {
-  max-width: 90%;
-  max-height: 380px;
-  display: block;
-  margin: 16px auto 6px;
-  border-radius: 8px;
-}
-/* 一般圖片 fallback */
-img {
   max-width: 100%;
-  height: auto;
+  max-height: 360px;
+  display: block;
+  margin: 14px auto 4px;
+  border-radius: var(--r);
+}
+img.scenario {
+  max-width: 95%;
+  max-height: 320px;
+  display: block;
+  margin: 14px auto 4px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--c-line);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+img.case-shot {
+  max-width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--r);
+}
+img.character-shot {
+  max-width: 160px;
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+img { max-width: 100%; height: auto; }
+
+/* ───── Day Hero（每章開頭代表圖） ───── */
+.day-hero-figure {
+  margin: 6mm 0 8mm;
+  padding: 0;
+  page-break-inside: avoid;
+}
+img.day-hero {
+  width: 100%;
+  max-height: 90mm;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--r-lg);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+.day-hero-figure figcaption {
+  margin-top: 8px;
+  font-size: 10pt;
+  color: var(--c-ink-mute);
+  text-align: center;
+  font-style: italic;
 }
 
-/* ===== 清單 ===== */
-ul, ol {
+/* ───── 章末分隔（N.A 講師講義原稿前） ───── */
+.day-annex-divider {
+  height: 0;
+  border-top: 2px dashed var(--c-line);
+  margin: 30px 0 18px;
+  position: relative;
+}
+.day-annex-divider::after {
+  content: '附錄 · 教學流程備忘';
+  display: block;
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 0 12px;
+  font-size: 9pt;
+  letter-spacing: 0.2em;
+  color: var(--c-ink-soft);
+  font-weight: 600;
+}
+
+/* ───── Figure Grid（多圖並排） ───── */
+.figure-grid {
+  display: grid;
+  gap: 14px;
+  margin: 14px 0;
+  page-break-inside: avoid;
+}
+.figure-grid-2 { grid-template-columns: 1fr 1fr; }
+.figure-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.figure-grid.compact { gap: 10px; }
+.figure-grid figure.grid-figure {
+  margin: 0;
+  padding: 12px;
+  background: var(--c-bg-soft);
+  border-radius: var(--r);
+  border: 1px solid var(--c-line);
+  text-align: center;
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.figure-grid figure.grid-figure img {
+  margin: 0 auto 8px;
+}
+.figure-grid figcaption {
+  font-size: 9.5pt;
+  color: var(--c-ink-mute);
+  line-height: 1.5;
+  margin-top: auto;
+  padding-top: 4px;
+}
+.figure-eyebrow {
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--c-brand);
+  margin-bottom: 4px;
+}
+
+/* ───── Card Grid（規章/工具/影片） ───── */
+.card-grid {
+  display: grid;
+  gap: 14px;
+  margin: 14px 0;
+}
+.card-grid-2 { grid-template-columns: 1fr 1fr; }
+.card-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.card {
+  background: white;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.card-media {
+  margin: -14px -16px 12px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  overflow: hidden;
+  background: #11161f;
+}
+.card-media img {
+  width: 100%;
+  display: block;
+  border-radius: 0;
+}
+.card-eyebrow {
+  display: inline-block;
+  background: var(--c-brand);
+  color: white;
+  font-size: 8.5pt;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+  vertical-align: middle;
+}
+.card-title {
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--c-ink);
+  margin: 0 0 8px;
+  padding: 0;
+  border: none;
+  line-height: 1.4;
+}
+.card-title::before { display: none; }
+.card-body {
+  flex: 1;
+  font-size: 9.8pt;
+  line-height: 1.6;
+  color: var(--c-ink-mute);
+}
+.card-desc {
+  margin: 4px 0 8px;
+  color: var(--c-ink);
+}
+.card-meta {
+  margin: 4px 0;
+  font-size: 9.5pt;
+}
+.card-meta-label {
+  display: inline-block;
+  background: var(--c-bg-soft);
+  color: var(--c-ink-mute);
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+.card-link {
+  font-size: 9pt;
+  color: var(--c-ink-mute);
+  word-break: break-all;
+  margin: 4px 0 0;
+}
+.card-qr {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--c-line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-qr img.qr {
+  width: 80px; height: 80px;
+}
+.card-qr::after {
+  content: '掃描下載 / 開啟';
+  font-size: 9pt;
+  color: var(--c-ink-soft);
+  letter-spacing: 0.05em;
+}
+.card-footer {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--c-line-soft);
+  font-size: 9pt;
+  color: var(--c-ink-mute);
+  text-align: right;
+}
+
+/* ───── 學習目標 callout（unit 內） ───── */
+.goals-callout {
+  background: linear-gradient(135deg, rgba(79,124,219,0.06), rgba(79,124,219,0.02));
+  border-left: 4px solid var(--c-brand-bright);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 10px 14px;
+  margin: 10px 0;
+  page-break-inside: avoid;
+}
+.goal-item {
+  position: relative;
+  padding: 4px 0 4px 22px;
+  font-size: 10.2pt;
+  line-height: 1.65;
+  color: var(--c-ink);
+}
+.goal-item::before {
+  content: '✓';
+  position: absolute;
+  left: 0; top: 4px;
+  width: 16px; height: 16px;
+  color: white;
+  background: var(--c-success);
+  border-radius: 50%;
+  text-align: center;
+  font-size: 9pt;
+  font-weight: 800;
+  line-height: 16px;
+}
+
+/* ───── 任務清單（勾選方塊） ───── */
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+.task-list li {
+  display: flex;
+  align-items: flex-start;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--c-line-soft);
+  font-size: 10.2pt;
+  line-height: 1.6;
+  page-break-inside: avoid;
+}
+.task-list li:last-child { border-bottom: none; }
+.task-box {
+  width: 14px; height: 14px;
+  border: 2px solid var(--c-brand-bright);
+  border-radius: 3px;
+  margin: 4px 10px 0 0;
+  flex-shrink: 0;
+}
+.task-label { flex: 1; }
+
+/* ───── 本單元素材（緊密列點） ───── */
+.material-list {
+  list-style: none;
+  padding: 0;
   margin: 8px 0;
-  padding-left: 1.5em;
+  border-top: 1px solid var(--c-line-soft);
+}
+.material-list li {
+  display: grid;
+  grid-template-columns: 1fr 110px 2fr;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--c-line-soft);
+  font-size: 10pt;
+  line-height: 1.55;
+  align-items: baseline;
+}
+.material-name { font-weight: 700; color: var(--c-ink); }
+.material-type {
+  display: inline-block;
+  background: var(--c-bg-soft);
+  color: var(--c-brand);
+  font-size: 8.5pt;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+.material-desc {
+  color: var(--c-ink-mute);
+  font-size: 9.5pt;
+}
+
+/* ───── 一般清單 ───── */
+ul:not(.task-list):not(.material-list):not(.cover-day-list), ol {
+  margin: 8px 0;
+  padding-left: 1.6em;
+}
+ul:not(.task-list):not(.material-list):not(.cover-day-list) li::marker {
+  color: var(--c-brand-bright);
 }
 li {
-  line-height: 1.85;
+  line-height: 1.75;
   margin: 2px 0;
 }
 
-/* ===== 分隔線 ===== */
+/* ───── 分隔線 ───── */
 hr {
   border: 0;
-  border-top: 1px dashed #c8cdd6;
+  height: 4px;
+  background: linear-gradient(90deg, var(--c-line) 0%, var(--c-line-soft) 50%, var(--c-line) 100%);
   margin: 18px 0;
+  border-radius: 2px;
 }
 
-/* ===== TOC（pandoc 產出 nav#TOC，只列 h1 章節） ===== */
+/* ───── TOC（pandoc 產出 nav#TOC，只列 h1 章節） ───── */
 nav#TOC {
-  page-break-after: always;
   page-break-before: always;
-  font-size: 12pt;
-  padding: 16px 0;
+  page-break-after: always;
+  break-before: page;
+  break-after: page;
+  font-size: 11.5pt;
+  padding: 4mm 0;
+}
+nav#TOC h2 {
+  font-size: 24pt;
+  font-weight: 800;
+  color: var(--c-brand);
+  border-bottom: 3px solid var(--c-brand);
+  padding-bottom: 8px;
+  margin: 0 0 18px;
+  text-align: left;
+  letter-spacing: -0.01em;
+}
+nav#TOC h2::before {
+  content: '';
+  display: block;
+  width: 56px; height: 6px;
+  background: var(--c-accent);
+  border-radius: 3px;
+  margin-bottom: 10px;
 }
 nav#TOC ul {
   list-style: none;
   padding-left: 0;
-  line-height: 2.2;
+  line-height: 2.0;
 }
+nav#TOC ul ul { padding-left: 20px; font-size: 90%; }
 nav#TOC li {
   margin: 4px 0;
-  padding: 4px 0;
-  border-bottom: 1px dashed #e2e5ec;
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--c-line);
+  position: relative;
 }
 nav#TOC a {
-  color: #2c4fa5;
+  color: var(--c-ink);
   text-decoration: none;
   font-weight: 600;
+  display: block;
+  padding-left: 4px;
 }
-nav#TOC h2 {
-  font-size: 22pt;
-  color: #1a1d22;
-  border-bottom: 2px solid #4f7cdb;
-  padding-bottom: 6px;
-  margin-top: 0;
-  margin-bottom: 24px;
-  text-align: center;
-}
+nav#TOC a:hover { color: var(--c-brand-bright); }
 
-/* ===== 連結 ===== */
-a { color: #2c4fa5; text-decoration: underline; }
-a:visited { color: #2c4fa5; }
+/* ───── 連結 ───── */
+a { color: var(--c-brand); text-decoration: none; border-bottom: 1px solid rgba(44,79,165,0.3); }
+a:visited { color: var(--c-brand); }
 
-/* ===== Print 微調 ===== */
+/* ───── Print 微調 ───── */
 @media print {
-  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  pre, table, blockquote { page-break-inside: avoid; }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  pre, table, blockquote, .card, .figure-grid, .prompt-block,
+  .task-list li, .goals-callout, .material-list { page-break-inside: avoid; }
+  /* 卡片網格內每張卡片獨立避免分頁 */
+  .card-grid .card { page-break-inside: avoid; }
 }

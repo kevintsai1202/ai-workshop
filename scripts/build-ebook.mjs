@@ -50,7 +50,7 @@ async function main() {
   console.log('[ebook] 組稿 markdown...');
   const sections = [];
   sections.push(composeCover(s));
-  sections.push(composeOverview(s));
+  sections.push(await composeOverview(s));
   sections.push(await composeDay(s.COURSE.day1, s.dayContents.day1, 1));
   sections.push(await composeDay(s.COURSE.day2, s.dayContents.day2, 2));
   sections.push(await composeDay(s.COURSE.day3, s.dayContents.day3, 3));

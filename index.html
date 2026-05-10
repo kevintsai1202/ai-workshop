@@ -796,6 +796,20 @@
     }
   }
 
+  /* 當日時程表內的「單元 N」超連結：點擊跳到對應 unit accordion */
+  .schedule-unit-link {
+    color: var(--accent-deep);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent);
+    padding-bottom: 1px;
+    transition: color 0.15s, border-bottom-color 0.15s;
+  }
+  .schedule-unit-link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent-deep);
+    border-bottom-style: solid;
+  }
+
   /* 上課地點旁的地圖連結 — 與既有資訊融合不搶眼 */
   .map-link {
     display: inline-flex;
@@ -2356,6 +2370,12 @@
    * @param {string} [type] 素材類型（PDF 文件 / TEXT / CSV / YAML / MD）
    */
   function getMaterialUrl(name, type) {
+    // 音檔 → 直接連到 assets/ 下的 .m4a；瀏覽器會用內建 HTML5 audio player 播放（modal iframe 內也支援）
+    if (type === '音檔') {
+      if (name.includes('Hermes Agent') || name.includes('Hermes') || name.includes('SOP 示範')) {
+        return 'assets/Hermes_Agent_會自己寫_SOP.m4a';
+      }
+    }
     // PDF 文件 → 對應 pdf/ 資料夾下的實體 PDF（會被加上 download 屬性）
     if (type === 'PDF 文件') {
       const pdfBase = '完整課程包/教學素材/pdf/';
@@ -2589,8 +2609,11 @@
     'day1-u1': { type: 'tool-map', src: 'assets/scenarios/day1-u1.png', kicker: 'tool setup', caption: '帳號登入與工具定位：先分清模型、工具與行政場景。' },
     'day1-u2': { type: 'prompt-lab', src: 'assets/scenarios/day1-u2.png', kicker: 'prompt lab', caption: 'RTFC 提示詞實驗室：把口語稿、長文與爛提示詞逐步修成可用輸出。' },
     'day1-u3': { type: 'gem-builder', src: 'assets/scenarios/day1-u3.png', kicker: 'gem builder', caption: '把今天常用的提示詞封裝成一個可以重複呼叫的 Gem。' },
-    'day2-u1': { type: 'poster-canvas', src: 'assets/scenarios/day2-u1.png', kicker: 'creative sprint', caption: '先文案、再主視覺、最後輸出海報與投影片。' },
-    'day2-u2': { type: 'video-flow', src: 'assets/scenarios/day2-u2.png', kicker: 'video flow', caption: '以關鍵幀為核心，將圖片轉成 8-16 秒短片成品。' },
+    'day2-u1': { type: 'poster-canvas', src: 'assets/scenarios/day2-u1.png', kicker: 'creative sprint', caption: '文案 → 主視覺 → 加字，三步驟產出 IG 海報。' },
+    'day2-u2': { type: 'gem-builder', src: 'assets/scenarios/day2-u2.png', kicker: 'gem package', caption: '規章 + 流程封裝成可重用的「綠野海報生成助手」Gem。' },
+    'day2-u3': { type: 'document-flow', src: 'assets/scenarios/day2-u3.png', kicker: 'canvas slides', caption: 'Canvas 模式直接生 8 頁 .pptx，下載即用。' },
+    'day2-u4': { type: 'media-studio', src: 'assets/scenarios/day2-u4.png', kicker: 'storyboard', caption: '白板分鏡 + HSC 結構（8 秒 / Veo 3.1 上限），先寫腳本再進 Flow。' },
+    'day2-u5': { type: 'video-flow', src: 'assets/scenarios/day2-u5.png', kicker: 'video flow', caption: '以關鍵幀為核心，用 Veo 3.1 一次生 8 秒短片成品（一次生成上限）。' },
     'day3-u1': { type: 'source-citation', src: 'assets/scenarios/day3-u1.png', kicker: 'grounded work', caption: '讓 NotebookLM 只依據上傳來源產生公告、回覆與會議紀錄。' },
     'day3-u2': { type: 'finance-grid', src: 'assets/scenarios/day3-u2.png', kicker: 'ops cleanup', caption: '把亂格式請購單、FAQ、發票與合規規則整理成表格。' },
     'day4-u1': { type: 'skill-yaml', src: 'assets/scenarios/day4-u1.png', kicker: 'skill design', caption: '依 agentskills.io 官方規範拆解 SKILL.md（name + description + Markdown body），完成第一版 Skill 範本。' },
@@ -2826,6 +2849,12 @@
     });
     t.append(tb);
     root.append(t);
+
+    // 工具方案訂閱對比 — 用 unit-level renderConcept 復用：免費版 + Google AI + OpenAI 三段
+    if (m.pricing && m.pricing.length) {
+      root.append(el('h3', {}, '⚡ 工具方案：免費版限制與付費訂閱對比'));
+      m.pricing.forEach(c => root.append(renderConcept(c)));
+    }
 
     // 講師卡片：來自 instructor-data.js (Playwright 爬 YouTube @pg-kt)
     if (window.INSTRUCTOR && window.INSTRUCTOR.channel) {
@@ -3100,12 +3129,35 @@
       root.append(el('div', { class: 'note tip' }, d.principle));
     }
 
-    // 當日時程
+    // Day 級共用概念（跨單元、整日適用的方法心法 / 工具地圖；目前 Day 2 用於放「本日 Google 三件套」工具地圖）
+    if (d.concepts && d.concepts.length) {
+      d.concepts.forEach(c => root.append(renderConcept(c)));
+    }
+
+    // 當日時程：第 2 欄若以「單元 N」開頭，包成 <a href="#dayN-uM"> 超連結，點擊跳到對應 unit accordion
     root.append(el('h3', {}, '當日時程'));
     const sch = el('table', { class: 't' });
     sch.innerHTML = '<thead><tr><th style="width:130px">時段</th><th style="width:32%">單元</th><th>內容重點</th></tr></thead>';
     const sb = el('tbody');
-    d.schedule.forEach(r => sb.innerHTML += `<tr><td><code>${r[0]}</code></td><td>${r[1]}</td><td>${r[2]}</td></tr>`);
+    d.schedule.forEach(r => {
+      const tr = el('tr');
+      // 第 1 欄：時段（包 <code>）
+      tr.append(el('td', {}, el('code', {}, r[0])));
+      // 第 2 欄：單元名稱 — 若以「單元 N」開頭，產生 #dayId-uN 超連結
+      const unitMatch = r[1].match(/^單元\s*(\d+)/);
+      if (unitMatch) {
+        tr.append(el('td', {}, el('a', {
+          href: `#${dayId}-u${unitMatch[1]}`,
+          class: 'schedule-unit-link',
+          title: `點擊跳到 ${r[1].split(/[｜:：]/)[0].trim()}`
+        }, r[1])));
+      } else {
+        tr.append(el('td', {}, r[1]));
+      }
+      // 第 3 欄：內容重點
+      tr.append(el('td', {}, r[2]));
+      sb.append(tr);
+    });
     sch.append(sb);
     root.append(sch);
 
