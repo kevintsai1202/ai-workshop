@@ -7,8 +7,11 @@
   "scripts": {
     "scrape:instructor": "node scripts/scrape-youtube-channel.mjs",
     "scrape:tools": "node scripts/scrape-tools.mjs",
+    "gen:qr": "node scripts/gen-qr.mjs",
     "verify:toolbox": "node scripts/verify-toolbox.mjs",
+    "verify:qr": "node scripts/verify-qr-access.mjs",
     "build:ebook": "node scripts/build-ebook.mjs",
+    "build:ebook:corp": "node scripts/build-corp-6h-ebook.mjs",
     "serve": "npx serve ."
   },
   "devDependencies": {

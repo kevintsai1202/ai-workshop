@@ -622,6 +622,122 @@
     }
   }
 
+  /* ============================================================
+   *  QR 入口 hero — 工作坊現場掃碼入站用，放在 main-content 最前
+   *  視覺語彙呼應 .day-hero（dot-grid + 兩欄 grid）但更精簡，
+   *  右側資訊區塊延用 .eyebrow / h2 / lead 的 chapter 字級節奏
+   * ============================================================ */
+  .qr-hero {
+    position: relative;
+    margin: 0 0 24px;
+    padding: 30px 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background:
+      var(--dot-bg) 0 0 / 24px 24px,
+      linear-gradient(135deg, var(--surface), var(--surface-2));
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    align-items: center;
+    gap: 32px;
+  }
+  .qr-hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      transparent 50%,
+      color-mix(in oklab, var(--accent-soft) 40%, transparent) 100%);
+    pointer-events: none;
+  }
+  .qr-hero > * { position: relative; z-index: 1; }
+
+  /* QR 卡片：永遠白底黑點以維持掃碼器辨識率（暗模式也不反相） */
+  .qr-hero-card {
+    background: #ffffff;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-md);
+    padding: 14px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lift);
+  }
+  .qr-hero-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;     /* 縮放時保持模組邊緣銳利 */
+  }
+
+  .qr-hero-info { display: flex; flex-direction: column; gap: 10px; }
+  .qr-hero-info .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .qr-hero-info h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 3.4vw, 30px);
+    font-weight: 540;
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+  }
+  .qr-hero-info .lead {
+    margin: 4px 0 6px;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.65;
+    max-width: 56ch;
+  }
+
+  /* 網址行：等寬字體呈現 URL + 複製按鈕，整列可點觸 */
+  .qr-url-row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+  .qr-url {
+    flex: 1 1 320px;
+    min-width: 0;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--fg);
+    word-break: break-all;
+    user-select: all;          /* 點一下即全選，方便手動複製 */
+  }
+  .qr-url a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .qr-url a:hover { color: var(--accent); }
+
+  @media (max-width: 720px) {
+    .qr-hero {
+      grid-template-columns: 1fr;
+      padding: 22px 18px;
+      gap: 18px;
+    }
+    .qr-hero-card {
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .qr-hero-info { text-align: left; }
+    .qr-url { font-size: 13px; padding: 9px 12px; }
+  }
+
   /* 情境圖片：優先使用 IMAGE-2 生成圖，缺圖時退回 inline SVG */
   .scenario-visual {
     position: relative;
@@ -2764,6 +2880,54 @@
   // ============================================================
   //  區塊渲染：總覽
   // ============================================================
+  // ============================================================
+  //  QR 入口卡：放在 main-content 最前，工作坊現場投影掃碼用
+  //  - 不掛入 sidebar 章節導覽（renderSidebar 只取 .chapter id），
+  //    這裡用 .qr-access-wrap 包裝、不加 .chapter，避免侵入學習導覽
+  //  - QR 圖檔由 scripts/gen-qr.mjs 預先產出（純靜態 SVG，無需執行期 JS）
+  // ============================================================
+  function renderQrAccess() {
+    const url = 'https://kevintsai1202.github.io/ai-workshop';
+    const wrap = el('div', { class: 'qr-access-wrap', id: 'qr-access' });
+    const hero = el('div', { class: 'qr-hero' });
+
+    // 左：QR 卡片，整張可點直接開啟連結（桌機投影時老師可一鍵 demo）
+    const card = el('a', {
+      class: 'qr-hero-card',
+      href: url,
+      target: '_blank',
+      rel: 'noopener',
+      title: '在新分頁開啟工作坊網站'
+    });
+    card.append(el('img', {
+      src: 'assets/qr-workshop.svg',
+      alt: '工作坊網站 QR Code（' + url + '）',
+      loading: 'eager',
+      decoding: 'async',
+      width: '256',
+      height: '256'
+    }));
+
+    // 右：標題 + 說明 + 網址 + 複製鈕
+    const info = el('div', { class: 'qr-hero-info' });
+    info.append(el('span', { class: 'eyebrow' }, '工作坊網站'));
+    info.append(el('h2', {}, '掃碼進入互動教學頁'));
+    info.append(el('p', { class: 'lead' },
+      '手機相機對準左側 QR Code 即可開啟；也可直接在瀏覽器輸入下方網址。'
+      + '進度與測驗答案會自動儲存在本機瀏覽器，隨時可回來接續。'));
+
+    const urlRow = el('div', { class: 'qr-url-row' });
+    const urlBox = el('div', { class: 'qr-url' });
+    urlBox.append(el('a', { href: url, target: '_blank', rel: 'noopener' }, url));
+    urlRow.append(urlBox);
+    urlRow.append(createCopyButton(() => url, '複製網址'));
+    info.append(urlRow);
+
+    hero.append(card, info);
+    wrap.append(hero);
+    return wrap;
+  }
+
   function renderOverview() {
     const m = C.meta;
     const root = el('section', { class: 'chapter', id: 'overview' });
@@ -3924,6 +4088,7 @@
   function init() {
     initTheme();
     const root = $('#main-content');
+    root.append(renderQrAccess());
     root.append(renderOverview());
     root.append(renderSharedCase());
     root.append(renderDay('day1'));
